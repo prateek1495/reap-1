@@ -1,0 +1,205 @@
+#auth-body {
+    background-color: #0747A6;
+}
+
+body{
+    background-image: url("../images/technology-bg.jpg");
+
+}
+#auth-content {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    margin: 0;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/*Heading*/
+
+header {
+    margin-top: 20px;
+    text-align: center;
+    display: block;
+}
+
+header > h1 {
+    font-weight: bold;
+    font-size: 50px;
+    color: white;
+    display: inline-block;
+    position: relative;
+}
+
+header > h6 {
+    margin-top: 30px;
+    font-weight: normal;
+    font-size: 18px;
+    color: white;
+
+}
+
+#emailIncorrect {
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.errorText {
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.myBtn {
+    height: auto;
+}
+
+/*Login Box */
+#auth-box {
+    margin-top: 80px;
+    width: 400px;
+    height: auto;
+    text-align: center;
+}
+
+#auth-box-signup {
+    margin-top: 60px;
+    width: 800px;
+    height: auto;
+    text-align: center;
+}
+
+#auth-box-password {
+    margin-top: 80px;
+    width: 400px;
+    height: auto;
+    text-align: center;
+}
+
+#auth-form {
+    padding: 40px;
+}
+
+#auth-form > input {
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+}
+
+.custom-input {
+    padding: 5px;
+    padding-left: 10px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    border: 1px solid #78B3FF;
+    box-shadow: #78B3FF;
+}
+
+#submitBtn {
+    margin-top: 10px;
+    background-color: #0052CC;
+}
+
+#submitBtn:hover {
+    background-color: #007bff;
+}
+
+/*Footer*/
+
+footer > div {
+    text-align: center;
+    color: white;
+}
+
+#forgetPassword {
+    text-align: center;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.42857142857143;
+    cursor: pointer;
+}
+
+#forgetPassword:hover {
+    text-decoration: underline;
+}
+
+#linkSelector {
+    color: white;
+    margin-top: 90px;
+}
+
+#linkSelector:hover {
+    text-decoration: underline;
+}
+
+.marginTop {
+    margin-top: 40px;
+}
+
+sup {
+    color: red;
+}
+
+#para {
+    text-align: left;
+    color: rgb(107, 119, 140);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.33333;
+}
+
+.newPass {
+    text-align: left;
+    color: rgb(107, 119, 140);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.33333;
+}
+
+#showPassDiv {
+    top: 0px;
+    margin-top: -25px;
+}
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0
+}
+
+
+
+
+

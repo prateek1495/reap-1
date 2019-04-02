@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
+<head>
+    <meta charset="UTF-8">
+    <title>DashBoard</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Login</title>
+    <meta name="header" content="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+            integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link th:href="@{/assets/css/dashboard.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="../static/assets/js/dashboard.js" th:src="@{/assets/js/dashboard.js}"></script>
+    <link rel="stylesheet" href="../../static/assets/css/dashboard.css">
+
+    <link th:href="@{/assets/css/main.css}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/assets/css/main.css">
+
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="jquery.timeago.js" type="text/javascript"></script>
+
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <header>
+
+        <nav class="navbar navbar-expand-sm  fixed-top customNav">
+
+            <!--Toggle Button-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+                    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+
+
+                <!--Navbar Images-->
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="#"><img
+                                th:src="@{assets/images/reap-ed280031215032f3350f114b95893a51.png}" height="30"
+                                width="120"/></a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="#"><img
+                                th:src="@{assets/images/text_footer-8f0e1eb9c8ec931dcc66dbcdc631fe64 .png}" height="30"
+                                width="400"/></a>
+
+                    </li>
+
+                </ul>
+
+
+                <!--Nav Links-->
+                <div class="collapse navbar-collapse justify-content-end">
+
+                    <ul class="nav navbar-nav navbar-right dashboardList justify-content-end pull-right"
+                        style="align-items: center; margin-right: 30px;">
+
+                        <li class="nav-item nav-menu marginRight listItem active">
+
+                            <a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+
+                        </li>
+
+                        <li class="nav-item nav-menu marginRight listItem ">
+
+                            <a class="nav-link" href="#"><i class="fas fa-award"></i>Badges</a>
+
+                        </li>
+                        <li class="nav-item nav-menu marginRight listItem " sec:authorize="hasAuthority('ADMIN')">
+
+                            <a class="nav-link" href="/item-warehouse"><i class="fas fa-award"></i>Items</a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <!--Profile Modal DropDown-->
+
+
+                    <ul class="navbar-nav" style="margin-right: 30px;">
+
+                        <li class="nav-item dropdown">
+
+                            <a id="profileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="recieverImage"
+                                     src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg"
+                                     alt="">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileMenu">
+
+                                <div class="profileModal">
+
+                                    <div class="profileModalContent">
+
+                                        <h4 class="userName">Your Name</h4>
+
+                                        <div class="row" style="margin-top: 10px">
+
+                                            <!--Profile Image-->
+                                            <div class="col-md-4">
+                                                <img src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg"
+                                                     width="80px" height="80px" alt="">
+                                            </div>
+
+                                            <!--Profile Info-->
+                                            <div class="col-md-8">
+
+                                                <div class="row">
+                                                    <div class="col-md-4 profileModalFontNormal">
+                                                        <p>Name:</p>
+                                                        <p>Email:</p>
+                                                    </div>
+                                                    <div class="col-md-8 profileModalFontBold">
+                                                        <p class="userName">Prateek Nagar</p>
+                                                        <p class="userEmail">prateek.nagar@tothenew.com</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <!--Profile Footer-->
+                                    <div class="clearfix profileFooter">
+                                        <a class="footerLeft">Guidelines</a>
+                                        <a class="footerRight">Logout</a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <div class="content-wrapper" style="min-height: 515px; margin-top: 60px;">
+
+        <div class="container-fluid">
+
+
+            <div class="row">
+
+
+                <!--Left Panel Scrollable-->
+                <div class="col-md-9 leftPanel">
+
+                    <!--Recognize Card-->
+                    <div class="card">
+
+                        <!--Card Header-->
+                        <div class="card-header">
+                            <img th:src="@{assets/images/white.png}" height="18"
+                                 width="20"/> &nbsp;&nbsp;Recognize
+                            Newer
+                        </div>
+
+                        <!--Card Body-->
+                        <div class="card-body">
+
+                            <div th:if="${success}">
+                                <div class="alert alert-success" role="alert">
+                                    <small>Newer has been successfully recognized.</small>
+                                </div>
+                            </div>
+                            <div th:if="${saveError}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>Cannot Give Selected Star.</small>
+                                </div>
+                            </div>
+                            <div th:if="${emailError}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>User dosen't exists</small>
+                                </div>
+                            </div>
+                            <div th:if="${selfRecoError}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>You cannot give yourself recognition.</small>
+                                </div>
+                            </div>
+
+                            <form th:action="@{/save-recognition}" method="post">
+
+                                <!--Newer name ,badges,karma-->
+                                <div class="card-title">
+
+                                    <div class="row">
+
+
+                                        <!--Newer Name Select-->
+                                        <div class="col-md-5 ">
+
+                                            <input type="text" class="form-control custom-heigth20 tags"
+                                                   placeholder="Select Newer" th:name="receiver">
+
+
+                                        </div>
+
+
+                                        <!--Select Badges-->
+                                        <div class="col-md-3">
+
+                                            <select class="form-control custom-heigthSelect20 badges"
+                                                    th:name="star">
+
+                                                <option value="" disabled selected>Select Badges</option>
+
+                                                <option value="Gold">Gold</option>
+                                                <option value="Silver">Silver</option>
+                                                <option value="Bronze">Bronze</option>
+
+
+                                            </select>
+
+                                        </div>
+
+                                        <!--Select karma-->
+                                        <div class="col-md-4">
+                                            <select class="form-control custom-heigthSelect20 " id="karmaValues">
+                                                <option value="" disabled selected>Select Karma</option>
+                                                <option>Karma 1</option>
+                                                <option>Karma 2</option>
+                                                <option>karma 3</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <!--Card Body Starts-->
+
+                                <p class="card-text">Reason:</p>
+
+                                <!--<div class="reason-area">-->
+
+                                <textarea class="reason-area"
+                                          placeholder="Please select Newer,Basges And Karma First"
+                                          th:name="comment"></textarea>
+
+
+                                <!--</div>-->
+
+                                <button class="recognizeBtn btn btn-default" type="submit" value="Submit">
+                                    Recognize
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <div class="card">
+                            <div class="card-header">
+                                User's
+                            </div>
+
+                            <!--Card Body-->
+                            <div class="card-body">
+
+                                <div id="result"></div>
+
+
+                                <div class="table-responsive">
+
+                                    <button type="button" class="btn btn-info" value="Assign New Role"
+                                            style="margin-bottom: 15px; float: right"
+                                            data-toggle="modal" data-target=".bd-example-modal-lg">Manage Roles
+                                    </button>
+
+                                    <table id="example" class=" row-border order-column"
+                                           style="width:100%;text-align: center">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th>Active</th>
+                                            <th>Email</th>
+                                            <th>Available Points</th>
+                                            <th>Points Used</th>
+                                            <th>
+                                                <p>Badges</p>
+                                                <span><img th:src="@{/assets/images/gold.png}" height="13" width="15"/>
+                                                </span>&nbsp;&nbsp;
+                                                <span><img th:src="@{/assets/images/silver.png}" height="13" width="15"/>
+                                                      </span>&nbsp;&nbsp;
+                                                <span><img th:src="@{/assets/images/bronze.png}" height="13" width="15"/>
+                                                      </span>&nbsp;&nbsp;
+                                            </th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="result:${users}">
+                                            <td th:text="${result.getUser().getFirstName()}">Prateek Nagar</td>
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <select class="custom-select select-assesor">
+                                                        <option th:each="res:${result.getUser().getRoles()}"
+                                                                th:value="${res.getName()}"
+                                                                th:text="${res.getName()}">
+
+                                                        </option>
+
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" class="checkBox"
+                                                       th:checked="${result.getUser().isActive()}"
+                                                       th:value="${result.getUser().getId()}">
+                                            </td>
+                                            <td th:text="${result.getUser().getEmail()}">prateek.nagar@tothenew.com</td>
+                                            <td>
+                                                <div>
+                                                    <span class="points" th:text="${result.getUser().getPoints()}">
+                                                        100</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span class="points" th:text="${result.getUser().getPointSpent()}">
+                                                        100</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:text="${result.getGoldStarCount()}"></span>&nbsp;&nbsp;
+                                                <span th:text="${result.getSilverStarCount()}"></span>&nbsp;&nbsp;
+                                                <span th:text="${result.getBronzeStarCount()}"></span>
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                                         aria-labelledby="myLargeModalLabel" aria-hidden="true" data-keyboard="false">
+                                        <div class="modal-dialog modal-lg">
+
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Assign Roles</h5>
+                                                </div>
+
+
+                                                <div class="modal-body" id="modalB">
+
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <input type="text" id="userEmail"
+                                                                   class="form-control custom-heigth20 modalInput tags"
+                                                                   placeholder="Select Newer" th:name="email"/>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <button type="submit" class="btn btn-success GetUserDetail">
+                                                                Get
+                                                                Details
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="bodyRoleUser" style="margin-top: 20px;padding: 5px">
+
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <strong><span>Name:</span></strong>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <span id="nameUser"></span>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <strong><span>Name:</span></strong>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <span id="emailUser"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="roleAssigned"
+                                                             style="margin-top: 30px;padding: 10px;">
+                                                            <div class="table-responsive">
+                                                                <table class="table-bordered"
+                                                                       style="width:100%;text-align: center">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Role</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody id="roleAssignedTable">
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                        <strong><p style="font-size: 12px">Select New Role To Assign</p>
+                                                        </strong>
+                                                        <div class="roleNew" style="margin-top: 10px;padding: 10px">
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger roleModalClose"
+                                                            data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Wall Of Fame Card-->
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <div class="row">
+
+                                <div class="col-md-4" style="vertical-align: center;align-items: center">
+                                    <img th:src="@{assets/images/walloffame.png}" height="18" width="20" alt=""/> &nbsp;&nbsp;Wall
+                                    Of Fame
+
+                                </div>
+
+                                <div class="col-md-4" style="text-align: center">
+                                    <input class="form-control fa-input searchData" type="text"
+                                           placeholder="&#xF002;   Search"
+                                           style="line-height: 15px;height: 25px;font-size: 13px">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <i class="fa fa-download fa-style csvBtn" aria-hidden="true"
+                                       style="color: white"></i>
+                                    <i class="fa fa-calendar fa-style" aria-hidden="true"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="resultRevoke"></div>
+
+                            <div class="row recordInfo" th:each="result:${recog}">
+
+                                <div class="col-md-1 " style="vertical-align: center">
+
+                                    <img class="recieverImage "
+                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
+
+                                </div>
+
+                                <div class="col-md-9 badgeInfo">
+                                    <p>
+
+                                        <strong><span
+                                                th:text="${result.getReceiver().getFirstName()}"></span></strong>
+
+                                        <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
+
+                                        <span th:switch="${result.getStar().getName()}">
+                                        <img th:case="GOLD" th:src="@{assets/images/gold.png}" th:width="15" th:height="15">
+                                    <img th:case="SILVER" th:src="@{assets/images/silver.png}" th:width="15" th:height="15">
+                                    <img th:case="BRONZE" th:src="@{assets/images/bronze.png}" th:width="15"
+                                         th:height="15"> </span>
+                                        <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>
+                                        <strong><span
+                                                th:text="${result.getGiver().getFirstName()}"></span></strong>
+
+                                        <br>
+                                        <span>Reason:</span>
+                                        <br>
+                                        <span th:text="${result.getComment()}">
+
+                                        Timeago was originally built for use with Yarp.com to timestamp comments.
+
+                                        Avoid timestamps dated "1 minute ago" even though the page was opened 10 minutes
+                                        ago; timeago refreshes automatically.
+                                        You can take full advantage of page caching in your web applications, because
+                                        the timestamps aren't calculated on the server.
+                                            You get to use standard HTML5 tags.</span>
+
+
+                                    </p>
+
+
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="delDiv" sec:authorize="hasAuthority('ADMIN')" data-toggle="modal"
+                                         data-target="#exampleModal1">
+                                        <input type="hidden" class="resultStar"
+                                               th:value="${result.getStar().getName()}">
+                                        <input type="hidden" class="resultId" th:value="${result.getId()}">
+                                        <i class="fa fa-trash deleteBadge"></i>
+                                    </div>
+                                    <div class="timeDiv" style="" th:text="${result.getUpdatedAt()}"></div>
+                                </div>
+
+                                <span class="recoId" hidden></span>
+                                <span class="recoStar" hidden></span>
+
+                                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="radioClass">
+                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                           value="Selected Incorect Name">
+                                                    &nbsp;&nbsp;Selected Incorrect Name <br>
+                                                </div>
+                                                <div class="radioClass">
+                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                           value="Selected incorrect Badge">
+                                                    &nbsp;&nbsp;Selected incorrect Badge <br>
+                                                </div>
+                                                <div class="radioClass">
+                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                           value="Selected Incorrect Karma">
+                                                    &nbsp;&nbsp;Selected Incorrect Karma <br>
+                                                </div>
+                                                <div class="radioClass">
+                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                           value="Inappropriate language Used">
+                                                    &nbsp;&nbsp;Inappropriate language Used <br>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary revokeRecognition">Revoke
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!--Right panel-->
+                <div class="col-md-3 rightPanel">
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <img src="" height="18" width="20"/> &nbsp;&nbsp;My Badges
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+
+                                <div class="col-sm-4" style="align-items: center;horiz-align: center">
+
+                                    <img class="recieverImage"
+                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
+
+                                </div>
+
+                                <div class="col-sm-6 userDetail" style="margin-left: -10px">
+
+                                    <h3 class="myName"></h3>
+
+                                    <span>
+                                        <img src="" height="18" width="20"/>
+                                        <i>0</i>
+                                  </span>
+
+                                    <span>
+                                        <img src="" height="18" width="20"/>
+                                         <i>0</i>
+                                  </span>
+
+                                    <span>
+                                        <img src="" height="18" width="20"/>
+                                         <i>0</i>
+                                  </span>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-header">
+                            Newers Board(Last 7 Days)
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row" style="margin-bottom: 13px">
+
+
+                                <div class="col-sm-4" style="align-items: center;horiz-align: center">
+
+                                    <img class="recieverImage"
+                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
+
+                                </div>
+
+                                <div class="col-sm-6 userDetail" style="margin-left: -10px">
+
+                                    <h3 class="myName">Prateek Nagar</h3>
+
+                                    <span>
+                                        <img th:src="@{assets/images/gold.png}" height="18" width="20"/>
+                                        <i>0</i>
+                                  </span>
+
+                                    <span>
+                                        <img th:src="@{assets/images/silver.png}" height="18" width="20"/>
+                                         <i>0</i>
+                                  </span>
+
+                                    <span>
+                                        <img th:src="@{assets/images/bronze.png}" height="18" width="20"/>
+                                         <i>0</i>
+                                  </span>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+<script>
+    $(function () {
+
+        $('.csvBtn').on("click", function () {
+            window.open("/download-csv");
+        });
+
+        $(".searchData").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $(".badgeInfo .recordSearch").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+    })
+</script>
+</html>
