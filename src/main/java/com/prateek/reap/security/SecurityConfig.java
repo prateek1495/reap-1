@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/save", "/signup", "/forget-password", "/reset-password",
                         "/forget-password-process", "/reset-password-process", "/perform-login")
                 .permitAll()
-                .anyRequest()
+                .antMatchers("/dashboard/**")
                 .authenticated()
                 .and()
                 .formLogin()
@@ -59,8 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .failureUrl("/login-error")
-                .defaultSuccessUrl("/dashboard");
+                .defaultSuccessUrl("/dashboard")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login");
     }
+/*
 
     @Override
     public void configure(WebSecurity web) {
@@ -69,5 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/assets/**","/auth/**","/static/**", "/css/**", "/images/**", "/vendor/**", "/fonts/**");
     }
 
+*/
 
 }

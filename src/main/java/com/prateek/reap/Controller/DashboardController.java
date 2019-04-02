@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
+
 @Controller
 public class DashboardController {
 
@@ -52,7 +54,7 @@ public class DashboardController {
         if (model.containsAttribute("selfRecoError"))
             model.addAttribute("selfRecoError", "Cannot Give To Recognition to yourself");
 
-
+        model.addAttribute("loggedUser",currentLoggedInUser(authentication));
         model.addAttribute("recog", badgeService.findAllActiveRecognition(true));
         model.addAttribute("badge", new BadgesGiven());
         model.addAttribute("users", userStarCountService.findAll());
