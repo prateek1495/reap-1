@@ -67,16 +67,21 @@
                                      </div>
                                  </div>
 
+                                 <div th:if="${expire}">
+                                     <div class="alert alert-danger" role="alert">
+                                         <small>Reset Password Link is Expired</small>
+                                     </div>
+                                 </div>
 
 
                                  <div th:if="${passwordsuccess}">
-                                     <div class="alert alert-danger" role="alert">
+                                     <div class="alert alert-success" role="alert">
                                          <small>Reset Password Link Sent,Please Reset Password and continue.</small>
                                      </div>
                                  </div>
 
                                  <div th:if="${resetPassword}">
-                                     <div class="alert alert-danger" role="alert">
+                                     <div class="alert alert-success" role="alert">
                                          <small>Password Successfully Updated, Please Log in.</small>
                                      </div>
                                  </div>
@@ -95,7 +100,9 @@
                                             tabindex="2"
                                             class="form-control" placeholder="Password"/>
                                  </div>
-
+                                 <div class="form-group">
+                                     <input type="checkbox" onclick="myFunction()"/>Show Password
+                                 </div>
                                  <div class="form-group">
                                      <div class="row">
                                          <div class="col-sm-6 col-sm-offset-3">
@@ -239,6 +246,15 @@
             $(".alert-success").alert('close');
         });
     });
+
+    function myFunction() {
+        var x = document.getElementById("password1");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
 </script>
             </div>
         </div>

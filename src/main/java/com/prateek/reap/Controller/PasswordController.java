@@ -41,7 +41,12 @@ public class PasswordController {
     }
 
     @RequestMapping(value = "/reset-password", method = RequestMethod.GET)
-    public String getResetPasswordPage(@RequestParam String token, Model model) {
+    public String getResetPasswordPage(@RequestParam String token, Model model,RedirectAttributes redirectAttributes) {
+        User user=signUpService.findByToken(token);
+        if(user==null) {
+            redirectAttributes.addFlashAttribute("expire", "Reset Password Link is expired");
+            return "redirect:/login";
+        }
         model.addAttribute("token", token);
         return "auth/resetPassword";
     }
@@ -69,7 +74,11 @@ public class PasswordController {
 
     @RequestMapping(value = "/reset-password-process", method = RequestMethod.POST)
     public String resetPasswordProcess(@RequestParam Map<String, String> requestParams, RedirectAttributes redirectAttributes) {
-
+        User user1=signUpService.findByToken(requestParams.get("token"));
+        if(user1==null) {
+            redirectAttributes.addFlashAttribute("expire", "Reset Password Link is expired");
+            return "redirect:/login";
+        }
         User user = signUpService.findUserByResetToken(requestParams.get("token"));
         /* User user1=user.get();*/
         user.setToken(null);

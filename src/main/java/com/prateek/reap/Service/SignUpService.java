@@ -66,6 +66,10 @@ public class SignUpService {
         return resetTokenUrl + token;
     }
 
+    public User findByToken(String Token) {
+        return signUpRepository.findByToken(Token);
+    }
+
     private String generateAndSaveResetToken(User user) {
         String token = UUID.randomUUID().toString();
         user.setActive(false);
