@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserStarReceivedRepository extends CrudRepository<UserStarReceived, Integer> {
     UserStarReceived findByUser(User receiverUser);
+
+    UserStarReceived findByUser_Id(Integer id);
 }

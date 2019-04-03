@@ -17,4 +17,6 @@ public interface SignUpRepository extends CrudRepository<User, Integer> {
     User findByToken(String resetToken);
 
 
+
+
 }

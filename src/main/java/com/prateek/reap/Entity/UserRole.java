@@ -1,5 +1,6 @@
 package com.prateek.reap.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class UserRole {
 
     private Integer priority;
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER,
             mappedBy = "roles")
     private Set<User> users = new HashSet<>();

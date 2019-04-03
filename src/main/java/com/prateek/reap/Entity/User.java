@@ -1,17 +1,16 @@
 package com.prateek.reap.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,13 +29,13 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    @Size(min = 0, max = 30, message = "Please First Name In Range of {min}-{max} characters")
+    @Size(min = 0, max = 30, message = "{user.first.name}")
     private String firstName;
 
-    @Size(min = 0, max = 30, message = "Please Last Name In Range of {min}-{max} characters")
+    @Size(min = 0, max = 30, message = "{user.last.name}")
     private String lastName;
 
-    @Email(message = "Please Enter Email Address In Right Format")
+    @Email(message = "{user.email}")
     private String email;
 
     @Column(nullable = false)
@@ -62,6 +61,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> roles = new HashSet<>();
@@ -170,6 +171,25 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", points=" + points +
+                ", pointSpent=" + pointSpent +
+                ", token='" + token + '\'' +
+                ", active=" + active +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", roles=" + roles +
+                '}';
     }
 
 

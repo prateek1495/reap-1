@@ -20,7 +20,8 @@ public class StarService{
         starRepository.save(star);
     }
 
-    public Star getStarByName(String starType) {
-        return starRepository.findByName(starType.toUpperCase());
+    public Star findByName(String starType)
+    {
+       return starRepository.findByName(starType.toUpperCase());
     }
 }

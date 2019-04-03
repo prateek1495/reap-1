@@ -7,11 +7,16 @@ import com.prateek.reap.Repository.UserStarReceivedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserStarReceivedService {
 
     @Autowired
     private  UserStarReceivedRepository userStarReceivedRepository;
+
+    @Autowired
+    private SignUpService signUpService;
 
     public Iterable<UserStarReceived> findAll() {
         return userStarReceivedRepository.findAll();
@@ -21,6 +26,10 @@ public class UserStarReceivedService {
         userStarReceivedRepository.save(starReceived);
     }
 
+    public UserStarReceived findByUserId(Integer id) {
+
+        return userStarReceivedRepository.findByUser_Id(id);
+    }
 
     public UserStarReceived findUserStarCount(User receiverUser) {
         return userStarReceivedRepository.findByUser(receiverUser);

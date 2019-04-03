@@ -29,14 +29,14 @@ public class LoginController {
    @RequestMapping("/login")
     public String getLoginPage(Model model) {
 
-       return "auth/login";
+       return "/login";
 
    }
 
     @RequestMapping("/login-error")
     public String getLoginErrorPage(Model model) {
         model.addAttribute("error", "Bad Credentials, Please Try Again");
-        return  "auth/login";
+        return  "/login";
 
     }
 

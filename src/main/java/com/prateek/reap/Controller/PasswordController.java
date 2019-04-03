@@ -79,14 +79,17 @@ public class PasswordController {
             redirectAttributes.addFlashAttribute("expire", "Reset Password Link is expired");
             return "redirect:/login";
         }
-        User user = signUpService.findUserByResetToken(requestParams.get("token"));
-        /* User user1=user.get();*/
+       /* User user = signUpService.findUserByResetToken(requestParams.get("token"));
+        *//* User user1=user.get();*//*
         user.setToken(null);
         user.setActive(true);
 
         user.setPassword(bCryptPasswordEncoder.encode(requestParams.get("newPassword")));
 
-        signUpService.saveUser(user);
+        signUpService.saveUser(user);*/
+
+        signUpService.resetEmailTokenAndSetNewPassword(
+                requestParams.get("token"), requestParams.get("newPassword"));
 
         redirectAttributes.addFlashAttribute("resetPassword", "Password Resetted, Please Log in.");
         return "redirect:/login";

@@ -1,10 +1,7 @@
 package com.prateek.reap.Service;
 
 
-import com.prateek.reap.Entity.ResponseDto;
-import com.prateek.reap.Entity.Star;
-import com.prateek.reap.Entity.User;
-import com.prateek.reap.Entity.UserRole;
+import com.prateek.reap.Entity.*;
 import com.prateek.reap.Repository.SignUpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +32,9 @@ public class SignUpService {
 
     @Autowired
     private  UserStarCountService userStarCountService;
+
+    @Autowired
+    UserStarReceivedService userStarReceivedService;
 
 
 
@@ -78,6 +78,18 @@ public class SignUpService {
         return token;
     }
 
+    public void resetEmailTokenAndSetNewPassword(String token, String newPassword) {
+        User user = signUpRepository.findByToken(token);
+        user.setToken(null);
+        user.setActive(true);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        signUpRepository.save(user);
+    }
+
+    public Optional<User> findById(Integer userId) {
+        return signUpRepository.findById(userId);
+    }
+
 
     public boolean checkUserExists(String email, boolean active) {
         List<User> userList = signUpRepository.findByEmailAndActive(email, active);
@@ -85,12 +97,81 @@ public class SignUpService {
     }
 
 
-    public void save(User user) {
+    public void save(User user,MultipartFile file) throws IOException {
         UserRole userRole = userRoleService.checkByName("USER");
+
         user.getRoles().add(userRole);
+
+        String imagePath = saveImagePath(file);
+        user.setImageUrl(imagePath);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
-        signUpRepository.save(user);
+
+        /*UserRole userRole1=new UserRole();
+        userRole1.setId(1);
+        userRole1.setName("USER");
+        userRole1.setGoldStar(new Integer(3));
+        userRole1.setSilverStar(new Integer(2));
+        userRole1.setBronzeStar(new Integer(1));
+        userRole1.setPriority(3);
+
+
+        UserRole userRole2=new UserRole();
+        userRole1.setId(2);
+        userRole1.setName("ADMIN");
+        userRole1.setGoldStar(new Integer(3));
+        userRole1.setSilverStar(new Integer(2));
+        userRole1.setBronzeStar(new Integer(1));
+        userRole1.setPriority(4);
+
+        UserRole userRole3=new UserRole();
+        userRole1.setId(1);
+        userRole1.setName("SUPERVISOR");
+        userRole1.setGoldStar(new Integer(6));
+        userRole1.setSilverStar(new Integer(3));
+        userRole1.setBronzeStar(new Integer(2));
+        userRole1.setPriority(2);
+
+        UserRole userRole4=new UserRole();
+        userRole1.setId(1);
+        userRole1.setName("PRACTICEHEAD");
+        userRole1.setGoldStar(new Integer(9));
+        userRole1.setSilverStar(new Integer(6));
+        userRole1.setBronzeStar(new Integer(3));
+        userRole1.setPriority(1);
+        userRoleService.save(userRole1);
+        userRoleService.save(userRole2);
+        userRoleService.save(userRole3);
+        userRoleService.save(userRole4);
+*/
+      User newUser= signUpRepository.save(user);
+
+        System.out.println(newUser + "+++++++++++");
+
+        UserStarCount userStarCount=new UserStarCount();
+
+        userStarCount.setUser(newUser);
+        userStarCount.setGoldStarCount(userRole.getGoldStar());
+        userStarCount.setSilverStarCount(userRole.getSilverStar());
+        userStarCount.setBronzeStarCount(userRole.getBronzeStar());
+        userStarCountService.save(userStarCount);
+        UserStarReceived userStarReceived=new UserStarReceived();
+        userStarReceived.setUser(newUser);
+        userStarReceived.setGoldStarRecieved(0);
+        userStarReceived.setSilverStarRecieved(0);
+        userStarReceived.setBronzeStarRecieved(0);
+        userStarReceivedService.save(userStarReceived);
+        //signUpRepository.save(user);
+    }
+
+
+
+    public String saveImagePath(MultipartFile profilePicture) throws IOException {
+        String filePath="/home/prateek/IdeaProjects/reap/out/production/resources/static/assets/profileImages/";
+        byte[] bytes =profilePicture.getBytes();
+        Path path = Paths.get(filePath+profilePicture.getOriginalFilename());
+        Files.write(path,bytes);
+        return "/assets/profileImages/"+profilePicture.getOriginalFilename();
     }
 
     public Iterable<User> findAll() {
@@ -99,63 +180,11 @@ public class SignUpService {
 
 
 
-   /* public ResponseDto getAllUser() {
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatus(true);
-        responseDto.setData(signUpRepository.findAll());
-        return responseDto;
-    }*/
-
-
-    /*public UserResponseDto findAllDetailOfUsers() {
-        return null;
-    }*/
-
-
-    public void deleteUserRole(int roleId, int userId) {
-        Optional<UserRole> userRole = userRoleService.findById(roleId);
-        Optional<User> user = signUpRepository.findById(userId);
-        user.get().getRoles().remove(userRole.get());
-        signUpRepository.save(user.get());
-        userStarCountService.setDefaultStarsAccordingToRole(user.get(), userRole.get(), "DELETE");
+    public List<User>getAllUser()
+    {
+     List<User> users= (List<User>) signUpRepository.findAll();
+     return users;
     }
-
-
-    public Optional<User> findById(int userId) {
-        return signUpRepository.findById(userId);
-    }
-
-
-    public void addUserRole(int roleId, int userId) {
-        Optional<UserRole> role = userRoleService.findById(roleId);
-        Optional<User> user = signUpRepository.findById(userId);
-        userStarCountService.setDefaultStarsAccordingToRole(user.get(), role.get(), "ADD");
-        user.get().getRoles().add(role.get());
-        signUpRepository.save(user.get());
-    }
-
-
-  /*  public UserResponseDto constructUserResponseDto(User user, Iterable<UserRole> roles) {
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUser(user);
-        userResponseDto.setAllRoles(roles);
-        return userResponseDto;
-    }
-*/
-
-    public void deactivateUser(int id) {
-        Optional<User> user = signUpRepository.findById(id);
-        user.get().setActive(false);
-        signUpRepository.save(user.get());
-    }
-
-
-    public void activateUser(int id) {
-        Optional<User> user = signUpRepository.findById(id);
-        user.get().setActive(true);
-        signUpRepository.save(user.get());
-    }
-
 
     public void changeUserPoints(User receiver, Star star, String decider) {
 
@@ -178,12 +207,105 @@ public class SignUpService {
     }
 
 
-    public String saveImagePath(MultipartFile profilePicture) throws IOException {
-        String filePath="/home/prateek/IdeaProjects/reap/src/main/resources/static/assets/profileImages/";
-        byte[] bytes =profilePicture.getBytes();
-        Path path = Paths.get(filePath+profilePicture.getOriginalFilename());
-        Files.write(path,bytes);
-        return "/assets/profileImages"+profilePicture.getOriginalFilename();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* public User getAllUser() {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setStatus(true);
+        responseDto.setData(signUpRepository.findAll());
+        return responseDto;
     }
+*/
+
+    /*public UserResponseDto findAllDetailOfUsers() {
+        return null;
+    }*/
+
+
+   /* public void deleteUserRole(int roleId, int userId) {
+        Optional<UserRole> userRole = userRoleService.findById(roleId);
+        Optional<User> user = signUpRepository.findById(userId);
+        user.get().getRoles().remove(userRole.get());
+        signUpRepository.save(user.get());
+        userStarCountService.setDefaultStarsAccordingToRole(user.get(), userRole.get(), "DELETE");
+    }
+
+
+
+
+    public void addUserRole(int roleId, int userId) {
+        Optional<UserRole> role = userRoleService.findById(roleId);
+        Optional<User> user = signUpRepository.findById(userId);
+        userStarCountService.setDefaultStarsAccordingToRole(user.get(), role.get(), "ADD");
+        user.get().getRoles().add(role.get());
+        signUpRepository.save(user.get());
+    }
+
+*/
+  /*  public UserResponseDto constructUserResponseDto(User user, Iterable<UserRole> roles) {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setUser(user);
+        userResponseDto.setAllRoles(roles);
+        return userResponseDto;
+    }
+*/
+
+   /* public void deactivateUser(int id) {
+        Optional<User> user = signUpRepository.findById(id);
+        user.get().setActive(false);
+        signUpRepository.save(user.get());
+    }
+
+
+    public void activateUser(int id) {
+        Optional<User> user = signUpRepository.findById(id);
+        user.get().setActive(true);
+        signUpRepository.save(user.get());
+    }
+
+
+
+*/
+
 
 }

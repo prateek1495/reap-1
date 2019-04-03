@@ -1,16 +1,49 @@
 package com.prateek.reap.Controller;
 
+import com.prateek.reap.Service.BadgeService;
+import com.prateek.reap.Service.UserStarReceivedService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
 
 @Controller
 public class BadgesController {
 
-    @RequestMapping("/badges")
-    public String getLoginPage(Model model) {
+    @Autowired
+    private BadgeService badgeService;
 
-        return "dashboard/badges";
+    @Autowired
+    private UserStarReceivedService userStarReceivedService;
+
+
+    @RequestMapping("/badge/{id}")
+    public String getPage(Model model,@PathVariable(value = "id") Integer id,Authentication authentication) {
+        model.addAttribute("loggedUser", currentLoggedInUser(authentication));
+        model.addAttribute("sharedRecognition", badgeService.findAllSharedRecognition(id));
+        model.addAttribute("receivedRecognition", badgeService.findAllReceivedRecognition(id));
+        model.addAttribute("allRecognition", badgeService.findAllRecognitionByUser(id));
+
+        model.addAttribute("starCount", userStarReceivedService.findByUserId(id));
+
+        return "/badges";
 
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

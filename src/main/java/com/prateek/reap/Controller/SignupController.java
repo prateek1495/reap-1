@@ -60,7 +60,7 @@ public class SignupController {
 
         model.addAttribute("user", new User());
 
-        return "auth/signup";
+        return "/signup";
     }
 
 
@@ -69,7 +69,7 @@ public class SignupController {
     public String formSucess(@Valid @ModelAttribute("user") User responseData, BindingResult bindingResult, RedirectAttributes redirectAttributes,@RequestParam("photo") MultipartFile file) throws IOException {
 
         UserRole userRole = userRoleSevice.checkByName("USER");
-        ModelAndView modelAndView = new ModelAndView("auth/signup");
+        ModelAndView modelAndView = new ModelAndView("/signup");
         List<User> emailVerification = (List<User>) signUpService.checkEmailAndActive(responseData.getEmail(), true);
         System.out.println(emailVerification);
         if (emailVerification.size() > 0) {
@@ -86,7 +86,7 @@ public class SignupController {
             return "redirect:/signup";
         } else {
 
-            responseData.setFirstName(responseData.getFirstName());
+           /* responseData.setFirstName(responseData.getFirstName());
             responseData.setLastName(responseData.getLastName());
             responseData.setEmail(responseData.getEmail());
             responseData.getRoles().add(userRole);
@@ -100,7 +100,9 @@ public class SignupController {
 //            responseData.setImageUrl(signUpService.saveImagePath("file"));
             responseData.setImageUrl(signUpService.saveImagePath(file));
 
-            signUpService.saveUser(responseData);
+            signUpService.saveUser(responseData);*/
+
+            signUpService.save(responseData,file);
 
             redirectAttributes.addFlashAttribute("signsuccess", "Registration Successfull,You can Login Now");
             return "redirect:/signup";
