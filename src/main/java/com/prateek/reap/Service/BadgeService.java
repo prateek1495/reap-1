@@ -111,5 +111,124 @@ public class BadgeService {
         return badgeRepository.findAllByGiverOrReceiver(user.get(), user.get());
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+    public void recognitionDelete(Integer id, String starName, String comment) {
+
+        Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
+        Star star = starService.findByName(starName);
+
+        if (badgesGiven.isPresent()) {
+
+            User giver = badgesGiven.get().getGiver();
+            User receiver = badgesGiven.get().getReceiver();
+
+            badgeRepository.delete(badgesGiven.get());
+
+            userStarCountService.incrementGiverStarAfterRevocation(giver, star);
+
+            userStarReceivedService.decrementReceiverStarAfterRevocation(receiver, star);
+
+            signUpService.changeUserPoints(receiver, star, "DELETE");
+
+            sendRevocationEmails(giver, receiver, comment);
+        }
+    }
+
+
+    private void sendRevocationEmails(User giver, User receiver, String comment) {
+
+        emailService.sendEmailToSingleRecipient(
+                giver.getEmail(),
+                MAIL_SUBJECT_RECOGNITION_REVOKED,
+                RECOGNITION_YOU_GAVE_TO
+                        + " "
+                        + receiver.getFirstName()
+                        + " "
+                        + REVOKED_BY_ADMIN
+                        + " "
+                        + REASON_REVOKATION
+                        + " \n"
+                        + comment
+                        + "\n");
+
+        emailService.sendEmailToSingleRecipient(
+                receiver.getEmail(),
+                MAIL_SUBJECT_RECOGNITION_REVOKED,
+                RECOGNITION_YOU_RECEIVED
+                        + " "
+                        + giver.getFirstName()
+                        + " "
+                        + REVOKED_BY_ADMIN
+                        + " "
+                        + REASON_REVOKATION
+                        + " \n"
+                        + comment
+                        + "\n"
+                        + CONTACT_ADMIN);
+    }
+*/
+
 
