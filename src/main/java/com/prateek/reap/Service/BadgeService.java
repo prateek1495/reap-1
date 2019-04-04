@@ -121,6 +121,63 @@ public class BadgeService {
     public List<BadgesGiven> findAllByDateAndNameLike(String name) {
         return badgeRepository.findByReceiverFirstNameLike("%"+name.substring(0,name.length()-2)+"%");
     }
+
+    public void recognitionDelete(Integer id, String starName, String comment) {
+
+        Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
+        Star star = starService.findByName(starName);
+
+        System.out.println(comment);
+        if (badgesGiven.isPresent()) {
+
+            User giver = badgesGiven.get().getGiver();
+            User receiver = badgesGiven.get().getReceiver();
+
+            badgeRepository.delete(badgesGiven.get());
+
+            userStarCountService.incrementGiverStarAfterRevocation(giver, star);
+
+            userStarReceivedService.decrementReceiverStarAfterRevocation(receiver, star);
+
+            signUpService.changeUserPoints(receiver, star, "DELETE");
+
+            sendRevocationEmails(giver, receiver, comment);
+        }
+    }
+
+    public void sendRevocationEmails(User giver, User receiver, String comment) {
+
+        emailService.sendEmailToSingleRecipient(
+                giver.getEmail(),
+                "Recognition revoked",
+                "The recognition you gave to "
+                        + " "
+                        + receiver.getFirstName()
+                        + " "
+                        + "has been revoked by Admin "
+                        + " "
+                        +  " For the following reason  "
+                        + " \n"
+                        + comment
+                        + "\n");
+
+        emailService.sendEmailToSingleRecipient(
+                receiver.getEmail(),
+                "Recognition revoked",
+                "The recognition you received from "
+                        + " "
+                        + giver.getFirstName()
+                        + " "
+                        + "has been revoked by Admin "
+                        + " "
+                        + " For the following reason  "
+                        + " \n"
+                        + comment
+                        + "\n"
+                        + "For more information Please contact the admin");
+    }
+
+
 }
 
 

@@ -12,9 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
+import static com.vagish.reap.util.HtmlConstants.KEY_SET_CONTENT_TYPE_CSV;
+import static com.vagish.reap.util.HtmlConstants.KEY_SET_HEADER_CSV;
+import static com.vagish.reap.util.HtmlConstants.VALUE_SET_HEADER_CSV;
 
 @Controller
 public class DashboardController {
@@ -128,5 +133,28 @@ public class DashboardController {
         return badgeService.findAllByDateAndNameLike(name);
     }
 
+    @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
 
+    public String disableRecognition(
+            @PathVariable int id, @PathVariable String star, @PathVariable String comment) {
+        badgeService.recognitionDelete(id, star, comment);
+
+        return "redirect:/dashboard";
+    }
+
+    @RequestMapping("/list-badges")
+
+    public String wallOfFameList(Model model) {
+
+        model.addAttribute("wall", badgeService.findAllByDate());
+        return "redirect:/dashboard";
+
+    }
+
+    @RequestMapping("/download-csv")
+    public void downloadCsv(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=users.csv");
+        csvService.getCsv(response.getWriter(), badgeService.findAll());
+    }
 }

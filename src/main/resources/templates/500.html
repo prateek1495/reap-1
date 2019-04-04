@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Error Page</title>
+    <style>
+
+        @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+        html {
+            background-image: url("/assets/images/keyImage.jpg");
+            background-size: cover;
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+        h1 {
+            font-size: 16em;
+            margin: .2em .5em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0px;
+        }
+
+        h2 {
+            font-size: 1.7em;
+            margin: .2em .5em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        div.error {
+            position: absolute;
+            top: 30%;
+            margin-top: -8em;
+            width: 100%;
+            text-align: center;
+        }
+
+        a{
+            text-decoration: none;
+            color: #0e5a80;
+        }
+
+        a:hover
+        {
+            text-decoration: none;
+            color: white;
+        }
+
+        .homePage
+        {
+            font-family: brandon-grotesque;
+            font-weight: 900;
+            font-style: normal;
+            letter-spacing: .29em;
+            line-height: 1em;
+            text-transform: uppercase;
+        }
+
+        .imageDimension {
+            height: 100vh;
+        }
+
+        .awwwText, .errorText {
+            display: block;
+            font-family: brandon-grotesque;
+            font-weight: 900;
+            font-style: normal;
+            font-size: 51px;
+            letter-spacing: .29em;
+            line-height: 1em;
+            text-transform: uppercase;
+        }
+
+        .centerText {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+
+<div class="error">
+    <h1>500 </h1>
+    <h2>Ooops Something went wrong !!! <i class="material-icons">terribly wrong.</i></h2>
+    <button class="btn btn-outline-info"><a class="homePage" th:href="@{/login}">Lets Go Back to the Home Page</a></button>
+
+</div>
+
+
+</body>
+</html>

@@ -21,4 +21,5 @@ public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
     List<BadgesGiven> findAll(Sort sort);
 
     List<BadgesGiven> findByReceiverFirstNameLike(String name);
+
 }
