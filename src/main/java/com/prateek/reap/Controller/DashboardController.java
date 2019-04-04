@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -65,7 +62,7 @@ public class DashboardController {
 //        User id = signUpRepository.findByEmail(authentication.getName());
         model.addAttribute("loggedUser", currentLoggedInUser(authentication));
 //        model.addAttribute("recog", badgeService.findAllActiveRecognition(true));
-        model.addAttribute("badge",new BadgesGiven());
+        model.addAttribute("badge", new BadgesGiven());
         model.addAttribute("users", userStarCountService.findAll());
         model.addAttribute("recvstars", userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
@@ -73,9 +70,9 @@ public class DashboardController {
                 .getId()));
         System.out.println(userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
-        model.addAttribute("wall",badgeService.findAllByDate());
+        model.addAttribute("wall", badgeService.findAllByDate());
         System.out.println(userStarReceivedService.findByTopNewers());
-        model.addAttribute("newersb",userStarReceivedService.findByTopNewers());
+        model.addAttribute("newersb", userStarReceivedService.findByTopNewers());
         return "/dashboard";
     }
 
@@ -124,9 +121,12 @@ public class DashboardController {
 
     }
 
-
-
-
+    @PostMapping("/getWall")
+    @ResponseBody
+    public List<BadgesGiven> getBadgesGiven(@RequestBody String name) {
+        System.out.println(name);
+        return badgeService.findAllByDateAndNameLike(name);
+    }
 
 
 }

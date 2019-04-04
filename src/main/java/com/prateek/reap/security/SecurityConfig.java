@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/save", "/signup", "/forget-password", "/reset-password",
-                        "/forget-password-process", "/reset-password-process", "/perform-login")
+                        "/forget-password-process", "/reset-password-process", "/perform-login","/getWall")
                 .permitAll()
                 .antMatchers("/dashboard/**")
                 .authenticated()

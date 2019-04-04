@@ -117,6 +117,10 @@ public class BadgeService {
     public List<BadgesGiven> findAllByDate() {
         return badgeRepository.findAll(new Sort(Sort.Direction.DESC,"updatedAt"));
     }
+
+    public List<BadgesGiven> findAllByDateAndNameLike(String name) {
+        return badgeRepository.findByReceiverFirstNameLike("%"+name.substring(0,name.length()-2)+"%");
+    }
 }
 
 

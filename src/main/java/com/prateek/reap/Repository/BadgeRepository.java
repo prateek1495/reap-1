@@ -19,4 +19,6 @@ public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
     List<BadgesGiven> findAllByGiverOrReceiver(User user, User user1);
 
     List<BadgesGiven> findAll(Sort sort);
+
+    List<BadgesGiven> findByReceiverFirstNameLike(String name);
 }
