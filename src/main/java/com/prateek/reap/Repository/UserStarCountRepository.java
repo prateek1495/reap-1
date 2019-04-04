@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserStarCountRepository extends CrudRepository<UserStarCount, Integer> {
     UserStarCount findByUser(User senderUser);
+    UserStarCount findByUser_Id(Integer id);
 }

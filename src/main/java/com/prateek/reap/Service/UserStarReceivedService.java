@@ -7,6 +7,7 @@ import com.prateek.reap.Repository.UserStarReceivedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -87,5 +88,9 @@ public class UserStarReceivedService {
         }
     }
 
+    public List<UserStarReceived> findByTopNewers() {
+        return userStarReceivedRepository.findByTopNewers();
+
+    }
 }
 

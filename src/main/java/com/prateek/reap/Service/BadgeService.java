@@ -5,7 +5,9 @@ import com.prateek.reap.Entity.BadgesGiven;
 import com.prateek.reap.Entity.Star;
 import com.prateek.reap.Entity.User;
 import com.prateek.reap.Repository.BadgeRepository;
+import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -112,6 +114,9 @@ public class BadgeService {
     }
 
 
+    public List<BadgesGiven> findAllByDate() {
+        return badgeRepository.findAll(new Sort(Sort.Direction.DESC,"updatedAt"));
+    }
 }
 
 

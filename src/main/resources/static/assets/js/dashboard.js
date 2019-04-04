@@ -14,7 +14,7 @@ $(function () {
 
     var availableTags = [];
 
-   /!* var table = $('#example').DataTable({
+    var table = $('#example').DataTable({
         scrollY: "300px",
         scrollX: true,
         scrollCollapse: true,
@@ -22,7 +22,6 @@ $(function () {
         fixedColumns: true,
         displayLength: 2
     });
-*!/
     $.ajax({
         type: "get",
         url: "/current-user",
@@ -254,7 +253,6 @@ $(function () {
 
 
 });
-*/
 
 
 
@@ -296,7 +294,6 @@ $(function () {
 
 
 
-/*
 
 $(function () {
 

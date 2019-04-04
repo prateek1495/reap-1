@@ -1,10 +1,7 @@
 package com.prateek.reap.Service;
 
 
-import com.prateek.reap.Entity.Star;
-import com.prateek.reap.Entity.User;
-import com.prateek.reap.Entity.UserRole;
-import com.prateek.reap.Entity.UserStarCount;
+import com.prateek.reap.Entity.*;
 import com.prateek.reap.Repository.UserStarCountRepository;
 import com.prateek.reap.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,10 @@ public class UserStarCountService {
         userStarCountRepository.save(starCount);
     }
 
+    public UserStarCount findByUserId(Integer id) {
+
+        return userStarCountRepository.findByUser_Id(id);
+    }
     public UserStarCount findUserStarCount(User senderUser) {
         return userStarCountRepository.findByUser(senderUser);
     }
