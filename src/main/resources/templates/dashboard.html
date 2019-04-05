@@ -56,7 +56,7 @@
 </head>
 <style>
 
-    .ui-autocomplete{
+    .ui-autocomplete {
         overflow-y: scroll;
     }
 </style>
@@ -136,7 +136,7 @@
                             <a id="profileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="receiverImage"
                                      src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
-                                     th:src="@{''+${loggedUser.imageUrl}}" >
+                                     th:src="@{''+${loggedUser.imageUrl}}">
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileMenu">
@@ -154,7 +154,7 @@
                                             <div class="col-md-4">
                                                 <img class="receiverImage"
                                                      src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
-                                                     th:src="@{''+${loggedUser.imageUrl}}" >
+                                                     th:src="@{''+${loggedUser.imageUrl}}">
                                             </div>
 
                                             <!--Profile Info-->
@@ -538,10 +538,8 @@
 
                         </div>
 
-                        <div class="card-body">
-
-                            <div id="resultRevoke "></div>
-
+                        <div class="card-body" id="torecord">
+                            <div class="resultRevoke"></div>
                             <div class="row recordInfo" id="record" th:each="result:${wall}">
 
                                 <div class="col-md-1 " style="vertical-align: center">
@@ -556,7 +554,7 @@
                                     <p>
 
                                         <strong><span id="firstName"
-                                                th:text="${result.getReceiver().firstName}"></span></strong>
+                                                      th:text="${result.getReceiver().firstName}"></span></strong>
 
                                         <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
 
@@ -592,14 +590,15 @@
 
 
                                 <div class="col-md-2">
-                                    <div class="delDiv" id="del" sec:authorize="hasAuthority('ADMIN')" data-toggle="modal"
+                                    <div class="delDiv" id="del" sec:authorize="hasAuthority('ADMIN')"
+                                         data-toggle="modal"
                                          data-target="#exampleModal1">
                                         <input type="hidden" class="resultStar"
                                                th:value="${result.getStar().getName()}">
                                         <input type="hidden" class="resultId" th:value="${result.getId()}">
                                         <i class="fa fa-trash deleteBadge"></i>
                                     </div>
-                                    <div class="timeDiv" style="" th:text="${result.getUpdatedAt()}"></div>
+                                    <div class="timeDiv" style="" th:text="${result.getElapsedTime()}"></div>
                                 </div>
 
                                 <span class="recoId" hidden></span>
@@ -609,7 +608,8 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel1">Reason For Revocation</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel1">Reason For
+                                                    Revocation</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -618,29 +618,30 @@
                                             <div class="modal-body">
                                                 <div class="radioClass">
                                                     <input type="radio" class="revoke" th:name="revoke"
-                                                           value="Selected Incorect Name">
+                                                           value="Selected_Incorect_Name">
                                                     &nbsp;&nbsp;Selected Incorrect Name <br>
                                                 </div>
                                                 <div class="radioClass">
                                                     <input type="radio" class="revoke" th:name="revoke"
-                                                           value="Selected incorrect Badge">
+                                                           value="Selected_incorrect_Badge">
                                                     &nbsp;&nbsp;Selected incorrect Badge <br>
                                                 </div>
                                                 <div class="radioClass">
                                                     <input type="radio" class="revoke" th:name="revoke"
-                                                           value="Selected Incorrect Karma">
+                                                           value="Selected_Incorrect_Karma">
                                                     &nbsp;&nbsp;Selected Incorrect Karma <br>
                                                 </div>
                                                 <div class="radioClass">
                                                     <input type="radio" class="revoke" th:name="revoke"
-                                                           value="Inappropriate language Used">
+                                                           value="Inappropriate_language_Used">
                                                     &nbsp;&nbsp;Inappropriate language Used <br>
                                                 </div>
 
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" id="revoke" class="btn btn-primary revokeRecognition">Revoke
+                                                <button type="button" id="revoke"
+                                                        class="btn btn-primary revokeRecognition">Revoke
                                                 </button>
                                             </div>
                                         </div>
@@ -817,7 +818,7 @@
             displayLength: 2
         });
 
-        $('#del').click(function(){
+        $('.delDiv').click(function (e) {
             var id = $(this).find('.resultId').val();
             console.log(id);
             var star = $(this).find('.resultStar').val();
@@ -828,167 +829,47 @@
 
 
         });
+
         $('.revokeRecognition').click(function (e) {
 
             var id = $(".recoId").val();
             var star = $(".recoStar").val();
-            var comment = $(".revoke").val();
+
+            var comment=$("input[name='revoke']:checked"). val();
+            // var comment = $(".revoke").val();
+
+
             console.log(comment);
-
             deleteRecognition(id, star, comment);
-
         });
+
 
         function deleteRecognition(id, star, comment) {
 
+
             $('.recordInfo').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
 
-                $('.recordInfo').load("/list-badges");
-                $('#resultRevoke').append("Recognition Revoked");
-                $('#resultRevoke').addClass("alert alert-success");
-                $("#resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
-                    $("#resultRevoke").empty();
-                    $('#resultRevoke').removeClass("alert alert-success");
-                    location.reload(true);
-
+                $('.resultRevoke').append("Recognition Revoked");
+                $('.resultRevoke').addClass("alert alert-success");
+                $(".resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
+                    $(".resultRevoke").empty();
+                    $('.resultRevoke').removeClass("alert alert-success");
+                    location.reload();
                 });
-            })
+
+            });
         }
 
         $('.csvBtn').on("click", function () {
             window.open("/download-csv");
         });
 
-        $(".searchData").on("keyup", function () {
+        $(".searchData").keyup(function () {
             var value = $(this).val().toLowerCase();
-            $("#record #content").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value)> -1)
+            $(" #torecord #record  ").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-
-        /*$('#search').keyup(function () {
-            console.log($('#search').val());
-            $.ajax({
-                url: "/getWall",
-                type: "POST",
-                data: $('#search').val(),
-                success: function (data) {
-                    console.log(data);
-                    var final;
-                    for(var i= 0 ;i<data.length;i++)
-                    {
-                        var firstName = data[i].receiver.firstName;
-                        console.log(firstName);
-                        var html = '<div class="row recordInfo" id="record"  th:each="result:${data[0]}">\n' +
-                            '\n' +
-                            '                                <div class="col-md-1 " style="vertical-align: center">\n' +
-                            '\n' +
-                            '                                    <img class="recieverImage "\n' +
-                            '                                         th:src="@{data[0].getReceiver().imageUrl}"\n' +
-                            '                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">\n' +
-                            '\n' +
-                            '                                </div>\n' +
-                            '\n' +
-                            '                                <div class="col-md-9 badgeInfo">\n' +
-                            '                                    <p>\n' +
-                            '\n' +
-                            '                                        <strong><span>' + firstName + '</span></strong>\n' +
-                            '\n' +
-                            '                                        <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>\n' +
-                            '\n' +
-                            '                                        <span th:switch="${result.getStar().getName()}">\n' +
-                            '                                        <img th:case="GOLD" th:src="@{assets/images/gold.png}" th:width="15" th:height="15">\n' +
-                            '                                    <img th:case="SILVER" th:src="@{assets/images/silver.png}" th:width="15" th:height="15">\n' +
-                            '                                    <img th:case="BRONZE" th:src="@{assets/images/bronze.png}" th:width="15"\n' +
-                            '                                         th:height="15"> </span>\n' +
-                            '                                        <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>\n' +
-                            '                                        <strong><span\n' +
-                            '                                                th:text="${result.getGiver().getFirstName()}"></span></strong>\n' +
-                            '\n' +
-                            '                                        <br>\n' +
-                            '                                        <span>Reason:</span>\n' +
-                            '                                        <br>\n' +
-                            '                                        <span th:text="${result.getComment()}">\n' +
-                            '\n' +
-                            '                                        Timeago was originally built for use with Yarp.com to timestamp comments.\n' +
-                            '\n' +
-                            '                                        Avoid timestamps dated "1 minute ago" even though the page was opened 10 minutes\n' +
-                            '                                        ago; timeago refreshes automatically.\n' +
-                            '                                        You can take full advantage of page caching in your web applications, because\n' +
-                            '                                        the timestamps aren\'t calculated on the server.\n' +
-                            '                                            You get to use standard HTML5 tags.</span>\n' +
-                            '\n' +
-                            '\n' +
-                            '                                    </p>\n' +
-                            '\n' +
-                            '\n' +
-                            '                                </div>\n' +
-                            '\n' +
-                            '\n' +
-                            '                                <div class="col-md-2">\n' +
-                            '                                    <div class="delDiv" sec:authorize="hasAuthority(\'ADMIN\')" data-toggle="modal"\n' +
-                            '                                         data-target="#exampleModal1">\n' +
-                            '                                        <input type="hidden" class="resultStar"\n' +
-                            '                                               th:value="${result.getStar().getName()}">\n' +
-                            '                                        <input type="hidden" class="resultId" th:value="${result.getId()}">\n' +
-                            '                                        <i class="fa fa-trash deleteBadge"></i>\n' +
-                            '                                    </div>\n' +
-                            '                                    <div class="timeDiv" style="" th:text="${result.getUpdatedAt()}"></div>\n' +
-                            '                                </div>\n' +
-                            '\n' +
-                            '                                <span class="recoId" hidden></span>\n' +
-                            '                                <span class="recoStar" hidden></span>\n' +
-                            '\n' +
-                            '                                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"\n' +
-                            '                                     aria-labelledby="exampleModalLabel1" aria-hidden="true">\n' +
-                            '                                    <div class="modal-dialog" role="document">\n' +
-                            '                                        <div class="modal-content">\n' +
-                            '                                            <div class="modal-header">\n' +
-                            '                                                <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>\n' +
-                            '                                                <button type="button" class="close" data-dismiss="modal"\n' +
-                            '                                                        aria-label="Close">\n' +
-                            '                                                    <span aria-hidden="true">&times;</span>\n' +
-                            '                                                </button>\n' +
-                            '                                            </div>\n' +
-                            '                                            <div class="modal-body">\n' +
-                            '                                                <div class="radioClass">\n' +
-                            '                                                    <input type="radio" class="revoke" th:name="revoke"\n' +
-                            '                                                           value="Selected Incorect Name">\n' +
-                            '                                                    &nbsp;&nbsp;Selected Incorrect Name <br>\n' +
-                            '                                                </div>\n' +
-                            '                                                <div class="radioClass">\n' +
-                            '                                                    <input type="radio" class="revoke" th:name="revoke"\n' +
-                            '                                                           value="Selected incorrect Badge">\n' +
-                            '                                                    &nbsp;&nbsp;Selected incorrect Badge <br>\n' +
-                            '                                                </div>\n' +
-                            '                                                <div class="radioClass">\n' +
-                            '                                                    <input type="radio" class="revoke" th:name="revoke"\n' +
-                            '                                                           value="Selected Incorrect Karma">\n' +
-                            '                                                    &nbsp;&nbsp;Selected Incorrect Karma <br>\n' +
-                            '                                                </div>\n' +
-                            '                                                <div class="radioClass">\n' +
-                            '                                                    <input type="radio" class="revoke" th:name="revoke"\n' +
-                            '                                                           value="Inappropriate language Used">\n' +
-                            '                                                    &nbsp;&nbsp;Inappropriate language Used <br>\n' +
-                            '                                                </div>\n' +
-                            '\n' +
-                            '\n' +
-                            '                                            </div>\n' +
-                            '                                            <div class="modal-footer">\n' +
-                            '                                                <button type="button" class="btn btn-primary revokeRecognition">Revoke\n' +
-                            '                                                </button>\n' +
-                            '                                            </div>\n' +
-                            '                                        </div>\n' +
-                            '                                    </div>\n' +
-                            '                                </div>\n' +
-                            '\n' +
-                            '                            </div>'
-                        final=final+html;
-                    }
-                        $('#record').replaceWith(final);
-                    }
-            });
-        });*/
     });
 
 </script>
@@ -998,51 +879,6 @@
 </html>
 
 
-<!--
-/* $('.csvBtn').on("click", function () {
-window.open("/download-csv");
-});
-
-$(".searchData").on("keyup", function () {
-var value = $(this).val().toLowerCase();
-$(".badgeInfo .recordSearch").filter(function () {
-$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-});
-});
-*/
-
-
-
-
-
-
-
-/*$.ajax({
-type: "get",
-url: "/get-all-user",
-contentType: "application/json; charset=utf-8",
-success: (function (response) {
-if (response.status === true) {
-populateUserAutoComplete(response.data);
-}
-})
-});
-
-
-function populateUserAutoComplete(data) {
-console.log(data);
-for (var i = 0; i < data.length; i++)
-availableTags.push(data[i].email);
-$('.tags').autocomplete({
-source: availableTags
-});
-$('.modalInput').autocomplete({
-source: availableTags,
-appendTo: "#modalB"
-});
-}
-*/
--->
 
 
 
@@ -1065,25 +901,9 @@ appendTo: "#modalB"
 
 
 
-<!--
-$('body').on("click", ".delDiv", function (e) {
-var id = $(this).find('.resultId').val();
-var star = $(this).find('.resultStar').val();
-console.log(id)
-console.log(star)
 
-$(".recoId").val(id);
-$(".recoStar").val(star);
 
-// deleteRecognition(id,star);
-});
 
-$('body').on("click", ".revokeRecognition", function (e) {
 
-var id = $(".recoId").val();
-var star = $(".recoStar").val();
-var comment = $(".revoke").val();
 
-deleteRecognition(id, star, comment);
 
-});-->

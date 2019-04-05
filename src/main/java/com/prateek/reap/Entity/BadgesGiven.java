@@ -1,7 +1,9 @@
 package com.prateek.reap.Entity;
 
+import com.prateek.reap.util.DateTimeUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,6 +33,18 @@ public class BadgesGiven {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Transient
+    private String elapsedTime;
+
+    public String getElapsedTime() {
+        setElapsedTime(DateTimeUtils.get(getUpdatedAt()));
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(String elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
 
     public Integer getId() {
         return id;

@@ -136,18 +136,19 @@ public class DashboardController {
     @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
 
     public String disableRecognition(
-            @PathVariable int id, @PathVariable String star, @PathVariable String comment) {
+            @PathVariable Integer id, @PathVariable String star, @PathVariable String comment) {
+        System.out.println(comment);
+            comment = comment.replace("_"," ");
         badgeService.recognitionDelete(id, star, comment);
 
         return "redirect:/dashboard";
     }
 
     @RequestMapping("/list-badges")
-
     public String wallOfFameList(Model model) {
+        model.addAttribute("wall",badgeService.findAllByDate());
+         return "/dashboard :: rowMapper";
 
-        model.addAttribute("wall", badgeService.findAllByDate());
-        return "redirect:/dashboard";
 
     }
 
