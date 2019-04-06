@@ -158,4 +158,11 @@ public class DashboardController {
         response.setHeader("Content-Disposition", "attachment; file=users.csv");
         csvService.getCsv(response.getWriter(), badgeService.findAll());
     }
+
+    /*@RequestMapping("/wallList")
+    @ResponseBody
+    public List<BadgesGiven> getBadgesList() {
+        return badgeService.findAllByDateAndNameLike(name);
+    }
+*/
 }

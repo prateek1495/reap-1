@@ -50,7 +50,7 @@
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-    <!--<script type="text/javascript" src="../static/assets/js/dashboard.js" th:src="@{/assets/js/dashboard.js}"></script>-->
+    <script type="text/javascript" src="../static/assets/js/dashboard.js" th:src="@{/assets/js/dashboard.js}"></script>
 
 
 </head>
@@ -540,6 +540,13 @@
 
                         <div class="card-body" id="torecord">
                             <div class="resultRevoke"></div>
+                            <nav aria-label=...>
+                                <ul class="pagination">
+                                    <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
+                                </ul>
+                            </nav>
+                            <div id="page">
+                                <div class="list-group">
                             <div class="row recordInfo" id="record" th:each="result:${wall}">
 
                                 <div class="col-md-1 " style="vertical-align: center">
@@ -649,7 +656,8 @@
                                 </div>
 
                             </div>
-
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -849,16 +857,31 @@
 
             $('.recordInfo').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
 
+                location.reload();
                 $('.resultRevoke').append("Recognition Revoked");
                 $('.resultRevoke').addClass("alert alert-success");
                 $(".resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
                     $(".resultRevoke").empty();
                     $('.resultRevoke').removeClass("alert alert-success");
-                    location.reload();
+
                 });
 
             });
         }
+
+      /*  $contentLoadTriggered = false;
+        $("#content-box").scroll(function(){
+            if($("#content-box").scrollTop() >= ($("#content-wrapper").height() - $("#content-box").height()) && $contentLoadTriggered == false)
+            {
+                $contentLoadTriggered = true;
+                $.get("/wallList", function(data){
+                    $("#content-wrapper").append(data);
+                    $contentLoadTriggered = false;
+                });
+            }
+
+        });
+*/
 
         $('.csvBtn').on("click", function () {
             window.open("/download-csv");
@@ -870,9 +893,13 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
     });
 
+
+
 </script>
+
 </body>
 
 

@@ -12,11 +12,11 @@ import java.util.List;
 public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
     List<BadgesGiven> findByFlag(boolean flag);
 
-    List<BadgesGiven> findByGiver(User user);
+    List<BadgesGiven> findByGiver(Sort sort,User user);
 
-    List<BadgesGiven> findByReceiver(User user);
+    List<BadgesGiven> findByReceiver(Sort sort,User user);
 
-    List<BadgesGiven> findAllByGiverOrReceiver(User user, User user1);
+    List<BadgesGiven> findAllByGiverOrReceiver(Sort sort,User user, User user1);
 
     List<BadgesGiven> findAll(Sort sort);
 

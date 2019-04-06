@@ -100,17 +100,17 @@ public class BadgeService {
 
     public List<BadgesGiven> findAllSharedRecognition(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return badgeRepository.findByGiver(user.get());
+        return badgeRepository.findByGiver(new Sort(Sort.Direction.DESC,"updatedAt"),user.get());
     }
     public List<BadgesGiven> findAllReceivedRecognition(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return  badgeRepository.findByReceiver(user.get());
+        return  badgeRepository.findByReceiver(new Sort(Sort.Direction.DESC,"updatedAt"),user.get());
     }
 
 
     public List<BadgesGiven> findAllRecognitionByUser(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return badgeRepository.findAllByGiverOrReceiver(user.get(), user.get());
+        return badgeRepository.findAllByGiverOrReceiver(new Sort(Sort.Direction.DESC,"updatedAt"),user.get(), user.get());
     }
 
 

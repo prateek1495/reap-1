@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
 <head>
     <meta charset="UTF-8">
     <title>Badges</title>
@@ -100,6 +103,11 @@
 
                             <a class="nav-link" th:href="@{'/badge/'+${loggedUser.getId()}}"><i
                                     class="fas fa-award"></i>Badges</a>
+
+                        </li>
+                        <li class="nav-item nav-menu marginRight listItem " sec:authorize="hasAuthority('ADMIN')">
+
+                            <a class="nav-link" href="/item-warehouse"><i class="fas fa-award"></i>Items</a>
 
                         </li>
 
@@ -248,9 +256,9 @@
                     </div>
 
                     <div>
-                        <button class="reedemBtn btn btn-default" type="submit" th:value="${loggedUser.getId()}">
+                        <a th:href="@{'/items/'+${loggedUser.getId()}}"><button class="reedemBtn btn btn-default" type="submit" th:value="${loggedUser.getId()}">
                             Reedem Points
-                        </button>
+                        </button></a>
                     </div>
 
                 </div>
@@ -342,7 +350,9 @@
                                                     <br>
                                                     <span>Reason:</span>
                                                     <br>
-                                                    <span th:text="${result.getComment()}"></span>
+                                                    <span th:text="${result.getComment()}"></span><br>
+                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+
                                                 </p>
 
 
@@ -388,7 +398,9 @@
                                                     <br>
                                                     <span>Reason:</span>
                                                     <br>
-                                                    <span th:text="${result.getComment()}"></span>
+                                                    <span th:text="${result.getComment()}"></span><br>
+                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+
                                                 </p>
                                             </div>
 
@@ -432,7 +444,9 @@
                                                     <br>
                                                     <span>Reason:</span>
                                                     <br>
-                                                    <span th:text="${result.getComment()}"></span>
+                                                    <span th:text="${result.getComment()}"></span><br>
+                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+
                                                 </p>
                                             </div>
 

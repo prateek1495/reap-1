@@ -33,13 +33,13 @@ public class DateTimeUtils {
 
         if(hours==0)
         {
-            return minutes +" minutes ";
+            return minutes +" minutes "+"ago";
         }
         if(days!=0){
             return days + " days " +
-                    hours + " hours ";
+                    hours + " hours "+"ago";
         }
-        return hours + " hours ";
+        return hours + " hours "+"ago";
 
     }
 }

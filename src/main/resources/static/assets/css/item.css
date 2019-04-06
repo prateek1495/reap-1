@@ -1,0 +1,104 @@
+.receiverImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 20%;
+    align-items: center;
+}
+
+.redeemBtn {
+    height: auto;
+    font-size: 12px;
+    font-weight: bold;
+    float: right;
+    margin-top: 8px;
+    border: 1px solid #0471A6;
+    color: white;
+    width: 120px;
+    background-color: #0471A6;
+    margin-bottom: 20px;
+}
+
+
+
+.itemBody {
+    vertical-align: center;
+    text-align: center;
+    align-items: center;
+}
+
+.itemPoints {
+    vertical-align: center;
+    align-items: center;
+    margin-left: 25%;
+    background-color: #17a2b8;
+    max-width: 110px;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.itemName {
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    color: dimgray;
+}
+
+.itemSelectQuant{
+    width: 100%;
+    float: left;
+    margin: 7px 0;
+    display: inline-block;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    padding: 4px 5px;
+    appearance: none;
+    position: relative;
+    z-index: 2;
+    height: 30px;
+}
+
+.totalCost{
+    float: right;
+    width: 100%;
+    clear: both;
+    max-width: 221px;
+}
+
+#points{
+    margin-right:40px;
+    color: red;
+    font-weight: bolder;
+    font-size: 18px;
+    float: right;
+}
+
+#totalText{
+    margin-left: 40px;
+    font-weight: bold;
+    font-size: 15px;
+    float: left;
+}
+
+.redeemRow{
+    margin-top: 40px;
+}
+
+.RButton{
+    float: right;
+    margin-right: 30px;
+    width: 110px;
+}
+
+.cartBtn{
+    font-size: 14px;
+    margin-top: 30px;
+    padding: 10px 10px 10px 36px;
+    width: 140px;
+    background:  #218838
+    url("../assets/reapnow.png") 10px 10px no-repeat;
+    border-radius: 16px;
+    border: 1px solid #d9d9d9;
+}
