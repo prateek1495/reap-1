@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -207,90 +208,37 @@ public class SignUpService {
     }
 
 
+    public Boolean allocateRole(UserRole role, User user) {
 
+        if(user.getRoles().contains(role))
+        {
+            return false;
+        }
+        getPriority(user,role);
+        user.getRoles().add(role);
+        signUpRepository.save(user);
+      return true;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   /* public User getAllUser() {
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setStatus(true);
-        responseDto.setData(signUpRepository.findAll());
-        return responseDto;
-    }
-*/
-
-    /*public UserResponseDto findAllDetailOfUsers() {
-        return null;
-    }*/
-
-
-   /* public void deleteUserRole(int roleId, int userId) {
-        Optional<UserRole> userRole = userRoleService.findById(roleId);
-        Optional<User> user = signUpRepository.findById(userId);
-        user.get().getRoles().remove(userRole.get());
-        signUpRepository.save(user.get());
-        userStarCountService.setDefaultStarsAccordingToRole(user.get(), userRole.get(), "DELETE");
     }
 
+public void getPriority(User user,UserRole role) {
+    int p1 = role.getPriority();
+    int currentPriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get().getPriority();
+    if (p1 > currentPriority) {
+      UserStarCount userStarCount=  userStarCountService.findUserStarCount(user);
+      userStarCount.setGoldStarCount(role.getGoldStar());
+      userStarCount.setSilverStarCount(role.getSilverStar());
+      userStarCount.setBronzeStarCount(role.getBronzeStar());
+      userStarCountService.save(userStarCount);
 
+    }
+    else {
 
-
-    public void addUserRole(int roleId, int userId) {
-        Optional<UserRole> role = userRoleService.findById(roleId);
-        Optional<User> user = signUpRepository.findById(userId);
-        userStarCountService.setDefaultStarsAccordingToRole(user.get(), role.get(), "ADD");
-        user.get().getRoles().add(role.get());
-        signUpRepository.save(user.get());
     }
 
-*/
-  /*  public UserResponseDto constructUserResponseDto(User user, Iterable<UserRole> roles) {
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUser(user);
-        userResponseDto.setAllRoles(roles);
-        return userResponseDto;
-    }
-*/
+}
 
-   /* public void deactivateUser(int id) {
+    public void deactivateUser(int id) {
         Optional<User> user = signUpRepository.findById(id);
         user.get().setActive(false);
         signUpRepository.save(user.get());
@@ -304,8 +252,6 @@ public class SignUpService {
     }
 
 
-
-*/
 
 
 }

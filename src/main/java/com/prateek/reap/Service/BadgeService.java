@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -178,6 +179,20 @@ public class BadgeService {
     }
 
 
+    public List<BadgesGiven> filterListByDateRange(
+            LocalDateTime startDate, LocalDateTime endDate) {
+        List<BadgesGiven> badges = findAllBetween(startDate, endDate);
+        return badges;
+    }
+
+
+    public List<BadgesGiven> findAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return badgeRepository.findAllByUpdatedAtBetweenOrderByUpdatedAtDesc(startDate, endDate);
+    }
+
+    public List<BadgesGiven> findAllData() {
+        return (List<BadgesGiven>) badgeRepository.findAll();
+    }
 }
 
 

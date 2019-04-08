@@ -31,31 +31,7 @@ public class UserStarCountService {
         return userStarCountRepository.findByUser(senderUser);
     }
 
-    public void setNewStarCount(User user, UserRole roleToSet) {
-        UserStarCount userStarCount = userStarCountRepository.findByUser(user);
-        userStarCount.setBronzeStarCount(roleToSet.getBronzeStar());
-        userStarCount.setSilverStarCount(roleToSet.getSilverStar());
-        userStarCount.setGoldStarCount(roleToSet.getGoldStar());
-        userStarCountRepository.save(userStarCount);
 
-    }
-
-    public void setDefaultStarsAccordingToRole(User user, UserRole roleToSet, String decider) {
-        int priorityToSet = roleToSet.getPriority();
-        Set<UserRole> currentRoles = user.getRoles();
-        int currentPriority = CommonUtils.getHighestRolePriority(currentRoles).getPriority();
-        switch (decider) {
-            case "ADD":
-                if (currentPriority > priorityToSet) {
-                } else {
-                    setNewStarCount(user, roleToSet);
-                }
-                break;
-            case "DELETE":
-                setNewStarCount(user, CommonUtils.getHighestRolePriority(currentRoles));
-                break;
-        }
-    }
 
 
     public void incrementGiverStarAfterRevocation(User giver, Star star) {

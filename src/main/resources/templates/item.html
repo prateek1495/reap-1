@@ -326,25 +326,89 @@
 
                             <div class="row" >
 
-                                <div class="col-md-4" th:each="result:${items}">
+                                <div class="col-md-4" >
 
                                     <div class="cartItem">
                                         <div class="card cardHover">
                                             <img class="card-img-top"
-                                                 th:src="@{/assets/images/laptop.png}"/>
+                                                 src="/assets/images/laptop.png"/>
                                             <div class="card-body itemBody">
-                                                <div class="itemPoints" th:text="${result.getPoints()}">
-
+                                                <div class="itemPoints">
+                                                350 points
                                                 </div>
 
-                                                <button class="btn btn-success cartBtn" th:value="${result.getId()}">Add
+                                                <button class="btn btn-success cartBtn">Add
                                                     To Cart
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
 
+
                                 </div>
+                                <div class="col-md-4" >
+
+                                    <div class="cartItem">
+                                        <div class="card cardHover">
+                                            <img class="card-img-top"
+                                                 src="/assets/images/laptop.png"/>
+                                            <div class="card-body itemBody">
+                                                <div class="itemPoints">
+                                                    350 points
+                                                </div>
+
+                                                <button class="btn btn-success cartBtn" >Add
+                                                    To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-4" >
+
+                                    <div class="cartItem">
+                                        <div class="card cardHover">
+                                            <img class="card-img-top"
+                                                 src="/assets/images/laptop.png"/>
+                                            <div class="card-body itemBody">
+                                                <div class="itemPoints">
+                                                    350 points
+                                                </div>
+
+                                                <button class="btn btn-success cartBtn" >Add
+                                                    To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-4" >
+
+                                    <div class="cartItem">
+                                        <div class="card cardHover">
+                                            <img class="card-img-top"
+                                                 src="/assets/images/laptop.png"/>
+                                            <div class="card-body itemBody">
+                                                <div class="itemPoints">
+                                                    350 points
+                                                </div>
+
+                                                <button class="btn btn-success cartBtn" >Add
+                                                    To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
 
 
                             </div>
@@ -363,5 +427,20 @@
     </div>
 
 </div>
+
+<script>
+    $(function()
+    {
+       $(".cartBtn").click(function(e)
+       {
+          $.ajax({
+
+             url:"/itemAdd",
+             type:"Get",
+             data:{}
+          });
+       });
+    });
+</script>
 </body>
 </html>

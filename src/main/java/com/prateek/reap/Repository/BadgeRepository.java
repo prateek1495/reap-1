@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -22,4 +23,5 @@ public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
 
     List<BadgesGiven> findByReceiverFirstNameLike(String name);
 
+    List<BadgesGiven> findAllByUpdatedAtBetweenOrderByUpdatedAtDesc(LocalDateTime startDate, LocalDateTime endDate);
 }

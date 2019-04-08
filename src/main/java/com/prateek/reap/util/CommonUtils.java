@@ -5,6 +5,9 @@ import com.prateek.reap.Entity.User;
 import com.prateek.reap.Entity.UserPrincipal;
 import com.prateek.reap.Entity.UserRole;
 import org.springframework.security.core.Authentication;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -23,5 +26,10 @@ public class CommonUtils {
     public static User currentLoggedInUser(Authentication authentication) {
         User user = ((UserPrincipal) authentication.getPrincipal()).getUser();
         return user;
+    }
+
+    public static LocalDateTime getDateTime(String date) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(date, format);
     }
 }

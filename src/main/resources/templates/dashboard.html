@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>DashBoard</title>
@@ -355,7 +353,8 @@
                                         <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Role</th>
+                                            <th>Revoke Role</th>
+                                            <th>Allocate Role</th>
                                             <th>Active</th>
                                             <th>Email</th>
                                             <th>Available Points</th>
@@ -363,13 +362,13 @@
                                             <th>
                                                 <p>Badges</p>
                                                 <span><img th:src="@{/assets/images/gold.png}" height="13" width="15"/>
-                                                </span>&nbsp;&nbsp;
+                                                </span>
                                                 <span><img th:src="@{/assets/images/silver.png}" height="13"
                                                            width="15"/>
-                                                      </span>&nbsp;&nbsp;
+                                                      </span>
                                                 <span><img th:src="@{/assets/images/bronze.png}" height="13"
                                                            width="15"/>
-                                                      </span>&nbsp;&nbsp;
+                                                      </span>
                                             </th>
 
                                         </tr>
@@ -389,16 +388,28 @@
                                                     </select>
                                                 </div>
                                             </td>
+
+                                            <td>
+                                                <div class="input-group mb-3">
+                                                    <select class="custom-select select-assesor allocate">
+                                                        <option th:value="USER" th:text="USER"> </option>
+                                                        <option th:value="ADMIN" th:text="ADMIN"> </option>
+                                                        <option th:value="SUPERVISOR" th:text="SUPERVISOR"> </option>
+                                                        <option th:value="PRACTICEHEAD" th:text="PRACTICEHEAD"> </option>
+
+                                                    </select>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <input type="checkbox" class="checkBox"
                                                        th:checked="${result.getUser().isActive()}"
                                                        th:value="${result.getUser().getId()}">
                                             </td>
-                                            <td th:text="${result.getUser().getEmail()}">prateek.nagar@tothenew.com</td>
+                                            <td id="email" th:text="${result.getUser().getEmail()}">prateek.nagar@tothenew.com</td>
                                             <td>
                                                 <div>
-                                                    <span class="points" th:text="${result.getUser().getPoints()}">
-                                                        100</span>
+                                                    <input type="text" class="points" th:text="${result.getUser().getPoints()}">
+                                                        100</input>
                                                 </div>
                                             </td>
                                             <td>
@@ -531,7 +542,9 @@
                                 <div class="col-md-4">
                                     <i class="fa fa-download fa-style csvBtn" aria-hidden="true"
                                        style="color: white"></i>
-                                    <i class="fa fa-calendar fa-style" aria-hidden="true"></i>
+                                    <span name="dateRange"><i class="fa fa-calendar fa-style" aria-hidden="true">
+
+                                    </i></span>
                                 </div>
 
                             </div>
@@ -808,6 +821,7 @@
         });
 
 
+
         $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
             $(".alert-success").alert('close');
         });
@@ -818,12 +832,12 @@
         });
 
         var table = $('#example').DataTable({
-            scrollY: "300px",
+            /*scrollY: "300px",
             scrollX: true,
-            scrollCollapse: true,
+            scrollCollapse: true,*/
             paging: true,
-            fixedColumns: true,
-            displayLength: 2
+            fixedColumns: true
+            // displayLength: 2
         });
 
         $('.delDiv').click(function (e) {
@@ -869,19 +883,6 @@
             });
         }
 
-      /*  $contentLoadTriggered = false;
-        $("#content-box").scroll(function(){
-            if($("#content-box").scrollTop() >= ($("#content-wrapper").height() - $("#content-box").height()) && $contentLoadTriggered == false)
-            {
-                $contentLoadTriggered = true;
-                $.get("/wallList", function(data){
-                    $("#content-wrapper").append(data);
-                    $contentLoadTriggered = false;
-                });
-            }
-
-        });
-*/
 
         $('.csvBtn').on("click", function () {
             window.open("/download-csv");
@@ -893,6 +894,67 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+        $("select.allocate").change(function(e){
+            var email=$(this).parent().parent().parent().find("#email").text();
+            console.log(email);
+            var role=$(this).children("option:selected").val();
+            console.log(role);
+            $.ajax({
+
+            url:"/addRole",
+            type:"Get",
+            data:{email:email,role:role},
+            success:function (response) {
+                console.log("hello");
+                location.reload();
+            }
+            });
+
+
+        });
+
+        $('body').on("change", ".checkBox", function () {
+            var checked = $(this).is(':checked');
+            var userId = $(this).val();
+            if (!checked) {
+                $.ajax({
+
+                    url: "/deactivate-user",
+                    data: {"userId": userId},
+                    success: (function () {
+                        $('#result').append("User Deactivated SuccessFully");
+                        $('#result').addClass("alert alert-success");
+
+                        $("#result").fadeTo(2000, 500).slideUp(500, function () {
+                            $("#result").empty();
+                            $('#result').removeClass("alert alert-success");
+                        });
+                    })
+
+                });
+            } else {
+                $.ajax({
+
+                    url: "/activate-user",
+                    data: {"userId": userId},
+                    success: (function () {
+                        $('#result').append("User Activated SuccessFully");
+                        $('#result').addClass("alert alert-success");
+
+                        $("#result").fadeTo(2000, 500).slideUp(500, function () {
+                            $("#result").empty();
+                            $('#result').removeClass("alert alert-success");
+                        });
+                    })
+
+                });
+
+            }
+        });
+
+
+
 
     });
 

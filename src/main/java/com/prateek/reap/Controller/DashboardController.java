@@ -1,8 +1,6 @@
 package com.prateek.reap.Controller;
 
-import com.prateek.reap.Entity.BadgesGiven;
-import com.prateek.reap.Entity.ResponseDto;
-import com.prateek.reap.Entity.User;
+import com.prateek.reap.Entity.*;
 import com.prateek.reap.Repository.SignUpRepository;
 import com.prateek.reap.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
+import static com.prateek.reap.util.CommonUtils.getDateTime;
 import static com.vagish.reap.util.HtmlConstants.KEY_SET_CONTENT_TYPE_CSV;
 import static com.vagish.reap.util.HtmlConstants.KEY_SET_HEADER_CSV;
 import static com.vagish.reap.util.HtmlConstants.VALUE_SET_HEADER_CSV;
@@ -40,6 +40,7 @@ public class DashboardController {
     private UserStarCountService userStarCountService;
     @Autowired
     private UserStarReceivedService userStarReceivedService;
+
 
   /*  @RequestMapping("/dashboard")
     public ModelAndView getDashboard()
@@ -165,4 +166,53 @@ public class DashboardController {
         return badgeService.findAllByDateAndNameLike(name);
     }
 */
+
+@RequestMapping("/addRole")
+public String updateRole(@RequestParam("email")String email,@RequestParam("role")String role,Model model)
+{
+    UserRole role1=userRoleService.checkByName(role);
+    User user=signUpService.checkByEmail(email);
+    signUpService.allocateRole(role1,user);
+    return "redirect:/dashboard";
+}
+
+
+   @RequestMapping("/deactivate-user")
+    @ResponseBody
+    public void userDeactivate(@RequestParam("userId") int id) {
+        signUpService.deactivateUser(id);
+    }
+
+    @RequestMapping("/activate-user")
+    @ResponseBody
+    public void userActivate(@RequestParam("userId") int id) {
+        signUpService.activateUser(id);
+    }
+
+   /* @RequestMapping("/change-user-points")
+    @ResponseBody
+    public void updateUserPointsByAdmin(
+            @RequestParam("userId") int userId, @RequestParam("points") int points) {
+        signUpService.updateUserPointsByAdmin(userId, points);
+    }*/
+
+
+    @RequestMapping("/list-badges-date-filter")
+    public String filterByDateWallOfFame(
+            Model model,
+            @RequestParam(value = "startDate", required = false) String start,
+            @RequestParam(value = "endDate", required = false) String end) {
+
+        if (start != null && end != null) {
+            model.addAttribute(
+                    "pages",
+                    badgeService.filterListByDateRange(getDateTime(start), getDateTime(end)));
+            return "/dashboard";
+        } else {
+            model.addAttribute(
+                    "pages",badgeService.findAllData());
+            return "/dashboard";
+        }
+    }
+
 }
