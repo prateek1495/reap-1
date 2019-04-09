@@ -27,4 +27,8 @@ public class UserRoleService {
     public Optional<UserRole> findById(int roleId) {
         return userRoleRepository.findById(roleId);
     }
+
+    public UserRole findByPriority(int revokePriority) {
+        return userRoleRepository.findByPriority(revokePriority);
+    }
 }

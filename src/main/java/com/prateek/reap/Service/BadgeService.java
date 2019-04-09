@@ -116,7 +116,7 @@ public class BadgeService {
 
 
     public List<BadgesGiven> findAllByDate() {
-        return badgeRepository.findAll(new Sort(Sort.Direction.DESC,"updatedAt"));
+        return badgeRepository.findAllByFlag(new Sort(Sort.Direction.DESC,"updatedAt"),true);
     }
 
     public List<BadgesGiven> findAllByDateAndNameLike(String name) {
@@ -134,7 +134,9 @@ public class BadgeService {
             User giver = badgesGiven.get().getGiver();
             User receiver = badgesGiven.get().getReceiver();
 
-            badgeRepository.delete(badgesGiven.get());
+            //badgeRepository.delete(badgesGiven.get());
+            BadgesGiven badgesGiven1=badgesGiven.get();
+            badgesGiven1.setFlag(false);
 
             userStarCountService.incrementGiverStarAfterRevocation(giver, star);
 
@@ -179,15 +181,10 @@ public class BadgeService {
     }
 
 
-    public List<BadgesGiven> filterListByDateRange(
-            LocalDateTime startDate, LocalDateTime endDate) {
-        List<BadgesGiven> badges = findAllBetween(startDate, endDate);
-        return badges;
-    }
 
 
     public List<BadgesGiven> findAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return badgeRepository.findAllByUpdatedAtBetweenOrderByUpdatedAtDesc(startDate, endDate);
+        return badgeRepository.findAllByUpdatedAtBetween(startDate, endDate);
     }
 
     public List<BadgesGiven> findAllData() {

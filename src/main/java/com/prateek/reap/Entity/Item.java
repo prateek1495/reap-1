@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "item")
@@ -27,6 +28,9 @@ public class Item{
 
     @Column(nullable = false)
     private boolean active;
+
+    /*@ManyToMany
+    private List<Order>orders;*/
 
     private String imageUrl;
 

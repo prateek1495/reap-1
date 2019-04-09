@@ -49,6 +49,10 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <script type="text/javascript" src="../static/assets/js/dashboard.js" th:src="@{/assets/js/dashboard.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
 
 </head>
@@ -162,6 +166,7 @@
                                                     <div class="col-md-4 profileModalFontNormal">
                                                         <p>Name:</p>
                                                         <p>Email:</p>
+                                                        <p>Roles:</p>
                                                     </div>
                                                     <div class="col-md-8 profileModalFontBold">
                                                         <p class="userName"
@@ -169,6 +174,10 @@
                                                             Prateek Nagar</p>
                                                         <p class="userEmail" th:text="${loggedUser.email}">
                                                             prateek.nagar@tothenew.com</p>
+                                                        <th:block th:each="role:${loggedUser.getRoles()}">
+                                                        <span class="roles"  th:text="'['+${role.name}+']'" >
+                                                        </span>
+                                                        </th:block>
                                                     </div>
                                                 </div>
 
@@ -259,7 +268,7 @@
                                         <!--Newer Name Select-->
                                         <div class="col-md-5 ">
 
-                                            <input type="text" class="form-control custom-heigth20 tags"
+                                            <input type="text" required class="form-control custom-heigth20 tags"
                                                    id="tagauto" placeholder="Select Newer" th:name="receiver">
 
 
@@ -269,7 +278,7 @@
                                         <!--Select Badges-->
                                         <div class="col-md-3">
 
-                                            <select class="form-control custom-heigthSelect20 badges"
+                                            <select  required class="form-control custom-heigthSelect20 badges"
                                                     th:name="star">
 
                                                 <option value="" disabled selected>Select Badges</option>
@@ -311,7 +320,7 @@
 
                                 <!--<div class="reason-area">-->
 
-                                <textarea class="reason-area"
+                                <textarea  required class="reason-area"
                                           placeholder="Please select Newer,Basges And Karma First"
                                           th:name="comment"></textarea>
 
@@ -338,15 +347,17 @@
                             <!--Card Body-->
                             <div class="card-body">
 
-                                <div id="result"></div>
+                                <div id="result">
+                                    <small></small>
+                                </div>
 
 
                                 <div class="table-responsive">
 
-                                    <button type="button" class="btn btn-info" value="Assign New Role"
+                                   <!-- <button type="button" class="btn btn-info" value="Assign New Role"
                                             style="margin-bottom: 15px; float: right"
                                             data-toggle="modal" data-target=".bd-example-modal-lg">Manage Roles
-                                    </button>
+                                    </button>-->
 
                                     <table id="example" class=" row-border order-column"
                                            style="width:100%;text-align: center">
@@ -373,12 +384,12 @@
 
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="manageUser">
                                         <tr th:each="result:${users}">
                                             <td th:text="${result.getUser().getFirstName()}">Prateek Nagar</td>
                                             <td>
                                                 <div class="input-group mb-3">
-                                                    <select class="custom-select select-assesor">
+                                                    <select class="custom-select select-assesor revokeRole">
                                                         <option th:each="res:${result.getUser().getRoles()}"
                                                                 th:value="${res.getName()}"
                                                                 th:text="${res.getName()}">
@@ -408,8 +419,8 @@
                                             <td id="email" th:text="${result.getUser().getEmail()}">prateek.nagar@tothenew.com</td>
                                             <td>
                                                 <div>
-                                                    <input type="text" class="points" th:text="${result.getUser().getPoints()}">
-                                                        100</input>
+                                                    <input style="width:55px;" type="number" class="points" th:value="${result.getUser().getPoints()}">
+                                                        </input>
                                                 </div>
                                             </td>
                                             <td>
@@ -538,15 +549,13 @@
                                            placeholder="&#xF002;   Search"
                                            style="line-height: 15px;height: 25px;font-size: 13px">
                                 </div>
-
                                 <div class="col-md-4">
-                                    <i class="fa fa-download fa-style csvBtn" aria-hidden="true"
-                                       style="color: white"></i>
-                                    <span name="dateRange"><i class="fa fa-calendar fa-style" aria-hidden="true">
-
-                                    </i></span>
+                                    <input type="hidden" name="startDate" id="startDate">
+                                    <input type="hidden" name="endDate" id="endDate">
+                                    <a href=""
+                                       onclick="this.href='/download.csv?startDate='+document.getElementById('startDate').value+'&endDate='+document.getElementById('endDate').value" id="download"><i class="fa fa-download fa-style" aria-hidden="true" style="color: white"></i></a>
+                                    <span id="dt" name="dates"><i class="fa fa-calendar fa-style" aria-hidden="true"></i></span>
                                 </div>
-
                             </div>
 
                         </div>
@@ -638,7 +647,7 @@
                                             <div class="modal-body">
                                                 <div class="radioClass">
                                                     <input type="radio" class="revoke" th:name="revoke"
-                                                           value="Selected_Incorect_Name">
+                                                           value="Selected_Incorrect_Name">
                                                     &nbsp;&nbsp;Selected Incorrect Name <br>
                                                 </div>
                                                 <div class="radioClass">
@@ -791,176 +800,6 @@
 
 </div>
 
-<script>
-    $(function () {
-
-        var availableTags = [];
-
-        $.ajax({
-            url: "/get-all-user",
-            method: "get",
-
-            success: function (data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    availableTags.push(data[i].email);
-
-                }
-
-
-            }
-
-        });
-
-        $("#tagauto").autocomplete({
-            source: availableTags
-        });
-        $('.modalInput').autocomplete({
-            source: availableTags,
-            appendTo: "#modalB"
-        });
-
-
-
-        $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
-            $(".alert-success").alert('close');
-        });
-
-
-        $(".alert-danger").fadeTo(2000, 500).slideUp(500, function () {
-            $(".alert-danger").alert('close');
-        });
-
-        var table = $('#example').DataTable({
-            /*scrollY: "300px",
-            scrollX: true,
-            scrollCollapse: true,*/
-            paging: true,
-            fixedColumns: true
-            // displayLength: 2
-        });
-
-        $('.delDiv').click(function (e) {
-            var id = $(this).find('.resultId').val();
-            console.log(id);
-            var star = $(this).find('.resultStar').val();
-            console.log(star);
-
-            $(".recoId").val(id);
-            $(".recoStar").val(star);
-
-
-        });
-
-        $('.revokeRecognition').click(function (e) {
-
-            var id = $(".recoId").val();
-            var star = $(".recoStar").val();
-
-            var comment=$("input[name='revoke']:checked"). val();
-            // var comment = $(".revoke").val();
-
-
-            console.log(comment);
-            deleteRecognition(id, star, comment);
-        });
-
-
-        function deleteRecognition(id, star, comment) {
-
-
-            $('.recordInfo').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
-
-                location.reload();
-                $('.resultRevoke').append("Recognition Revoked");
-                $('.resultRevoke').addClass("alert alert-success");
-                $(".resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
-                    $(".resultRevoke").empty();
-                    $('.resultRevoke').removeClass("alert alert-success");
-
-                });
-
-            });
-        }
-
-
-        $('.csvBtn').on("click", function () {
-            window.open("/download-csv");
-        });
-
-        $(".searchData").keyup(function () {
-            var value = $(this).val().toLowerCase();
-            $(" #torecord #record  ").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-
-        $("select.allocate").change(function(e){
-            var email=$(this).parent().parent().parent().find("#email").text();
-            console.log(email);
-            var role=$(this).children("option:selected").val();
-            console.log(role);
-            $.ajax({
-
-            url:"/addRole",
-            type:"Get",
-            data:{email:email,role:role},
-            success:function (response) {
-                console.log("hello");
-                location.reload();
-            }
-            });
-
-
-        });
-
-        $('body').on("change", ".checkBox", function () {
-            var checked = $(this).is(':checked');
-            var userId = $(this).val();
-            if (!checked) {
-                $.ajax({
-
-                    url: "/deactivate-user",
-                    data: {"userId": userId},
-                    success: (function () {
-                        $('#result').append("User Deactivated SuccessFully");
-                        $('#result').addClass("alert alert-success");
-
-                        $("#result").fadeTo(2000, 500).slideUp(500, function () {
-                            $("#result").empty();
-                            $('#result').removeClass("alert alert-success");
-                        });
-                    })
-
-                });
-            } else {
-                $.ajax({
-
-                    url: "/activate-user",
-                    data: {"userId": userId},
-                    success: (function () {
-                        $('#result').append("User Activated SuccessFully");
-                        $('#result').addClass("alert alert-success");
-
-                        $("#result").fadeTo(2000, 500).slideUp(500, function () {
-                            $("#result").empty();
-                            $('#result').removeClass("alert alert-success");
-                        });
-                    })
-
-                });
-
-            }
-        });
-
-
-
-
-    });
-
-
-
-</script>
 
 </body>
 

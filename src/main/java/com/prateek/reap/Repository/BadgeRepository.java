@@ -19,9 +19,9 @@ public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
 
     List<BadgesGiven> findAllByGiverOrReceiver(Sort sort,User user, User user1);
 
-    List<BadgesGiven> findAll(Sort sort);
+    List<BadgesGiven> findAllByFlag(Sort sort,Boolean flag);
 
     List<BadgesGiven> findByReceiverFirstNameLike(String name);
 
-    List<BadgesGiven> findAllByUpdatedAtBetweenOrderByUpdatedAtDesc(LocalDateTime startDate, LocalDateTime endDate);
+    List<BadgesGiven> findAllByUpdatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -221,6 +221,37 @@ public class SignUpService {
 
     }
 
+    public Boolean deleteRole(UserRole role, User user) {
+
+        if(user.getRoles().contains(role))
+        {
+            user.getRoles().remove(role);
+            int revokePriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get().getPriority();
+            UserRole role1=userRoleService.findByPriority(revokePriority);
+            UserStarCount userStarCount=  userStarCountService.findUserStarCount(user);
+            userStarCount.setGoldStarCount(role1.getGoldStar());
+            userStarCount.setSilverStarCount(role1.getSilverStar());
+            userStarCount.setBronzeStarCount(role1.getBronzeStar());
+            userStarCountService.save(userStarCount);
+            signUpRepository.save(user);
+            return true;
+        }
+        else
+        return false;
+
+    }
+
+    public Boolean changePoints(User user1, Integer points) {
+       if(user1.isActive()) {
+           user1.setPoints(points);
+           signUpRepository.save(user1);
+           return true;
+       }
+       else
+           return false;
+
+    }
+
 public void getPriority(User user,UserRole role) {
     int p1 = role.getPriority();
     int currentPriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get().getPriority();
@@ -250,7 +281,6 @@ public void getPriority(User user,UserRole role) {
         user.get().setActive(true);
         signUpRepository.save(user.get());
     }
-
 
 
 

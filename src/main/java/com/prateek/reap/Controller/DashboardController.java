@@ -1,6 +1,9 @@
 package com.prateek.reap.Controller;
 
-import com.prateek.reap.Entity.*;
+import com.prateek.reap.Entity.BadgesGiven;
+import com.prateek.reap.Entity.ResponseDto;
+import com.prateek.reap.Entity.User;
+import com.prateek.reap.Entity.UserRole;
 import com.prateek.reap.Repository.SignUpRepository;
 import com.prateek.reap.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
-import static com.prateek.reap.util.CommonUtils.getDateTime;
-import static com.vagish.reap.util.HtmlConstants.KEY_SET_CONTENT_TYPE_CSV;
-import static com.vagish.reap.util.HtmlConstants.KEY_SET_HEADER_CSV;
-import static com.vagish.reap.util.HtmlConstants.VALUE_SET_HEADER_CSV;
 
 @Controller
 public class DashboardController {
@@ -33,22 +33,11 @@ public class DashboardController {
     @Autowired
     private SignUpService signUpService;
     @Autowired
-    private CsvService csvService;
-    @Autowired
     private UserRoleService userRoleService;
     @Autowired
     private UserStarCountService userStarCountService;
     @Autowired
     private UserStarReceivedService userStarReceivedService;
-
-
-  /*  @RequestMapping("/dashboard")
-    public ModelAndView getDashboard()
-    {
-        ModelAndView modelAndView = new ModelAndView("auth/dashboard");
-        modelAndView.addObject("user", new User());
-        return modelAndView;
-    }*/
 
     @RequestMapping("/dashboard")
     public String getDashboardPage(Model model, Authentication authentication) {
@@ -65,9 +54,7 @@ public class DashboardController {
         if (model.containsAttribute("selfRecoError"))
             model.addAttribute("selfRecoError", "Cannot Give To Recognition to yourself");
 
-//        User id = signUpRepository.findByEmail(authentication.getName());
         model.addAttribute("loggedUser", currentLoggedInUser(authentication));
-//        model.addAttribute("recog", badgeService.findAllActiveRecognition(true));
         model.addAttribute("badge", new BadgesGiven());
         model.addAttribute("users", userStarCountService.findAll());
         model.addAttribute("recvstars", userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
@@ -139,45 +126,49 @@ public class DashboardController {
     public String disableRecognition(
             @PathVariable Integer id, @PathVariable String star, @PathVariable String comment) {
         System.out.println(comment);
-            comment = comment.replace("_"," ");
+        comment = comment.replace("_", " ");
         badgeService.recognitionDelete(id, star, comment);
 
         return "redirect:/dashboard";
     }
 
-    @RequestMapping("/list-badges")
-    public String wallOfFameList(Model model) {
-        model.addAttribute("wall",badgeService.findAllByDate());
-         return "/dashboard :: rowMapper";
+    @GetMapping(value = "/download.csv")
+    public void download(@RequestParam("startDate") String s, @RequestParam("endDate") String e, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-Disposition", "attachment; file=BadgesGiven.csv");
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateStart = LocalDateTime.parse(s, formatter);
+        LocalDateTime dateEnd = LocalDateTime.parse(e, formatter);
+        List<BadgesGiven> badgesGivens = badgeService.findAllBetween(dateStart, dateEnd);
+        WriteDataToCsv.writeObjectToCSV(response.getWriter(), badgesGivens);
+    }
+
+
+    @PostMapping("/addRole")
+    public String updateRole(@RequestParam("email") String email, @RequestParam("role") String role, Model model) {
+        UserRole role1 = userRoleService.checkByName(role);
+        User user = signUpService.checkByEmail(email);
+        signUpService.allocateRole(role1, user);
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/deleteRole")
+    public String deleteRole(@RequestParam("email") String email, @RequestParam("role") String role, Model model) {
+        UserRole role2 = userRoleService.checkByName(role);
+        User user1 = signUpService.checkByEmail(email);
+        signUpService.deleteRole(role2, user1);
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/changePoints")
+    public String changePoints(@RequestParam("email") String email, @RequestParam("point") Integer points, Model model) {
+        User user1 = signUpService.checkByEmail(email);
+        signUpService.changePoints(user1, points);
+        return "redirect:/dashboard";
 
     }
 
-    @RequestMapping("/download-csv")
-    public void downloadCsv(HttpServletResponse response) throws IOException {
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; file=users.csv");
-        csvService.getCsv(response.getWriter(), badgeService.findAll());
-    }
-
-    /*@RequestMapping("/wallList")
-    @ResponseBody
-    public List<BadgesGiven> getBadgesList() {
-        return badgeService.findAllByDateAndNameLike(name);
-    }
-*/
-
-@RequestMapping("/addRole")
-public String updateRole(@RequestParam("email")String email,@RequestParam("role")String role,Model model)
-{
-    UserRole role1=userRoleService.checkByName(role);
-    User user=signUpService.checkByEmail(email);
-    signUpService.allocateRole(role1,user);
-    return "redirect:/dashboard";
-}
-
-
-   @RequestMapping("/deactivate-user")
+    @RequestMapping("/deactivate-user")
     @ResponseBody
     public void userDeactivate(@RequestParam("userId") int id) {
         signUpService.deactivateUser(id);
@@ -189,30 +180,5 @@ public String updateRole(@RequestParam("email")String email,@RequestParam("role"
         signUpService.activateUser(id);
     }
 
-   /* @RequestMapping("/change-user-points")
-    @ResponseBody
-    public void updateUserPointsByAdmin(
-            @RequestParam("userId") int userId, @RequestParam("points") int points) {
-        signUpService.updateUserPointsByAdmin(userId, points);
-    }*/
-
-
-    @RequestMapping("/list-badges-date-filter")
-    public String filterByDateWallOfFame(
-            Model model,
-            @RequestParam(value = "startDate", required = false) String start,
-            @RequestParam(value = "endDate", required = false) String end) {
-
-        if (start != null && end != null) {
-            model.addAttribute(
-                    "pages",
-                    badgeService.filterListByDateRange(getDateTime(start), getDateTime(end)));
-            return "/dashboard";
-        } else {
-            model.addAttribute(
-                    "pages",badgeService.findAllData());
-            return "/dashboard";
-        }
-    }
 
 }

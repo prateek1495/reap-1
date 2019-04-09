@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRoleRepository extends CrudRepository<UserRole, Integer> {
     UserRole findByName(String name);
 
+    UserRole findByPriority(int revokePriority);
 }

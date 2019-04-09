@@ -1,4 +1,4 @@
-package com.vagish.reap.util;
+package com.prateek.reap.util;
 
 
 public class HtmlConstants {
