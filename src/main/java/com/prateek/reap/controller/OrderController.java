@@ -35,9 +35,8 @@ public class OrderController {
     @PostMapping("/itemRedeem")
     @ResponseBody
     public String redeemPoints(@RequestParam("items") String items, @RequestParam("totalPrice") String totalPrice, @RequestParam("itemUrls") String itemUrls, Authentication authentication) {
-        Integer cartPrice = Integer.parseInt(totalPrice);
         User user = signUpService.checkByEmail(currentLoggedInUser(authentication).getEmail());
-        return orderService.redeemPoints(items, cartPrice, itemUrls, user);
+        return orderService.redeemPoints(items, totalPrice, itemUrls, user);
 
 
     }

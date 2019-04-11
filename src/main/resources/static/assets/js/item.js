@@ -20,10 +20,10 @@ $(function () {
             '<img class="item-img"' + "src=" + '"' + url + '"' +
             'height="30" width="30"/>' +
             '</div>' +
-            '<div class="col-md-3">' +
+            '<div class="col-md-4">' +
             '<p class="item-name">' + nameee + '</p>' +
             '</div>' +
-            '<div class="col-md-3">' +
+            '<div class="col-md-2">' +
             '' +
             '</div>' +
             '<div class="col-md-2 item-price">' +
@@ -51,7 +51,7 @@ $(function () {
 
         if (!$(".item-data-r").children().length > 0) {
             $("#result").addClass("alert alert-danger");
-            $("#result").append("Order Something");
+            $("#result").append("Select Item First");
             setTimeout(
                 function(){
                     location.reload();
@@ -90,7 +90,7 @@ $(function () {
                     }
                     else {
                         $("#result").addClass("alert alert-danger");
-                        $("#result").append("Not Enough Points");
+                        $("#result").append("Not Enough Points to redeem");
                         setTimeout(
                             function(){
                                 location.reload();

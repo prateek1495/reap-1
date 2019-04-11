@@ -4,9 +4,12 @@ import com.prateek.reap.entity.Order;
 import com.prateek.reap.entity.User;
 import com.prateek.reap.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -20,7 +23,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public String redeemPoints(String items, Integer cartPrice, String itemUrls, User user) {
+    public String redeemPoints(String items, String totalPrice, String itemUrls, User user) {
+        Integer cartPrice = Integer.parseInt(totalPrice);
         if (cartPrice > user.getPoints()) {
             return "Not enough points";
         }
@@ -41,6 +45,15 @@ public class OrderService {
         return "redeemed";
 
     }
+
+
+
+    public List<Order> findAllOrders(Integer id) {
+        Optional<User> user = signUpService.findById(id);
+        return orderRepository.findByUser(new Sort(Sort.Direction.DESC,"orderDate"),user.get());
+    }
+
+
 
    /* public Order findByUserId(Integer id) {
 

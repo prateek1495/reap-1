@@ -1,6 +1,7 @@
 package com.prateek.reap.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.prateek.reap.util.DateTimeUtils;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @JsonManagedReference
     @ManyToOne
@@ -31,6 +32,18 @@ public class Order {
 
     @CreationTimestamp
     LocalDateTime orderDate;
+
+    @Transient
+    private String elapsedTime;
+
+    public String getElapsedTime() {
+        setElapsedTime(DateTimeUtils.get(getOrderDate()));
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(String elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
 
     public Order() {
     }

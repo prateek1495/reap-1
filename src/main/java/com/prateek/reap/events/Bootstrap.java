@@ -190,61 +190,61 @@ public class Bootstrap {
             item1.setPoints(350);
             item1.setName("Visting Card Holder");
             item1.setSize(false);
-            item1.setImageUrl("/assets/images/laptop.png");
+            item1.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item2.setActive(true);
             item2.setPoints(70);
             item2.setName("Paper Clip");
             item2.setSize(false);
-            item2.setImageUrl("/assets/images/laptop.png");
+            item2.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item3.setActive(true);
             item3.setPoints(750);
             item3.setName("Steel Sipper Bottle");
             item3.setSize(false);
-            item3.setImageUrl("/assets/images/laptop.png");
+            item3.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item4.setActive(true);
             item4.setPoints(130);
             item4.setName("Simley Desktop Message Card");
             item4.setSize(false);
-            item4.setImageUrl("/assets/images/laptop.png");
+            item4.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item5.setActive(true);
             item5.setPoints(140);
             item5.setName("Booklight Paper Clip");
             item5.setSize(false);
-            item5.setImageUrl("/assets/images/laptop.png");
+            item5.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item6.setActive(true);
             item6.setPoints(400);
             item6.setName("Laptop Sleeve");
             item6.setSize(false);
-            item6.setImageUrl("/assets/images/laptop.png");
+            item6.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item7.setActive(true);
             item7.setPoints(40);
             item7.setName("Pen");
             item7.setSize(false);
-            item7.setImageUrl("/assets/images/laptop.png");
+            item7.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item8.setActive(true);
             item8.setPoints(300);
             item8.setName("Mug");
             item8.setSize(false);
-            item8.setImageUrl("/assets/images/laptop.png");
+            item8.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item9.setActive(true);
             item9.setPoints(90);
             item9.setName("Mobile Stand");
             item9.setSize(false);
-            item9.setImageUrl("/assets/images/laptop.png");
+            item9.setImageUrl("/assets/images/LaptopSleeve.png");
 
             item10.setActive(true);
             item10.setPoints(690);
             item10.setName("Passport Holder");
             item10.setSize(false);
-            item10.setImageUrl("/assets/images/laptop.png");
+            item10.setImageUrl("/assets/images/LaptopSleeve.png");
         }
 
  Iterator<User> userIterator = signUpService.findAll().iterator();

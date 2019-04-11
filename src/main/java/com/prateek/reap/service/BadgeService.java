@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,23 +18,22 @@ import java.util.Optional;
 public class BadgeService {
 
     @Autowired
-    private  BadgeRepository badgeRepository;
+    private BadgeRepository badgeRepository;
 
     @Autowired
-    private  SignUpService signUpService;
+    private SignUpService signUpService;
 
     @Autowired
-    private  StarService starService;
+    private StarService starService;
 
     @Autowired
-    private  EmailService emailService;
+    private EmailService emailService;
 
     @Autowired
-    private  UserStarCountService userStarCountService;
+    private UserStarCountService userStarCountService;
 
     @Autowired
-    private  UserStarReceivedService userStarReceivedService;
-
+    private UserStarReceivedService userStarReceivedService;
 
 
     public Iterable<BadgesGiven> findAll() {
@@ -46,7 +44,6 @@ public class BadgeService {
     public void save(BadgesGiven badgesGiven) {
         badgeRepository.save(badgesGiven);
     }
-
 
 
     public List<BadgesGiven> findAllActiveRecognition(boolean flag) {
@@ -81,7 +78,6 @@ public class BadgeService {
                         + " " + " For the following reason" + "\n\n" + comment);
 
 
-
         return true;
 
     }
@@ -99,35 +95,27 @@ public class BadgeService {
 
     public List<BadgesGiven> findAllSharedRecognition(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return badgeRepository.findByGiverAndFlag(new Sort(Sort.Direction.DESC,"updatedAt"),user.get(),true);
+        return badgeRepository.findByGiverAndFlag(new Sort(Sort.Direction.DESC, "updatedAt"), user.get(), true);
     }
+
     public List<BadgesGiven> findAllReceivedRecognition(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return  badgeRepository.findByReceiverAndFlag(new Sort(Sort.Direction.DESC,"updatedAt"),user.get(),true);
+        return badgeRepository.findByReceiverAndFlag(new Sort(Sort.Direction.DESC, "updatedAt"), user.get(), true);
     }
 
-
-   /* public List<BadgesGiven> findAllRecognitionByUser(Integer id) {
-        Optional<User> user = signUpService.findById(id);
-        return badgeRepository.findAllByFlagAndGiverOrReceiver(new Sort(Sort.Direction.DESC,"updatedAt"),true,user.get(), user.get());
-    }*/
 
     public List<BadgesGiven> findAllRecognitionByUser(Integer id) {
-        List<BadgesGiven> badgesGivensAndReceived = new ArrayList<>();
-        if (!findAllSharedRecognition(id).isEmpty())
-            badgesGivensAndReceived.addAll(findAllSharedRecognition(id));
-        if (!findAllReceivedRecognition(id).isEmpty())
-            badgesGivensAndReceived.addAll(findAllReceivedRecognition(id));
-        return badgesGivensAndReceived;
-
+        Optional<User> user = signUpService.findById(id);
+        return badgeRepository.findAllByGiverOrReceiver(new Sort(Sort.Direction.DESC, "updatedAt"), user.get(), user.get());
     }
 
-        public List<BadgesGiven> findAllByDate() {
-        return badgeRepository.findAllByFlag(new Sort(Sort.Direction.DESC,"updatedAt"),true);
+
+    public List<BadgesGiven> findAllByDate() {
+        return badgeRepository.findAllByFlag(new Sort(Sort.Direction.DESC, "updatedAt"), true);
     }
 
     public List<BadgesGiven> findAllByDateAndNameLike(String name) {
-        return badgeRepository.findByReceiverFirstNameLike("%"+name.substring(0,name.length()-2)+"%");
+        return badgeRepository.findByReceiverFirstNameLike("%" + name.substring(0, name.length() - 2) + "%");
     }
 
     public void recognitionDelete(Integer id, String starName, String comment) {
@@ -142,7 +130,7 @@ public class BadgeService {
             User receiver = badgesGiven.get().getReceiver();
 
             //badgeRepository.delete(badgesGiven.get());
-            BadgesGiven badgesGiven1=badgesGiven.get();
+            BadgesGiven badgesGiven1 = badgesGiven.get();
             badgesGiven1.setFlag(false);
 
             userStarCountService.incrementGiverStarAfterRevocation(giver, star);
@@ -166,7 +154,7 @@ public class BadgeService {
                         + " "
                         + "has been revoked by Admin "
                         + " "
-                        +  " For the following reason  "
+                        + " For the following reason  "
                         + " \n"
                         + comment
                         + "\n");
@@ -188,14 +176,16 @@ public class BadgeService {
     }
 
 
-
-
     public List<BadgesGiven> findAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return badgeRepository.findAllByUpdatedAtBetween(startDate, endDate);
     }
 
     public List<BadgesGiven> findAllData() {
         return (List<BadgesGiven>) badgeRepository.findAll();
+    }
+
+    public List<BadgesGiven> findRecognitionByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return badgeRepository.findAllByUpdatedAtBetween(startDate,endDate);
     }
 }
 

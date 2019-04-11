@@ -66,7 +66,7 @@ public class DashboardController {
                 .getId()));
         model.addAttribute("wall", badgeService.findAllByDate());
         System.out.println(userStarReceivedService.findByTopNewers());
-        model.addAttribute("newersb", userStarReceivedService.findByTopNewers());
+        model.addAttribute("newersBoard", userStarReceivedService.findByTopNewers());
         return "/dashboard";
     }
 
@@ -178,5 +178,15 @@ public class DashboardController {
         signUpService.activateUser(id);
     }
 
+
+    @GetMapping("/searchRecogByDate/{start}/{end}")
+    @ResponseBody
+    public List<BadgesGiven> getUserRecodByName(@PathVariable("start") String startDate,@PathVariable("end")String endDate){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateStart = LocalDateTime.parse(startDate, formatter);
+        LocalDateTime dateEnd = LocalDateTime.parse(endDate, formatter);
+        List<BadgesGiven> recognitions=badgeService.findRecognitionByDateBetween(dateStart,dateEnd).stream().filter(e1 -> e1.isFlag()).collect(Collectors.toList());
+        return recognitions;
+    }
 
 }

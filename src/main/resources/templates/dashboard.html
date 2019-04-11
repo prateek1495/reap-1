@@ -300,16 +300,6 @@
 
                                         </div>
 
-                                        <!--Select karma-->
-                                        <!--<div class="col-md-4">
-                                            <select class="form-control custom-heigthSelect20 " id="karmaValues">
-                                                <option value="" disabled selected>Select Karma</option>
-                                                <option>Karma 1</option>
-                                                <option>Karma 2</option>
-                                                <option>karma 3</option>
-                                            </select>
-                                        </div>-->
-
                                     </div>
 
                                 </div>
@@ -369,7 +359,7 @@
                                             <th>Active</th>
                                             <th>Email</th>
                                             <th>Available Points</th>
-                                            <th>Points Used</th>
+
                                             <th>
                                                 <p>Badges</p>
                                                 <span><img th:src="@{/assets/images/gold.png}" height="13" width="15"/>
@@ -392,7 +382,7 @@
                                                     <select class="custom-select select-assesor revokeRole">
                                                         <option th:each="res:${result.getUser().getRoles()}"
                                                                 th:value="${res.getName()}"
-                                                                th:disabled="${res.getName()==USER}"
+                                                                th:disabled="${res.getName()=='USER'}"
                                                                 th:text="${res.getName()}">
 
                                                         </option>
@@ -424,12 +414,7 @@
                                                         </input>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div>
-                                                    <span class="points" th:text="${result.getUser().getPointSpent()}">
-                                                        100</span>
-                                                </div>
-                                            </td>
+
                                             <td>
                                                 <span th:text="${result.getGoldStarCount()}"></span>&nbsp;&nbsp;
                                                 <span th:text="${result.getSilverStarCount()}"></span>&nbsp;&nbsp;
@@ -553,7 +538,7 @@
                                 <div class="col-md-4">
                                     <input type="hidden" name="startDate" id="startDate">
                                     <input type="hidden" name="endDate" id="endDate">
-                                    <a href=""
+                                    <a sec:authorize="hasAuthority('ADMIN')" href=""
                                        onclick="this.href='/download.csv?startDate='+document.getElementById('startDate').value+'&endDate='+document.getElementById('endDate').value" id="download"><i class="fa fa-download fa-style" aria-hidden="true" style="color: white"></i></a>
                                     <span id="dt" name="dates"><i class="fa fa-calendar fa-style" aria-hidden="true"></i></span>
                                 </div>
@@ -561,30 +546,28 @@
 
                         </div>
 
+                        <div id="recognitionResults">
+                            <div id="userdataDiv"><p id="userdata"></p></div>
+                        </div>
                         <div class="card-body" id="torecord">
+
                             <div class="resultRevoke"></div>
-                            <nav aria-label=...>
-                                <ul class="pagination">
-                                    <li id="previous-page"><a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>&laquo;</span></a></li>
-                                </ul>
-                            </nav>
+
                             <div id="page">
                                 <div class="list-group">
                             <div class="row recordInfo" id="record" th:each="result:${wall}">
 
                                 <div class="col-md-1 " style="vertical-align: center">
 
-                                    <img class="recieverImage "
-                                         th:src="@{result.getReceiver().imageUrl}"
-                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
-
+                                    <img class="receiverImage"
+                                         th:src="@{''+${result.getReceiver().imageUrl}}">
                                 </div>
 
                                 <div class="col-md-9 badgeInfo">
                                     <p>
 
-                                        <strong><span id="firstName"
-                                                      th:text="${result.getReceiver().firstName}"></span></strong>
+                                        <strong><a th:href="@{'/badge/'+${result.getReceiver().getId()}}" id="firstName"
+                                                      th:text="${result.getReceiver().firstName}"></a></strong>
 
                                         <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
 
@@ -596,8 +579,8 @@
                                     <img th:case="BRONZE" th:src="@{assets/images/bronze.png}" th:width="15"
                                          th:height="15"> </span>
                                         <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>
-                                        <strong><span
-                                                th:text="${result.getGiver().getFirstName()}"></span></strong>
+                                        <strong><a th:href="@{'/badge/'+${result.getGiver().getId()}}"
+                                                th:text="${result.getGiver().getFirstName()}"></a></strong>
 
                                         <br>
                                         <span>Reason:</span>
@@ -655,7 +638,7 @@
                                                 <div class="radioClass">
                                                     <input type="radio" required class="revoke" th:name="revoke"
                                                            value="Selected_incorrect_Badge">
-                                                    &nbsp;&nbsp;Selected incorrect Badge <br>
+                                                    &nbsp;&nbsp;Selected Incorrect Badge <br>
                                                 </div>
                                                 <div class="radioClass">
                                                     <input type="radio" required class="revoke" th:name="revoke"
@@ -752,7 +735,7 @@
 
                         <div class="card-body board">
 
-                            <div class="row" style="margin-bottom: 13px" th:each="top:${newersb}">
+                            <div class="row" style="margin-bottom: 13px" th:each="top:${newersBoard}">
 
 
                                 <div class="col-sm-4" style="align-items: center;horiz-align: center">

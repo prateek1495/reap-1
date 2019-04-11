@@ -470,7 +470,37 @@
 
                                     <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                          aria-labelledby="nav-purchase-tab">
-                                      ..
+                                        <div class="row" th:each="purchase:${purchaseHistory}">
+
+                                            <div class="col-md-1" style="vertical-align: center">
+
+                                                <img class="receiverImage"
+                                                     th:src="${purchase.getUser().getImageUrl()}"
+                                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"/>
+
+                                            </div>
+
+                                            <div class="col-md-11 badgeInfo">
+
+                                                <p>
+
+                                                    <strong><a th:href="@{'/badge/'+${purchase.getUser().getId()}}"
+                                                               th:text="${purchase.getUser().getFirstName()}"></a></strong>
+
+                                                    <span> &nbsp; &nbsp;has &nbsp; purchased &nbsp;&nbsp; </span>
+                                                    <span th:each="item:${purchase.getItemUrl()}"><strong><span  th:text="${item}+','"></span></strong></span>
+
+
+                                                    <span>&nbsp;&nbsp; for &#8377; &nbsp;&nbsp;</span>
+                                                    <span th:text="${purchase.getTotalPrice()}"></span>
+                                                    <br>
+                                                    <span class="timeDiv" style="float: right"
+                                                          th:text="${purchase.getElapsedTime()}"></span>
+
+                                                </p>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
 

@@ -3,12 +3,36 @@ $(function () {
     $("#startDate").val(moment().format('YYYY-MM-DD HH:mm:ss'));
     $("#endDate").val(moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'));
 
-    $('span[name="dates"]').daterangepicker({
-
-    }, function(start, end, label) {
+    $('span[name="dates"]').daterangepicker({}, function (start, end, label) {
         $("#startDate").val(start.format('YYYY-MM-DD HH:mm:ss'));
         $("#endDate").val(end.format('YYYY-MM-DD HH:mm:ss'));
+        var start= $("#startDate").val();
+        var end= $("#endDate").val();
+        $.ajax({
+           type:"Get",
+           url:"/searchRecognitionByDate/"+ start+"/"+end,
+            success:function(data)
+            {
+                $("#userdataDiv").empty();
+                data.forEach(function (e) {
+                    $("#userdataDiv").append(
+                        "<strong> " +
+                        e.receiverName +
+                        "</strong> has received a " +
+                        e.badge +
+                        " from " +
+                        e.senderName +
+                        " for " +
+                        e.reason +
+                        "<br>" +
+                        " on " + e.date.year+"-"+e.date.monthOfYear+"-"+e.date.dayOfMonth +
+                        "<br>"
+                    )
+                });
+            }
+        });
     });
+
 
     var availableTags = [];
 
@@ -33,8 +57,6 @@ $(function () {
     });
 
 
-
-
     $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
         $(".alert-success").alert('close');
     });
@@ -50,7 +72,7 @@ $(function () {
 
     });
 
-    $('body').on('click','.delDiv',function(e){
+    $('body').on('click', '.delDiv', function (e) {
         var id = $(this).find('.resultId').val();
         console.log(id);
         var star = $(this).find('.resultStar').val();
@@ -62,13 +84,12 @@ $(function () {
 
     });
 
-    $('body').on('click','.revokeRecognition',function(e){
+    $('body').on('click', '.revokeRecognition', function (e) {
 
         var id = $(".recoId").val();
         var star = $(".recoStar").val();
+        var comment = $("input[name='revoke']:checked").val();
 
-        var comment=$("input[name='revoke']:checked"). val();
-        // var comment = $(".revoke").val();
         if (typeof comment === "undefined") {
             $("#selectResult").addClass("alert alert-danger");
             $("#selectResult").append("Select One Reason");
@@ -79,7 +100,7 @@ $(function () {
             });
         }
         else {
-            console.log(comment);
+
             deleteRecognition(id, star, comment);
         }
     });
@@ -115,80 +136,77 @@ $(function () {
         });
     });
 
-    $('body').on('change','select.allocate',function(e){
-        var email=$(this).parent().parent().parent().find("#email").text();
+    $('body').on('change', 'select.allocate', function (e) {
+        var email = $(this).parent().parent().parent().find("#email").text();
         console.log(email);
-        var role=$(this).children("option:selected").val();
+        var role = $(this).children("option:selected").val();
         console.log(role);
         $.ajax({
 
-            url:"/addRole",
-            type:"post",
-            data:{email:email,role:role},
-            success:function (response) {
+            url: "/addRole",
+            type: "post",
+            data: {email: email, role: role},
+            success: function (response) {
                 $("#result").addClass("alert alert-success");
                 $("#result small").text("Role Allocated");
                 setTimeout(
-                    function(){
+                    function () {
                         location.reload();
 
-                    },5000
+                    }, 5000
                 );
             }
         });
 
 
+    });
+
+    $('body').on('change', 'select.revokeRole', function (e) {
+        var email = $(this).parent().parent().parent().find("#email").text();
+        console.log(email);
+        var role = $(this).children("option:selected").val();
+        console.log(role);
+        $.ajax({
+            url: "/deleteRole",
+            type: "post",
+            data: {email: email, role: role},
+            success: function (response) {
+                console.log("hi");
+                $("#result").addClass("alert alert-success");
+                $("#result small").text("Role Revoked");
+                setTimeout(
+                    function () {
+                        location.reload();
+
+                    }, 5000
+                );
+            }
+        });
 
     });
 
-    $('body').on('change','select.revokeRole',function(e){
-       var email=$(this).parent().parent().parent().find("#email").text();
-       console.log(email);
-       var role=$(this).children("option:selected").val();
-       console.log(role);
-       $.ajax({
-          url:"/deleteRole",
-          type:"post",
-          data:{email:email,role:role},
-          success:function(response){
-              console.log("hi");
-              $("#result").addClass("alert alert-success");
-              $("#result small").text("Role Revoked");
-              setTimeout(
-                  function(){
-                      location.reload();
+    $('body').on('change', '.points', function (e) {
+        var email = $(this).parent().parent().parent().find("#email").text();
+        var point = $(this).val();
+        $.ajax({
+            url: "/changePoints",
+            type: "post",
+            data: {email: email, point: point},
+            success: function (response) {
+                $("#result").addClass("alert alert-success");
+                $('#result small').text("Points Changed");
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 5000
+                );
 
-                  },5000
-              );
-          }
-       });
-
-    });
-
-    $('body').on('change','.points',function(e){
-      var email=$(this).parent().parent().parent().find("#email").text();
-      var point=$(this).val();
-      $.ajax({
-         url:"/changePoints",
-         type:"post",
-         data:{email:email,point:point},
-         success:function(response)
-         {
-             $("#result").addClass("alert alert-success");
-             $('#result small').text("Points Changed");
-             setTimeout(
-                function () {
-                    location.reload();
-                },5000
-             );
-
-         }
-      });
+            }
+        });
     });
 
 
-
-        $(".checkBox").change(function () {
+    $(".checkBox").change(function () {
         var checked = $(this).is(':checked');
         var userId = $(this).val();
         if (!checked) {
@@ -226,8 +244,6 @@ $(function () {
 
         }
     });
-
-
 
 
 });
