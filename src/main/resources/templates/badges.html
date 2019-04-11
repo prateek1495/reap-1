@@ -37,14 +37,13 @@
 
     <link th:href="@{/assets/css/badges.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/assets/css/badges.css">
-<style>
-    .coins
-    {
-        background-image: url("/assets/images/coins.png");
-        background-repeat: no-repeat;
-        background-position-x: 350px;
-    }
-</style>
+    <style>
+        .coins {
+            background-image: url("/assets/images/coins.png");
+            background-repeat: no-repeat;
+            background-position-x: 350px;
+        }
+    </style>
 
 
 </head>
@@ -96,7 +95,8 @@
 
                         <li class="nav-item nav-menu marginRight listItem ">
 
-                            <a class="nav-link" th:href="@{/dashboard}" ><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                            <a class="nav-link" th:href="@{/dashboard}"><i
+                                    class="fas fa-tachometer-alt"></i>Dashboard</a>
 
                         </li>
                         <li class="nav-item nav-menu marginRight listItem active ">
@@ -123,8 +123,9 @@
 
                             <a id="profileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="receiverImage"
-                                     th:src="@{''+${loggedUser.imageUrl}}"
-                                     src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg"                            </a>
+                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                     th:src="${loggedUser.imageUrl}">
+                            </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileMenu">
 
@@ -139,8 +140,9 @@
 
                                             <!--Profile Image-->
                                             <div class="col-md-4">
-                                                <img
-                                                     th:src="@{''+${loggedUser.imageUrl}}" width="80px" height="80px">
+                                                <img class="receiverImage"
+                                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                                     th:src="@{''+${loggedUser.imageUrl}}">
                                             </div>
 
                                             <!--Profile Info-->
@@ -216,7 +218,7 @@
 
                                     <img class="receiverImage"
                                          src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
-                                         th:src="@{''+${loggedUser.imageUrl}}" >
+                                         th:src="@{''+${starReceived.getUser().imageUrl}}">
 
                                 </div>
 
@@ -224,30 +226,31 @@
 
 
                                     <h3 id="myName"
-                                        th:text="${starCount.getUser().getFirstName()+' '+starCount.getUser().getLastName()}">
+                                        th:text="${starReceived.getUser().getFirstName()+' '+starReceived.getUser().getLastName()}">
                                         Prateek Nagar</h3>
 
                                     <span>
                                         <img th:src="@{/assets/images/gold.png}" height="18" width="20"/>
-                                        <i th:text="${starCount.getGoldStarRecieved()}">0</i>
+                                        <i th:text="${starReceived.getGoldStarRecieved()}">0</i>
                                   </span>
 
                                     <span>
                                         <img th:src="@{/assets/images/silver.png}" height="18" width="20"/>
-                                         <i th:text="${starCount.getSilverStarRecieved()}">0</i>
+                                         <i th:text="${starReceived.getSilverStarRecieved()}">0</i>
                                   </span>
 
                                     <span>
-                                        <img th:src="@{/assets/images/gold.png}" height="18" width="20"/>
-                                         <i th:text="${starCount.getBronzeStarRecieved()}">0</i>
+                                        <img th:src="@{/assets/images/bronze.png}" height="18" width="20"/>
+                                         <i th:text="${starReceived.getBronzeStarRecieved()}">0</i>
                                   </span>
 
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <h3 class="pointsStyle" th:text="${starCount.getUser().getPoints()}+'points'" style="position:absolute; bottom:-15px; right:-25px; font-size:24px; padding-left: 10px; color: white; font-weight: bolder">0 points</h3>
+                                    <h3 class="pointsStyle" th:text="${starReceived.getUser().getPoints()}+'points'"
+                                        style="position:absolute; bottom:-15px; right:-25px; font-size:24px; padding-left: 10px; color: white; font-weight: bolder">
+                                        0 points</h3>
                                 </div>
-
 
                             </div>
 
@@ -256,9 +259,11 @@
                     </div>
 
                     <div>
-                        <a th:href="@{'/items/'+${loggedUser.getId()}}"><button class="reedemBtn btn btn-default" type="submit" th:value="${loggedUser.getId()}">
-                            Reedem Points
-                        </button></a>
+                        <a th:href="@{'/items/'+${loggedUser.getId()}}">
+                            <button class="reedemBtn btn btn-default" type="submit" th:value="${loggedUser.getId()}">
+                                Reedem Points
+                            </button>
+                        </a>
                     </div>
 
                 </div>
@@ -321,7 +326,7 @@
                                             <div class="col-md-1" style="vertical-align: center">
 
                                                 <img class="receiverImage"
-                                                    th:src="${result.getReceiver().getImageUrl()}"
+                                                     th:src="${result.getReceiver().getImageUrl()}"
                                                      src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"/>
 
                                             </div>
@@ -337,11 +342,13 @@
 
                                                     <span th:switch="${result.getStar().getName()}">
                                                    <img th:case="GOLD" th:src="@{/assets/images/gold.png}" th:width="15"
-                                                      th:height="15"
-                                                      alt="gold">
-                                                   <img th:case="SILVER" th:src="@{/assets/images/silver.png}" th:width="15" th:height="15"
+                                                        th:height="15"
+                                                        alt="gold">
+                                                   <img th:case="SILVER" th:src="@{/assets/images/silver.png}"
+                                                        th:width="15" th:height="15"
                                                         alt="silver">
-                                                   <img th:case="BRONZE" th:src="@{/assets/images/bronze.png}" th:width="15"
+                                                   <img th:case="BRONZE" th:src="@{/assets/images/bronze.png}"
+                                                        th:width="15"
                                                         th:height="15" alt="bronze"> </span>
                                                     <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>
                                                     <strong><a th:href="@{'/badge/'+${result.getGiver().getId()}}"
@@ -351,7 +358,8 @@
                                                     <span>Reason:</span>
                                                     <br>
                                                     <span th:text="${result.getComment()}"></span><br>
-                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+                                                    <span class="timeDiv" style="float: right"
+                                                          th:text="${result.getElapsedTime()}"></span>
 
                                                 </p>
 
@@ -385,9 +393,11 @@
                                                     <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
 
                                                     <span th:switch="${result.getStar().getName()}">
-                                        <img th:case="GOLD" th:src="@{/assets/images/gold.png}" th:width="15" th:height="15"
+                                        <img th:case="GOLD" th:src="@{/assets/images/gold.png}" th:width="15"
+                                             th:height="15"
                                              alt="gold">
-                                    <img th:case="SILVER" th:src="@{/assets/images/silver.png}" th:width="15" th:height="15"
+                                    <img th:case="SILVER" th:src="@{/assets/images/silver.png}" th:width="15"
+                                         th:height="15"
                                          alt="silver">
                                     <img th:case="BRONZE" th:src="@{/assets/images/bronze.png}" th:width="15"
                                          th:height="15" alt="bronze"> </span>
@@ -399,7 +409,8 @@
                                                     <span>Reason:</span>
                                                     <br>
                                                     <span th:text="${result.getComment()}"></span><br>
-                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+                                                    <span class="timeDiv" style="float: right"
+                                                          th:text="${result.getElapsedTime()}"></span>
 
                                                 </p>
                                             </div>
@@ -431,9 +442,11 @@
                                                     <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
 
                                                     <span th:switch="${result.getStar().getName()}">
-                                        <img th:case="GOLD" th:src="@{/assets/images/gold.png}" th:width="15" th:height="15"
+                                        <img th:case="GOLD" th:src="@{/assets/images/gold.png}" th:width="15"
+                                             th:height="15"
                                              alt="gold">
-                                    <img th:case="SILVER" th:src="@{/assets/images/silver.png}" th:width="15" th:height="15"
+                                    <img th:case="SILVER" th:src="@{/assets/images/silver.png}" th:width="15"
+                                         th:height="15"
                                          alt="silver">
                                     <img th:case="BRONZE" th:src="@{/assets/images/bronze.png}" th:width="15"
                                          th:height="15" alt="bronze"> </span>
@@ -445,7 +458,8 @@
                                                     <span>Reason:</span>
                                                     <br>
                                                     <span th:text="${result.getComment()}"></span><br>
-                                                    <span class="timeDiv" style="float: right" th:text="${result.getElapsedTime()}"></span>
+                                                    <span class="timeDiv" style="float: right"
+                                                          th:text="${result.getElapsedTime()}"></span>
 
                                                 </p>
                                             </div>
@@ -455,9 +469,11 @@
                                     </div>
 
                                     <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                                         aria-labelledby="nav-contact-tab">
-                                        ...
+                                         aria-labelledby="nav-purchase-tab">
+                                      ..
                                     </div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -471,8 +487,6 @@
         </div>
 
     </div>
-
-</div>
 </div>
 
 </body>

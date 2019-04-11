@@ -645,23 +645,24 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
+                                                <div id="selectResult"></div>
                                                 <div class="radioClass">
-                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                    <input type="radio" required class="revoke" th:name="revoke"
                                                            value="Selected_Incorrect_Name">
                                                     &nbsp;&nbsp;Selected Incorrect Name <br>
                                                 </div>
                                                 <div class="radioClass">
-                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                    <input type="radio" required class="revoke" th:name="revoke"
                                                            value="Selected_incorrect_Badge">
                                                     &nbsp;&nbsp;Selected incorrect Badge <br>
                                                 </div>
                                                 <div class="radioClass">
-                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                    <input type="radio" required class="revoke" th:name="revoke"
                                                            value="Selected_Incorrect_Karma">
                                                     &nbsp;&nbsp;Selected Incorrect Karma <br>
                                                 </div>
                                                 <div class="radioClass">
-                                                    <input type="radio" class="revoke" th:name="revoke"
+                                                    <input type="radio" required class="revoke" th:name="revoke"
                                                            value="Inappropriate_language_Used">
                                                     &nbsp;&nbsp;Inappropriate language Used <br>
                                                 </div>
@@ -705,15 +706,17 @@
 
                                 <div class="col-sm-4" style="align-items: center;horiz-align: center">
 
-                                    <img class="recieverImage"
-                                         th:src="@{loggedUser.imageUrl}"
-                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
-
+                                    <img class="receiverImage"
+                                         src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                         th:src="@{''+${loggedUser.imageUrl}}">
                                 </div>
 
                                 <div class="col-sm-6 userDetail" style="margin-left: -10px" th>
 
-                                    <h3 class="myName"></h3>
+                                    <h3 class="myName"
+                                        th:text="${recvstars.getUser().getFirstName()+' '+
+                                        recvstars.getUser().getLastName()}"></h3>
+
 
                                     <span>
                                         <img th:src="@{/assets/images/gold.png}" height="18" width="20"/>
@@ -752,11 +755,8 @@
 
 
                                 <div class="col-sm-4" style="align-items: center;horiz-align: center">
-
-                                    <img class="recieverImage"
-                                         th:src="@{top.getUser().imageUrl}"
-                                         src="https://demo.userproplugin.com/wp-content/plugins/userpro/img/default_avatar_male.jpg">
-
+                                    <img class="receiverImage"
+                                         th:src="@{''+${top.getUser().imageUrl}}">
                                 </div>
 
                                 <div class="col-sm-6 userDetail" style="margin-left: -10px">

@@ -1,9 +1,9 @@
 package com.prateek.reap.util;
 
 
-import com.prateek.reap.Entity.User;
-import com.prateek.reap.Entity.UserPrincipal;
-import com.prateek.reap.Entity.UserRole;
+import com.prateek.reap.entity.User;
+import com.prateek.reap.entity.UserPrincipal;
+import com.prateek.reap.entity.UserRole;
 import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;

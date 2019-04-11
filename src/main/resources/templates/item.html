@@ -37,6 +37,8 @@
 
     <link th:href="@{/assets/css/item.css}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/assets/css/item.css">
+
+    <script type="text/javascript" th:src="@{/assets/js/item.js}"></script>
     <style>
         .coins
         {
@@ -122,8 +124,8 @@
 
                             <a id="profileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="receiverImage"
-                                     th:src="@{''+${loggedUser.imageUrl}}"
-                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"/>
+                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                     th:src="@{''+${loggedUser.imageUrl}}">
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileMenu">
@@ -139,8 +141,9 @@
 
                                             <!--Profile Image-->
                                             <div class="col-md-4">
-                                                <img
-                                                        th:src="@{''+${loggedUser.imageUrl}}" width="80px" height="80px">
+                                                <img class="receiverImage"
+                                                     src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                                     th:src="@{''+${loggedUser.imageUrl}}">
                                             </div>
 
                                             <!--Profile Info-->
@@ -195,7 +198,7 @@
     <div class="content-wrapper" style="">
 
         <div class="container-fluid">
-
+        <div id="result"></div>
             <div class="row">
 
                 <div class="col-md-4">
@@ -214,9 +217,8 @@
                                 <div class="col-sm-1">
 
                                     <img class="receiverImage"
-                                         th:src="@{''+${loggedUser.imageUrl}}"
-                                         src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"/>
-
+                                         src="http://rs775.pbsrc.com/albums/yy35/PhoenyxStar/link-1.jpg~c200"
+                                         th:src="@{''+${loggedUser.imageUrl}}">
 
                                 </div>
 
@@ -258,54 +260,25 @@
                         <div class="card-header">
                             <img th:src="@{/assets/images/bag.png}" height="24" width="24"/>&nbsp;&nbsp;Bag
                         </div>
-                        <div class="card-body">
+                        <div class="card-body ">
                             <div class="cartHead row">
                                 <div class="col-md-2">
                                     <strong><p>Item</p></strong>
                                 </div>
                                 <div class="col-md-3">
                                     <strong><p>Detail</p></strong>
-
                                 </div>
-                                <div class="col-md-3">
-                                    <strong><p>Quantity</p></strong>
-
-                                </div>
+                                <div class="col-md-3"></div>
                                 <div class="col-md-2">
                                     <strong><p>Sub total</p></strong>
-
                                 </div>
                             </div>
-                            <div class="cardItemList">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <img th:src="@{/assets/images/white.png}"
-                                             height="30" width="30"/>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p>Reap Image</p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="itemSelectQuant" name="quantity_2" id="quantity_2">
-                                            <option value="1" selected="selected">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        350
-                                    </div>
-                                    <div class="col-md-2"><img th:src="@{/assets/images/close.png}" height="11"
-                                                               width="12"/></div>
-
-                                </div>
+                            <div class="cardItemList item-data-r">
                             </div>
                             <div class="totalCost">
                                 <p>
                                     <span id="totalText">Total:</span>
-                                    <spna id="points">1230</spna>
+                                    <span id="points">0</span>
                                 </p>
                             </div>
                             <div class="redeemRow">
@@ -313,7 +286,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-md-8">
@@ -330,12 +302,10 @@
 
                                     <div class="cartItem">
                                         <div class="card cardHover">
-                                            <img class="card-img-top"
+                                            <img id="img1" class="card-img-top"
                                                  src="/assets/images/laptop.png"/>
                                             <div class="card-body itemBody">
-                                                <div class="itemPoints">
-                                                350 points
-                                                </div>
+                                                <div class="itemPoints">300 points</div>
 
                                                 <button class="btn btn-success cartBtn">Add
                                                     To Cart
@@ -351,11 +321,9 @@
                                     <div class="cartItem">
                                         <div class="card cardHover">
                                             <img class="card-img-top"
-                                                 src="/assets/images/laptop.png"/>
+                                                 src="/assets/images/bottle.png" style="height: 300px;"/>
                                             <div class="card-body itemBody">
-                                                <div class="itemPoints">
-                                                    350 points
-                                                </div>
+                                                <div class="itemPoints">400 points</div>
 
                                                 <button class="btn btn-success cartBtn" >Add
                                                     To Cart
@@ -371,11 +339,9 @@
                                     <div class="cartItem">
                                         <div class="card cardHover">
                                             <img class="card-img-top"
-                                                 src="/assets/images/laptop.png"/>
+                                                 src="/assets/images/diaries.png" style="height: 300px;"/>
                                             <div class="card-body itemBody">
-                                                <div class="itemPoints">
-                                                    350 points
-                                                </div>
+                                                <div class="itemPoints">200 points</div>
 
                                                 <button class="btn btn-success cartBtn" >Add
                                                     To Cart
@@ -391,10 +357,48 @@
                                     <div class="cartItem">
                                         <div class="card cardHover">
                                             <img class="card-img-top"
-                                                 src="/assets/images/laptop.png"/>
+                                                 src="/assets/images/pen.png" style="height: 300px;"/>
+                                            <div class="card-body itemBody">
+                                                <div class="itemPoints">100 points</div>
+
+                                                <button class="btn btn-success cartBtn" >Add
+                                                    To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-4" >
+
+                                    <div class="cartItem">
+                                        <div class="card cardHover">
+                                            <img class="card-img-top"
+                                                 src="/assets/images/pinclip.png" style="height: 300px;"/>
+                                            <div class="card-body itemBody">
+                                                <div class="itemPoints">200 points</div>
+
+                                                <button class="btn btn-success cartBtn" >Add
+                                                    To Cart
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-4" >
+
+                                    <div class="cartItem">
+                                        <div class="card cardHover">
+                                            <img class="card-img-top"
+                                                 src="/assets/images/visitingcard.png" style="height: 300px;"/>
                                             <div class="card-body itemBody">
                                                 <div class="itemPoints">
-                                                    350 points
+                                                    100 points
                                                 </div>
 
                                                 <button class="btn btn-success cartBtn" >Add
@@ -406,6 +410,7 @@
 
 
                                 </div>
+
 
 
 

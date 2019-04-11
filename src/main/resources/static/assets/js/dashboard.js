@@ -45,12 +45,9 @@ $(function () {
     });
 
     var table = $('#example').DataTable({
-        /*scrollY: "300px",
-        scrollX: true,
-        scrollCollapse: true,*/
         paging: true,
         fixedColumns: true
-        // displayLength: 2
+
     });
 
     $('body').on('click','.delDiv',function(e){
@@ -72,10 +69,19 @@ $(function () {
 
         var comment=$("input[name='revoke']:checked"). val();
         // var comment = $(".revoke").val();
+        if (typeof comment === "undefined") {
+            $("#selectResult").addClass("alert alert-danger");
+            $("#selectResult").append("Select One Reason");
+            $("#selectResult").fadeTo(2000, 500).slideUp(500, function () {
+                $("#selectResult").empty();
+                $('#selectResult').removeClass("alert alert-danger");
 
-
-        console.log(comment);
-        deleteRecognition(id, star, comment);
+            });
+        }
+        else {
+            console.log(comment);
+            deleteRecognition(id, star, comment);
+        }
     });
 
 

@@ -2,10 +2,10 @@
 package com.prateek.reap.events;
 
 
-import com.prateek.reap.Entity.*;
-import com.prateek.reap.Repository.SignUpRepository;
-import com.prateek.reap.Repository.UserRoleRepository;
-import com.prateek.reap.Service.*;
+import com.prateek.reap.entity.*;
+import com.prateek.reap.repository.SignUpRepository;
+import com.prateek.reap.repository.UserRoleRepository;
+import com.prateek.reap.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -21,27 +21,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class Bootstrap {
 
 
+    @Autowired
+    private SignUpService signUpService;
 
-        @Autowired
-        private  SignUpService signUpService;
+    @Autowired
+    private UserRoleService userRoleService;
 
-        @Autowired
-        private UserRoleService userRoleService;
+    @Autowired
+    private StarService starService;
 
-        @Autowired
-        private StarService starService;
+    @Autowired
+    private BadgeService badgeService;
 
-        @Autowired
-        private BadgeService badgeService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-        @Autowired
-        private  BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserStarCountService userStarCountService;
 
-        @Autowired
-        private UserStarCountService userStarCountService;
+    @Autowired
+    private UserStarReceivedService userStarReceivedService;
 
-        @Autowired
-        private  UserStarReceivedService userStarReceivedService;
+    @Autowired
+    private ItemService itemService;
 
 
     @EventListener(ContextRefreshedEvent.class)
@@ -50,7 +52,6 @@ public class Bootstrap {
     }
 
     private void userData() {
-
         User adminUser = new User();
         User vagish = new User();
         User vd = new User();
@@ -100,8 +101,18 @@ public class Bootstrap {
         UserStarReceived starReceived8 = new UserStarReceived();
 
 
+        Item item1 = new Item();
+        Item item2 = new Item();
+        Item item3 = new Item();
+        Item item4 = new Item();
+        Item item5 = new Item();
+        Item item6 = new Item();
+        Item item7 = new Item();
+        Item item8 = new Item();
+        Item item9 = new Item();
+        Item item10 = new Item();
 
-        Iterator<BadgesGiven> badgesGivenIterator = badgeService.findAll().iterator();
+  Iterator<BadgesGiven> badgesGivenIterator = badgeService.findAll().iterator();
         if (!badgesGivenIterator.hasNext()) {
 
             badgesGiven.setGiver(vagish);
@@ -171,7 +182,72 @@ public class Bootstrap {
             badgesGiven10.setFlag(true);
         }
 
-        Iterator<User> userIterator = signUpService.findAll().iterator();
+
+        Iterator<Item> itemIterator = itemService.findAll().iterator();
+        if (!itemIterator.hasNext()) {
+
+            item1.setActive(true);
+            item1.setPoints(350);
+            item1.setName("Visting Card Holder");
+            item1.setSize(false);
+            item1.setImageUrl("/assets/images/laptop.png");
+
+            item2.setActive(true);
+            item2.setPoints(70);
+            item2.setName("Paper Clip");
+            item2.setSize(false);
+            item2.setImageUrl("/assets/images/laptop.png");
+
+            item3.setActive(true);
+            item3.setPoints(750);
+            item3.setName("Steel Sipper Bottle");
+            item3.setSize(false);
+            item3.setImageUrl("/assets/images/laptop.png");
+
+            item4.setActive(true);
+            item4.setPoints(130);
+            item4.setName("Simley Desktop Message Card");
+            item4.setSize(false);
+            item4.setImageUrl("/assets/images/laptop.png");
+
+            item5.setActive(true);
+            item5.setPoints(140);
+            item5.setName("Booklight Paper Clip");
+            item5.setSize(false);
+            item5.setImageUrl("/assets/images/laptop.png");
+
+            item6.setActive(true);
+            item6.setPoints(400);
+            item6.setName("Laptop Sleeve");
+            item6.setSize(false);
+            item6.setImageUrl("/assets/images/laptop.png");
+
+            item7.setActive(true);
+            item7.setPoints(40);
+            item7.setName("Pen");
+            item7.setSize(false);
+            item7.setImageUrl("/assets/images/laptop.png");
+
+            item8.setActive(true);
+            item8.setPoints(300);
+            item8.setName("Mug");
+            item8.setSize(false);
+            item8.setImageUrl("/assets/images/laptop.png");
+
+            item9.setActive(true);
+            item9.setPoints(90);
+            item9.setName("Mobile Stand");
+            item9.setSize(false);
+            item9.setImageUrl("/assets/images/laptop.png");
+
+            item10.setActive(true);
+            item10.setPoints(690);
+            item10.setName("Passport Holder");
+            item10.setSize(false);
+            item10.setImageUrl("/assets/images/laptop.png");
+        }
+
+ Iterator<User> userIterator = signUpService.findAll().iterator();
         if (!userIterator.hasNext()) {
 
             adminUser.setFirstName("Admin");
@@ -373,7 +449,6 @@ public class Bootstrap {
         }
 
 
-
         adminUser.getRoles().add(admin);
         adminUser.getRoles().add(practiceHead);
         vagish.getRoles().add(supervisor);
@@ -432,95 +507,20 @@ public class Bootstrap {
         userStarReceivedService.save(starReceived7);
         userStarReceivedService.save(starReceived8);
 
-      
-    }
 
-     */
-/*   @EventListener(ContextRefreshedEvent.class)
-        public void seedData() {
-            userData();
-        }
-
-        private void userData() {
-
-            User user1=new User();
-            user1.setEmail("mailforprateek@gmail.com");
-            user1.setFirstName("Prateek");
-            user1.setLastName("Nagar");
-            user1.setActive(true);
-            user1.setPassword(passwordEncoder.encode("12345"));
-            UserRole admin = new UserRole();
-            UserRole user = new UserRole();
-            UserRole supervisor = new UserRole();
-            UserRole practiceHead = new UserRole();
-
-            user1.getRoles().add(admin);
-
-
-            Star goldStar = new Star();
-            Star silverStar = new Star();
-            Star bronzeStar = new Star();
-
- Iterator<UserRole> userRoleIterator = userRoleService.findAll().iterator();
-            if (!userRoleIterator.hasNext()) {
-
-                admin.setId(1);
-                admin.setName("ADMIN");
-                admin.setPriority(0);
-                admin.setGoldStar(3);
-                admin.setSilverStar(2);
-                admin.setBronzeStar(1);
-
-                user.setId(2);
-                user.setPriority(1);
-                user.setName("USER");
-                user.setGoldStar(3);
-                user.setSilverStar(2);
-                user.setBronzeStar(1);
-
-                supervisor.setId(3);
-                supervisor.setPriority(2);
-                supervisor.setName("SUPERVISOR");
-                supervisor.setGoldStar(6);
-                supervisor.setSilverStar(4);
-                supervisor.setBronzeStar(2);
-
-                practiceHead.setId(4);
-                practiceHead.setPriority(3);
-                practiceHead.setName("PRACTICEHEAD");
-                practiceHead.setGoldStar(9);
-                practiceHead.setSilverStar(6);
-                practiceHead.setBronzeStar(3);
-            }
-
-
-            Iterator<Star> starIterator = starService.findAll().iterator();
-            if (!starIterator.hasNext()) {
-
-                goldStar.setName("GOLD");
-                goldStar.setWeight(30);
-
-                silverStar.setName("SILVER");
-                silverStar.setWeight(20);
-
-                bronzeStar.setName("BRONZE");
-                bronzeStar.setWeight(10);
-            }
-
-            userRoleService.save(admin);
-            userRoleService.save(user);
-            userRoleService.save(supervisor);
-            userRoleService.save(practiceHead);
-
-            starService.save(goldStar);
-            starService.save(silverStar);
-            starService.save(bronzeStar);
-
-            signUpService.saveUser(user1);
-
-        }*//*
+        itemService.save(item1);
+        itemService.save(item2);
+        itemService.save(item3);
+        itemService.save(item4);
+        itemService.save(item5);
+        itemService.save(item6);
+        itemService.save(item7);
+        itemService.save(item8);
+        itemService.save(item9);
+        itemService.save(item10);
 
     }
+}
 
 
 
