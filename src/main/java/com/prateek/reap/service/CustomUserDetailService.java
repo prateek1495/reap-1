@@ -41,15 +41,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
         return (UserDetails) new UserPrincipal(user.getEmail(), user.getPassword(), enabled, accountNonExpired, credentialsNotExpired, accountNonLocked
                 , getAuthorities(user), user);
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                true,
-//                true,
-//                true,
-//                true,
-//                auths
-//        );
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(User roles) {
@@ -69,43 +60,4 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    /* if (isNull(user))
-            throw new UsernameNotFoundException("User Does Not Exists"+email);
-
-        List<SimpleGrantedAuthority> auths = new ArrayList<>();
-        for (UserRole userRole : user.getRoles()) {
-            auths.add(new SimpleGrantedAuthority(userRole.getName()));
-        }
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                auths
-        );
-    }
-}
-*/
-
-/*
-
-        List<SimpleGrantedAuthority> auths = new ArrayList<>();
-        for (UserRole userRole : user1.getRoles()) {
-            auths.add(new SimpleGrantedAuthority(userRole.getName()));
-        }
-
-*/
 

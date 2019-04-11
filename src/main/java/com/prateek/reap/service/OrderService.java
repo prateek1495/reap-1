@@ -15,7 +15,6 @@ import java.util.Optional;
 public class OrderService {
     @Autowired
     OrderRepository orderRepository;
-
     @Autowired
     SignUpService signUpService;
 
@@ -30,8 +29,7 @@ public class OrderService {
         }
         if (cartPrice == 0) {
             return "Order something";
-        }
-        else {
+        } else {
             String itemArray[] = items.split(" ");
             String itemUrl[] = itemUrls.split(" ");
             Order order = new Order();
@@ -46,17 +44,8 @@ public class OrderService {
 
     }
 
-
-
     public List<Order> findAllOrders(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return orderRepository.findByUser(new Sort(Sort.Direction.DESC,"orderDate"),user.get());
+        return orderRepository.findByUser(new Sort(Sort.Direction.DESC, "orderDate"), user.get());
     }
-
-
-
-   /* public Order findByUserId(Integer id) {
-
-        return orderRepository.findByUser_Id(id);
-    }*/
 }

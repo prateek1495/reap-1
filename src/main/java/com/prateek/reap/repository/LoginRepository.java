@@ -15,5 +15,4 @@ public interface LoginRepository extends CrudRepository<User, Integer> {
     Optional<User> findById(int userId);
 
     User findByEmailAndActive(String email,Boolean active);
-    /* User findByToken(String resetToken);*/
 }

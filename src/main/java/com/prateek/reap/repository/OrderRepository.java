@@ -11,6 +11,4 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends CrudRepository<Order,Integer> {
     List<Order> findByUser(Sort sort, User user);
-
-//    Order findByUser_Id(Integer id);
 }

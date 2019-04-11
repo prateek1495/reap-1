@@ -77,10 +77,7 @@ public class PasswordController {
             return "redirect:/login";
         }
 
-
-        signUpService.resetEmailTokenAndSetNewPassword(
-                requestParams.get("token"), requestParams.get("newPassword"));
-
+        signUpService.resetEmailTokenAndSetNewPassword(requestParams.get("token"), requestParams.get("newPassword"));
         redirectAttributes.addFlashAttribute("resetPassword", "Password Resetted, Please Log in.");
         return "redirect:/login";
     }

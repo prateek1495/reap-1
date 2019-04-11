@@ -57,7 +57,6 @@ public class UserStarReceivedService {
                 userStarReceivedRepository.save(starCount);
                 break;
 
-
         }
 
     }

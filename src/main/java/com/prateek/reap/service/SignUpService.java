@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 @Service
 public class SignUpService {
 
@@ -35,15 +33,8 @@ public class SignUpService {
     private UserStarCountService userStarCountService;
 
     public void saveUser(User responseData) {
-        // responseData.setUserPassword(new BCryptPasswordEncoder().encode(responseData.getUserPassword()));
         signUpRepository.save(responseData);
     }
-
-   /* public List<User> checkUser(User responseData) {
-
-        return signUpRepository.findByEmail(responseData.getEmail());
-
-    }*/
 
     public List<User> checkEmailAndActive(String email, boolean active) {
         return signUpRepository.findByEmailAndActive(email, active);
@@ -103,49 +94,8 @@ public class SignUpService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
 
-        /*UserRole userRole1=new UserRole();
-        userRole1.setId(1);
-        userRole1.setName("USER");
-        userRole1.setGoldStar(new Integer(3));
-        userRole1.setSilverStar(new Integer(2));
-        userRole1.setBronzeStar(new Integer(1));
-        userRole1.setPriority(3);
-
-
-        UserRole userRole2=new UserRole();
-        userRole1.setId(2);
-        userRole1.setName("ADMIN");
-        userRole1.setGoldStar(new Integer(3));
-        userRole1.setSilverStar(new Integer(2));
-        userRole1.setBronzeStar(new Integer(1));
-        userRole1.setPriority(4);
-
-        UserRole userRole3=new UserRole();
-        userRole1.setId(1);
-        userRole1.setName("SUPERVISOR");
-        userRole1.setGoldStar(new Integer(6));
-        userRole1.setSilverStar(new Integer(3));
-        userRole1.setBronzeStar(new Integer(2));
-        userRole1.setPriority(2);
-
-        UserRole userRole4=new UserRole();
-        userRole1.setId(1);
-        userRole1.setName("PRACTICEHEAD");
-        userRole1.setGoldStar(new Integer(9));
-        userRole1.setSilverStar(new Integer(6));
-        userRole1.setBronzeStar(new Integer(3));
-        userRole1.setPriority(1);
-        userRoleService.save(userRole1);
-        userRoleService.save(userRole2);
-        userRoleService.save(userRole3);
-        userRoleService.save(userRole4);
-*/
         User newUser = signUpRepository.save(user);
-
-        System.out.println(newUser + "+++++++++++");
-
         UserStarCount userStarCount = new UserStarCount();
-
         userStarCount.setUser(newUser);
         userStarCount.setGoldStarCount(userRole.getGoldStar());
         userStarCount.setSilverStarCount(userRole.getSilverStar());
@@ -157,7 +107,6 @@ public class SignUpService {
         userStarReceived.setSilverStarRecieved(0);
         userStarReceived.setBronzeStarRecieved(0);
         userStarReceivedService.save(userStarReceived);
-        //signUpRepository.save(user);
     }
 
 

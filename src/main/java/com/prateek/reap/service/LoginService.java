@@ -13,23 +13,16 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
-
     public Optional<User> validateUser(User responseData) {
-
-        Optional<User> loginStatus = loginRepository.findByEmailAndPassword(responseData.getEmail(), responseData.getPassword());
-
+        Optional<User> loginStatus = loginRepository
+                .findByEmailAndPassword(responseData.getEmail(), responseData.getPassword());
         return loginStatus;
-
     }
 
     public Optional<User> find(int userId) {
         Optional<User> id = loginRepository.findById(userId);
         return id;
     }
-
-    /*public User findUserByResetToken(String resetToken) {
-        return loginRepository.findByToken(resetToken);
-    }*/
 
     public User findUserByEmail(String email) {
         return loginRepository.findByEmail(email);

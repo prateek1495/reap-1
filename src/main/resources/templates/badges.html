@@ -488,7 +488,8 @@
                                                                th:text="${purchase.getUser().getFirstName()}"></a></strong>
 
                                                     <span> &nbsp; &nbsp;has &nbsp; purchased &nbsp;&nbsp; </span>
-                                                    <span th:each="item:${purchase.getItemUrl()}"><strong><span  th:text="${item}+','"></span></strong></span>
+                                                    <span th:each="item:${purchase.getItemUrl()}"><strong><span
+                                                            th:text="${item}+','"></span></strong></span>
 
 
                                                     <span>&nbsp;&nbsp; for &#8377; &nbsp;&nbsp;</span>

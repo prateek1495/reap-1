@@ -68,13 +68,15 @@ public class BadgeService {
         badgeRepository.save(badgesGiven);
 
         emailService.sendEmailToSingleRecipient(senderUser.getEmail(), "Newer Recognition",
-                "You gave a " + " " + star.getName().toUpperCase() + " to " + receiverUser.getEmail() + " " + " For the following reason"
+                "You gave a " + " " + star.getName().toUpperCase() + " to " + receiverUser
+                        .getEmail() + " " + " For the following reason"
                         + " \n\n" + comment);
 
 
         emailService.sendEmailToSingleRecipient(receiverUser.getEmail(), "Newer Recognition",
                 "Congratulation" + "\n" + receiverUser.getFirstName() + " " + receiverUser.getLastName() + " you " +
-                        "have received" + star.getName().toUpperCase() + " star from " + senderUser.getFirstName() + " " + senderUser.getLastName()
+                        "have received" + star.getName().toUpperCase() + " star from " + senderUser
+                        .getFirstName() + " " + senderUser.getLastName()
                         + " " + " For the following reason" + "\n\n" + comment);
 
 
@@ -106,7 +108,8 @@ public class BadgeService {
 
     public List<BadgesGiven> findAllRecognitionByUser(Integer id) {
         Optional<User> user = signUpService.findById(id);
-        return badgeRepository.findAllByGiverOrReceiver(new Sort(Sort.Direction.DESC, "updatedAt"), user.get(), user.get());
+        return badgeRepository
+                .findAllByGiverOrReceiver(new Sort(Sort.Direction.DESC, "updatedAt"), user.get(), user.get());
     }
 
 
@@ -123,13 +126,10 @@ public class BadgeService {
         Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
         Star star = starService.findByName(starName);
 
-        System.out.println(comment);
         if (badgesGiven.isPresent()) {
 
             User giver = badgesGiven.get().getGiver();
             User receiver = badgesGiven.get().getReceiver();
-
-            //badgeRepository.delete(badgesGiven.get());
             BadgesGiven badgesGiven1 = badgesGiven.get();
             badgesGiven1.setFlag(false);
 
@@ -177,7 +177,8 @@ public class BadgeService {
 
 
     public List<BadgesGiven> findAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return badgeRepository.findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"),startDate, endDate);
+        return badgeRepository
+                .findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"), startDate, endDate);
     }
 
     public List<BadgesGiven> findAllData() {
@@ -185,127 +186,12 @@ public class BadgeService {
     }
 
     public List<BadgesGiven> findRecognitionByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return badgeRepository.findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"),startDate,endDate);
+        return badgeRepository
+                .findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"), startDate, endDate);
     }
 
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-    public void recognitionDelete(Integer id, String starName, String comment) {
-
-        Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
-        Star star = starService.findByName(starName);
-
-        if (badgesGiven.isPresent()) {
-
-            User giver = badgesGiven.get().getGiver();
-            User receiver = badgesGiven.get().getReceiver();
-
-            badgeRepository.delete(badgesGiven.get());
-
-            userStarCountService.incrementGiverStarAfterRevocation(giver, star);
-
-            userStarReceivedService.decrementReceiverStarAfterRevocation(receiver, star);
-
-            signUpService.changeUserPoints(receiver, star, "DELETE");
-
-            sendRevocationEmails(giver, receiver, comment);
-        }
-    }
-
-
-    private void sendRevocationEmails(User giver, User receiver, String comment) {
-
-        emailService.sendEmailToSingleRecipient(
-                giver.getEmail(),
-                MAIL_SUBJECT_RECOGNITION_REVOKED,
-                RECOGNITION_YOU_GAVE_TO
-                        + " "
-                        + receiver.getFirstName()
-                        + " "
-                        + REVOKED_BY_ADMIN
-                        + " "
-                        + REASON_REVOKATION
-                        + " \n"
-                        + comment
-                        + "\n");
-
-        emailService.sendEmailToSingleRecipient(
-                receiver.getEmail(),
-                MAIL_SUBJECT_RECOGNITION_REVOKED,
-                RECOGNITION_YOU_RECEIVED
-                        + " "
-                        + giver.getFirstName()
-                        + " "
-                        + REVOKED_BY_ADMIN
-                        + " "
-                        + REASON_REVOKATION
-                        + " \n"
-                        + comment
-                        + "\n"
-                        + CONTACT_ADMIN);
-    }
-*/
 
 

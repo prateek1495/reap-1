@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 @Setter
 public class CustomUserDetails implements UserDetails {
 
-
-
     private User user;
 
     public User getUser() {

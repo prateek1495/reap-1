@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface SignUpRepository extends CrudRepository<User, Integer> {
-    /*List<User> findByEmail(String responseData);*/
+
     List<User> findByEmailAndActive(String email, boolean active);
 
     User findByEmail(String email);

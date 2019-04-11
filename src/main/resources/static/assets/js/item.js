@@ -3,25 +3,18 @@ $(function () {
     var totalCart = 0;
     $('.cartBtn').on('click', function () {
         $(this).attr('disabled');
-
         var price = $(this).prev().text();
-        console.log(price);
         var name = $(this).parent().prev().attr("src");
-        // console.log(name);
-        var nameee = name.substring(name.lastIndexOf("/") + 1, name.lastIndexOf(".png"));
-        // console.log(nameee);
-        var url = "/assets/images/" + nameee + ".png";
+        var imgName = name.substring(name.lastIndexOf("/") + 1, name.lastIndexOf(".png"));
+        var url = "/assets/images/" + imgName + ".png";
         price = price.substring(0, price.indexOf(" "));
-        console.log(price + "dsnjdjs");
-
-
         var row = ' <div class="row item-row-r">' +
             '<div class="col-md-2">' +
             '<img class="item-img"' + "src=" + '"' + url + '"' +
             'height="30" width="30"/>' +
             '</div>' +
             '<div class="col-md-4">' +
-            '<p class="item-name">' + nameee + '</p>' +
+            '<p class="item-name">' + imgName + '</p>' +
             '</div>' +
             '<div class="col-md-2">' +
             '' +
@@ -35,11 +28,8 @@ $(function () {
             + '';
 
         $(".item-data-r").append(row);
-
         totalCart += parseInt(price);
         $("#points").text(totalCart);
-
-
     });
 
 
@@ -48,7 +38,6 @@ $(function () {
     var itemUrls = "";
 
     $(".RButton").click(function () {
-
         if (!$(".item-data-r").children().length > 0) {
             $("#result").addClass("alert alert-danger");
             $("#result").append("Select Item First");

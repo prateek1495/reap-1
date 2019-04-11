@@ -51,12 +51,13 @@ public class SignupController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
 
-    public String formSucess(@Valid @ModelAttribute("user") User responseData, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile file) throws IOException {
+    public String formSucess(@Valid @ModelAttribute("user") User responseData, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile file)
+            throws IOException {
 
         UserRole userRole = userRoleSevice.checkByName("USER");
         ModelAndView modelAndView = new ModelAndView("/signup");
         List<User> emailVerification = (List<User>) signUpService.checkEmailAndActive(responseData.getEmail(), true);
-        System.out.println(emailVerification);
         if (emailVerification.size() > 0) {
             redirectAttributes.addFlashAttribute("exist", "Email Id Already Exists");
             return "redirect:/signup";
@@ -70,29 +71,9 @@ public class SignupController {
                     .collect(Collectors.joining(System.lineSeparator())));
             return "redirect:/signup";
         } else {
-
-           /* responseData.setFirstName(responseData.getFirstName());
-            responseData.setLastName(responseData.getLastName());
-            responseData.setEmail(responseData.getEmail());
-            responseData.getRoles().add(userRole);
-
-            responseData.setPassword(bCryptPasswordEncoder.encode(responseData.getPassword()));
-
-            responseData.setPassword(responseData.getPassword());
-
-            responseData.setActive(true);
-//          responseData.setImageUrl(signUpService.saveImagePath(responseData.getImageUrl()));
-//            responseData.setImageUrl(signUpService.saveImagePath("file"));
-            responseData.setImageUrl(signUpService.saveImagePath(file));
-
-            signUpService.saveUser(responseData);*/
-
             signUpService.save(responseData, file);
-
             redirectAttributes.addFlashAttribute("signsuccess", "Registration Successfull,You can Login Now");
             return "redirect:/signup";
-
-
         }
 
 

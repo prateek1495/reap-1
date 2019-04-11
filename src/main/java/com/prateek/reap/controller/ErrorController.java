@@ -26,7 +26,6 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         return "error";
     }
 
-
     @Override
     public String getErrorPath() {
         return "/error";

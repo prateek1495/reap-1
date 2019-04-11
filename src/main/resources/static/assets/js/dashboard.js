@@ -1,7 +1,7 @@
 $(function () {
 
     $("#endDate").val(moment().format('YYYY-MM-DD HH:mm:ss'));
-    $("#startDate").val(moment().subtract('days',1).format('YYYY-MM-DD HH:mm:ss'));
+    $("#startDate").val(moment().subtract('days', 1).format('YYYY-MM-DD HH:mm:ss'));
 
     $('span[name="dates"]').daterangepicker({}, function (start, end, label) {
         $("#startDate").val(start.format('YYYY-MM-DD HH:mm:ss'));
@@ -13,8 +13,8 @@ $(function () {
             url: "/searchRecognitionByDate/" + start + "/" + end,
             success: function (data) {
 
-               $('#page').empty();
-               $('#page').html(data);
+                $('#page').empty();
+                $('#page').html(data);
             }
         });
     });
@@ -27,13 +27,10 @@ $(function () {
         method: "get",
 
         success: function (data) {
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 availableTags.push(data[i].email);
 
             }
-
-
         }
 
     });
@@ -52,7 +49,7 @@ $(function () {
         $(".alert-danger").alert('close');
     });
 
-    var table = $('#example').DataTable({
+    var table = $('#dataTable').DataTable({
         paging: true,
         fixedColumns: true
 
@@ -60,22 +57,15 @@ $(function () {
 
     $('body').on('click', '.delDiv', function (e) {
         var id = $(this).find('.resultId').val();
-        console.log(id);
         var star = $(this).find('.resultStar').val();
-        console.log(star);
-
         $(".recoId").val(id);
         $(".recoStar").val(star);
-
-
     });
 
     $('body').on('click', '.revokeRecognition', function (e) {
-
         var id = $(".recoId").val();
         var star = $(".recoStar").val();
         var comment = $("input[name='revoke']:checked").val();
-
         if (typeof comment === "undefined") {
             $("#selectResult").addClass("alert alert-danger");
             $("#selectResult").append("Select One Reason");
@@ -94,9 +84,7 @@ $(function () {
 
     function deleteRecognition(id, star, comment) {
 
-
         $(' body').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
-
 
             location.reload();
             $('.resultRevoke').append("Recognition Revoked");
@@ -110,17 +98,13 @@ $(function () {
         });
     }
 
-
-    $('.csvBtn').on("click", function () {
-        window.open("/download-csv");
-    });
-
     $(".searchData").keyup(function () {
         var value = $(this).val().toLowerCase();
         $(" #torecord #record  ").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+
 
     $('body').on('change', 'select.allocate', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
@@ -143,9 +127,8 @@ $(function () {
                 );
             }
         });
-
-
     });
+
 
     $('body').on('change', 'select.revokeRole', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
@@ -170,6 +153,7 @@ $(function () {
         });
 
     });
+
 
     $('body').on('change', '.points', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
@@ -230,7 +214,6 @@ $(function () {
 
         }
     });
-
 
 });
 
