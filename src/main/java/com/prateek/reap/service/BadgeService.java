@@ -177,7 +177,7 @@ public class BadgeService {
 
 
     public List<BadgesGiven> findAllBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return badgeRepository.findAllByUpdatedAtBetween(startDate, endDate);
+        return badgeRepository.findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"),startDate, endDate);
     }
 
     public List<BadgesGiven> findAllData() {
@@ -185,7 +185,7 @@ public class BadgeService {
     }
 
     public List<BadgesGiven> findRecognitionByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return badgeRepository.findAllByUpdatedAtBetween(startDate,endDate);
+        return badgeRepository.findAllByUpdatedAtBetween(new Sort(Sort.Direction.DESC, "updatedAt"),startDate,endDate);
     }
 
 

@@ -64,7 +64,7 @@ public class DashboardController {
                 .getId()));
         System.out.println(userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
-        model.addAttribute("wall", badgeService.findAllByDate());
+        model.addAttribute("wallOfFame", badgeService.findAllByDate());
         System.out.println(userStarReceivedService.findByTopNewers());
         model.addAttribute("newersBoard", userStarReceivedService.findByTopNewers());
         return "/dashboard";
@@ -180,13 +180,13 @@ public class DashboardController {
 
 
     @GetMapping("/searchRecognitionByDate/{start}/{end}")
-    @ResponseBody
-    public List<BadgesGiven> getUserRecodByName(@PathVariable("start") String startDate,@PathVariable("end")String endDate){
+    public String getUserRecodByName(@PathVariable("start") String startDate,@PathVariable("end")String endDate,Model model){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateStart = LocalDateTime.parse(startDate, formatter);
         LocalDateTime dateEnd = LocalDateTime.parse(endDate, formatter);
         List<BadgesGiven> recognitions=badgeService.findRecognitionByDateBetween(dateStart,dateEnd).stream().filter(e1 -> e1.isFlag()).collect(Collectors.toList());
-        return recognitions;
+        model.addAttribute("wallOfFame",recognitions);
+        return "dashboard::wallOfFame";
     }
 
 }

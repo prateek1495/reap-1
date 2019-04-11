@@ -51,8 +51,7 @@
     <script type="text/javascript" src="../static/assets/js/dashboard.js" th:src="@{/assets/js/dashboard.js}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
 
 </head>
@@ -175,7 +174,7 @@
                                                         <p class="userEmail" th:text="${loggedUser.email}">
                                                             prateek.nagar@tothenew.com</p>
                                                         <th:block th:each="role:${loggedUser.getRoles()}">
-                                                        <span class="roles"  th:text="'['+${role.name}+']'" >
+                                                        <span class="roles" th:text="'['+${role.name}+']'">
                                                         </span>
                                                         </th:block>
                                                     </div>
@@ -278,7 +277,7 @@
                                         <!--Select Badges-->
                                         <div class="col-md-3">
 
-                                            <select  required class="form-control custom-heigthSelect20 badges"
+                                            <select required class="form-control custom-heigthSelect20 badges"
                                                     th:name="star">
 
                                                 <option value="" disabled selected>Select Badges</option>
@@ -310,7 +309,7 @@
 
                                 <!--<div class="reason-area">-->
 
-                                <textarea  required class="reason-area"
+                                <textarea required class="reason-area"
                                           placeholder="Please select Newer,Basges And Karma First"
                                           th:name="comment"></textarea>
 
@@ -344,10 +343,10 @@
 
                                 <div class="table-responsive">
 
-                                   <!-- <button type="button" class="btn btn-info" value="Assign New Role"
-                                            style="margin-bottom: 15px; float: right"
-                                            data-toggle="modal" data-target=".bd-example-modal-lg">Manage Roles
-                                    </button>-->
+                                    <!-- <button type="button" class="btn btn-info" value="Assign New Role"
+                                             style="margin-bottom: 15px; float: right"
+                                             data-toggle="modal" data-target=".bd-example-modal-lg">Manage Roles
+                                     </button>-->
 
                                     <table id="example" class=" row-border order-column"
                                            style="width:100%;text-align: center">
@@ -394,10 +393,10 @@
                                             <td>
                                                 <div class="input-group mb-3">
                                                     <select class="custom-select select-assesor allocate">
-                                                        <option th:th:value="USER" th:text="USER"> </option>
-                                                        <option th:value="ADMIN" th:text="ADMIN"> </option>
-                                                        <option th:value="SUPERVISOR" th:text="SUPERVISOR"> </option>
-                                                        <option th:value="PRACTICEHEAD" th:text="PRACTICEHEAD"> </option>
+                                                        <option th:th:value="USER" th:text="USER"></option>
+                                                        <option th:value="ADMIN" th:text="ADMIN"></option>
+                                                        <option th:value="SUPERVISOR" th:text="SUPERVISOR"></option>
+                                                        <option th:value="PRACTICEHEAD" th:text="PRACTICEHEAD"></option>
 
                                                     </select>
                                                 </div>
@@ -407,11 +406,14 @@
                                                        th:checked="${result.getUser().isActive()}"
                                                        th:value="${result.getUser().getId()}">
                                             </td>
-                                            <td id="email" th:text="${result.getUser().getEmail()}">prateek.nagar@tothenew.com</td>
+                                            <td id="email" th:text="${result.getUser().getEmail()}">
+                                                prateek.nagar@tothenew.com
+                                            </td>
                                             <td>
                                                 <div>
-                                                    <input style="width:55px;" type="number" class="points" th:value="${result.getUser().getPoints()}">
-                                                        </input>
+                                                    <input style="width:55px;" type="number" class="points"
+                                                           th:value="${result.getUser().getPoints()}">
+                                                    </input>
                                                 </div>
                                             </td>
 
@@ -539,8 +541,11 @@
                                     <input type="hidden" name="startDate" id="startDate">
                                     <input type="hidden" name="endDate" id="endDate">
                                     <a sec:authorize="hasAuthority('ADMIN')" href=""
-                                       onclick="this.href='/download.csv?startDate='+document.getElementById('startDate').value+'&endDate='+document.getElementById('endDate').value" id="download"><i class="fa fa-download fa-style" aria-hidden="true" style="color: white"></i></a>
-                                    <span id="dt" name="dates"><i class="fa fa-calendar fa-style" aria-hidden="true"></i></span>
+                                       onclick="this.href='/download.csv?startDate='+document.getElementById('startDate').value+'&endDate='+document.getElementById('endDate').value"
+                                       id="download"><i class="fa fa-download fa-style" aria-hidden="true"
+                                                        style="color: white"></i></a>
+                                    <span id="dt" name="dates"><i class="fa fa-calendar fa-style"
+                                                                  aria-hidden="true"></i></span>
                                 </div>
                             </div>
 
@@ -549,43 +554,46 @@
                         <div id="recognitionResults">
                             <div id="userdataDiv"><p id="userdata"></p></div>
                         </div>
+
                         <div class="card-body" id="torecord">
 
                             <div class="resultRevoke"></div>
 
                             <div id="page">
-                                <div class="list-group">
-                            <div class="row recordInfo" id="record" th:each="result:${wall}">
 
-                                <div class="col-md-1 " style="vertical-align: center">
+                                <div class="list-group" th:fragment="wallOfFame">
+                                    <div class="row recordInfo" id="record" th:each="result:${wallOfFame}">
 
-                                    <img class="receiverImage"
-                                         th:src="@{''+${result.getReceiver().imageUrl}}">
-                                </div>
+                                        <div class="col-md-1 " style="vertical-align: center">
 
-                                <div class="col-md-9 badgeInfo">
-                                    <p>
+                                            <img class="receiverImage"
+                                                 th:src="@{''+${result.getReceiver().imageUrl}}">
+                                        </div>
 
-                                        <strong><a th:href="@{'/badge/'+${result.getReceiver().getId()}}" id="firstName"
-                                                      th:text="${result.getReceiver().firstName}"></a></strong>
+                                        <div class="col-md-9 badgeInfo">
+                                            <p>
 
-                                        <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
+                                                <strong><a th:href="@{'/badge/'+${result.getReceiver().getId()}}"
+                                                           id="firstName"
+                                                           th:text="${result.getReceiver().firstName}"></a></strong>
 
-                                        <span th:switch="${result.getStar().getName()}">
+                                                <span> &nbsp; &nbsp;has &nbsp; recieved &nbsp;&nbsp; </span>
+
+                                                <span th:switch="${result.getStar().getName()}">
                                         <img th:case="GOLD" th:src="@{assets/images/gold.png}" th:width="15"
                                              th:height="15">
                                     <img th:case="SILVER" th:src="@{assets/images/silver.png}" th:width="15"
                                          th:height="15">
                                     <img th:case="BRONZE" th:src="@{assets/images/bronze.png}" th:width="15"
                                          th:height="15"> </span>
-                                        <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>
-                                        <strong><a th:href="@{'/badge/'+${result.getGiver().getId()}}"
-                                                th:text="${result.getGiver().getFirstName()}"></a></strong>
+                                                <span>&nbsp;&nbsp; from &nbsp;&nbsp;</span>
+                                                <strong><a th:href="@{'/badge/'+${result.getGiver().getId()}}"
+                                                           th:text="${result.getGiver().getFirstName()}"></a></strong>
 
-                                        <br>
-                                        <span>Reason:</span>
-                                        <br>
-                                        <span th:text="${result.getComment()}">
+                                                <br>
+                                                <span>Reason:</span>
+                                                <br>
+                                                <span th:text="${result.getComment()}">
 
                                         Timeago was originally built for use with Yarp.com to timestamp comments.
 
@@ -596,73 +604,73 @@
                                             You get to use standard HTML5 tags.</span>
 
 
-                                    </p>
+                                            </p>
 
 
-                                </div>
+                                        </div>
 
 
-                                <div class="col-md-2">
-                                    <div class="delDiv" id="del" sec:authorize="hasAuthority('ADMIN')"
-                                         data-toggle="modal"
-                                         data-target="#exampleModal1">
-                                        <input type="hidden" class="resultStar"
-                                               th:value="${result.getStar().getName()}">
-                                        <input type="hidden" class="resultId" th:value="${result.getId()}">
-                                        <i class="fa fa-trash deleteBadge"></i>
-                                    </div>
-                                    <div class="timeDiv" style="" th:text="${result.getElapsedTime()}"></div>
-                                </div>
-
-                                <span class="recoId" hidden></span>
-                                <span class="recoStar" hidden></span>
-                                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel1">Reason For
-                                                    Revocation</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                        <div class="col-md-2">
+                                            <div class="delDiv" id="del" sec:authorize="hasAuthority('ADMIN')"
+                                                 data-toggle="modal"
+                                                 data-target="#exampleModal1">
+                                                <input type="hidden" class="resultStar"
+                                                       th:value="${result.getStar().getName()}">
+                                                <input type="hidden" class="resultId" th:value="${result.getId()}">
+                                                <i class="fa fa-trash deleteBadge"></i>
                                             </div>
-                                            <div class="modal-body">
-                                                <div id="selectResult"></div>
-                                                <div class="radioClass">
-                                                    <input type="radio" required class="revoke" th:name="revoke"
-                                                           value="Selected_Incorrect_Name">
-                                                    &nbsp;&nbsp;Selected Incorrect Name <br>
-                                                </div>
-                                                <div class="radioClass">
-                                                    <input type="radio" required class="revoke" th:name="revoke"
-                                                           value="Selected_incorrect_Badge">
-                                                    &nbsp;&nbsp;Selected Incorrect Badge <br>
-                                                </div>
-                                                <div class="radioClass">
-                                                    <input type="radio" required class="revoke" th:name="revoke"
-                                                           value="Selected_Incorrect_Karma">
-                                                    &nbsp;&nbsp;Selected Incorrect Karma <br>
-                                                </div>
-                                                <div class="radioClass">
-                                                    <input type="radio" required class="revoke" th:name="revoke"
-                                                           value="Inappropriate_language_Used">
-                                                    &nbsp;&nbsp;Inappropriate language Used <br>
-                                                </div>
+                                            <div class="timeDiv" style="" th:text="${result.getElapsedTime()}"></div>
+                                        </div>
+
+                                        <span class="recoId" hidden></span>
+                                        <span class="recoStar" hidden></span>
+                                        <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+                                             aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel1">Reason For
+                                                            Revocation</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div id="selectResult"></div>
+                                                        <div class="radioClass">
+                                                            <input type="radio" required class="revoke" th:name="revoke"
+                                                                   value="Selected_Incorrect_Name">
+                                                            &nbsp;&nbsp;Selected Incorrect Name <br>
+                                                        </div>
+                                                        <div class="radioClass">
+                                                            <input type="radio" required class="revoke" th:name="revoke"
+                                                                   value="Selected_incorrect_Badge">
+                                                            &nbsp;&nbsp;Selected Incorrect Badge <br>
+                                                        </div>
+                                                        <div class="radioClass">
+                                                            <input type="radio" required class="revoke" th:name="revoke"
+                                                                   value="Selected_Incorrect_Karma">
+                                                            &nbsp;&nbsp;Selected Incorrect Karma <br>
+                                                        </div>
+                                                        <div class="radioClass">
+                                                            <input type="radio" required class="revoke" th:name="revoke"
+                                                                   value="Inappropriate_language_Used">
+                                                            &nbsp;&nbsp;Inappropriate language Used <br>
+                                                        </div>
 
 
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" id="revoke"
-                                                        class="btn btn-primary revokeRecognition">Revoke
-                                                </button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="revoke"
+                                                                class="btn btn-primary revokeRecognition">Revoke
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                            </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -13,26 +13,8 @@ $(function () {
             url: "/searchRecognitionByDate/" + start + "/" + end,
             success: function (data) {
 
-                $(".recordInfo").empty();
-                var wallOfFame = " ";
-                data.forEach(function (e) {
-
-                    wallOfFame +=
-                        "<img src=e.receiver.imageUrl>"+
-                        "<strong> " +
-                        e.receiver.firstName +
-                        "</strong> has received a " +
-                        e.star.name +
-                        " from " +
-                        e.giver.firstName +
-                        " for " +
-                        e.comment +
-                        "<br>" +
-
-                        "<br>";
-                });
-
-                $('#userdataDiv').html(wallOfFame);
+               $('#page').empty();
+               $('#page').html(data);
             }
         });
     });
