@@ -179,7 +179,7 @@ public class DashboardController {
     }
 
 
-    @GetMapping("/searchRecogByDate/{start}/{end}")
+    @GetMapping("/searchRecognitionByDate/{start}/{end}")
     @ResponseBody
     public List<BadgesGiven> getUserRecodByName(@PathVariable("start") String startDate,@PathVariable("end")String endDate){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

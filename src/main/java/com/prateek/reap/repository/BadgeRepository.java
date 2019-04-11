@@ -25,4 +25,5 @@ public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
     List<BadgesGiven> findByReceiverFirstNameLike(String name);
 
     List<BadgesGiven> findAllByUpdatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 }

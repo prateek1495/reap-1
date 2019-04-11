@@ -1,34 +1,38 @@
 $(function () {
 
-    $("#startDate").val(moment().format('YYYY-MM-DD HH:mm:ss'));
-    $("#endDate").val(moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'));
+    $("#endDate").val(moment().format('YYYY-MM-DD HH:mm:ss'));
+    $("#startDate").val(moment().subtract('days',1).format('YYYY-MM-DD HH:mm:ss'));
 
     $('span[name="dates"]').daterangepicker({}, function (start, end, label) {
         $("#startDate").val(start.format('YYYY-MM-DD HH:mm:ss'));
         $("#endDate").val(end.format('YYYY-MM-DD HH:mm:ss'));
-        var start= $("#startDate").val();
-        var end= $("#endDate").val();
+        var start = $("#startDate").val();
+        var end = $("#endDate").val();
         $.ajax({
-           type:"Get",
-           url:"/searchRecognitionByDate/"+ start+"/"+end,
-            success:function(data)
-            {
-                $("#userdataDiv").empty();
+            type: "Get",
+            url: "/searchRecognitionByDate/" + start + "/" + end,
+            success: function (data) {
+
+                $(".recordInfo").empty();
+                var wallOfFame = " ";
                 data.forEach(function (e) {
-                    $("#userdataDiv").append(
+
+                    wallOfFame +=
+                        "<img src=e.receiver.imageUrl>"+
                         "<strong> " +
-                        e.receiverName +
+                        e.receiver.firstName +
                         "</strong> has received a " +
-                        e.badge +
+                        e.star.name +
                         " from " +
-                        e.senderName +
+                        e.giver.firstName +
                         " for " +
-                        e.reason +
+                        e.comment +
                         "<br>" +
-                        " on " + e.date.year+"-"+e.date.monthOfYear+"-"+e.date.dayOfMonth +
-                        "<br>"
-                    )
+
+                        "<br>";
                 });
+
+                $('#userdataDiv').html(wallOfFame);
             }
         });
     });
