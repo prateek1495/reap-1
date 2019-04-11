@@ -83,7 +83,7 @@ $(function () {
                         $("#result").append("Order Placed");
                         setTimeout(
                             function(){
-                               // location.reload();
+                                location.reload();
 
                             },3000
                         );
