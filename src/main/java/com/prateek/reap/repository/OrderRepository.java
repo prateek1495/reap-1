@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends CrudRepository<Order,Integer> {
 
-    Order findByUser_Id(Integer id);
+//    Order findByUser_Id(Integer id);
 }

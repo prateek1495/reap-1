@@ -32,7 +32,7 @@ public class BadgesController {
         model.addAttribute("receivedRecognition", badgeService.findAllReceivedRecognition(id));
         model.addAttribute("allRecognition", badgeService.findAllRecognitionByUser(id));
         model.addAttribute("starReceived", userStarReceivedService.findByUserId(id));
-        model.addAttribute("purchaseHistory",orderService.findByUserId(id));
+       // model.addAttribute("purchaseHistory",orderService.findByUserId(id));
         return "/badges";
 
     }

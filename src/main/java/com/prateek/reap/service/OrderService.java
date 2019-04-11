@@ -42,8 +42,8 @@ public class OrderService {
 
     }
 
-    public Order findByUserId(Integer id) {
+   /* public Order findByUserId(Integer id) {
 
         return orderRepository.findByUser_Id(id);
-    }
+    }*/
 }

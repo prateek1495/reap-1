@@ -392,6 +392,7 @@
                                                     <select class="custom-select select-assesor revokeRole">
                                                         <option th:each="res:${result.getUser().getRoles()}"
                                                                 th:value="${res.getName()}"
+                                                                th:disabled="${res.getName()==USER}"
                                                                 th:text="${res.getName()}">
 
                                                         </option>
@@ -403,7 +404,7 @@
                                             <td>
                                                 <div class="input-group mb-3">
                                                     <select class="custom-select select-assesor allocate">
-                                                        <option th:value="USER" th:text="USER"> </option>
+                                                        <option th:th:value="USER" th:text="USER"> </option>
                                                         <option th:value="ADMIN" th:text="ADMIN"> </option>
                                                         <option th:value="SUPERVISOR" th:text="SUPERVISOR"> </option>
                                                         <option th:value="PRACTICEHEAD" th:text="PRACTICEHEAD"> </option>
