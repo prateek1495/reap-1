@@ -1,4 +1,10 @@
 
+.boardWall{
+    overflow-y: auto;
+    height: 270px;
+    margin-bottom: 30px;
+}
+
 .recognizeBtn {
     height: auto;
     font-size: 12px;

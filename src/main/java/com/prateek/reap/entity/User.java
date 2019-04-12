@@ -37,8 +37,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 8,max=20,message = "Please Enter the Password In Range of 8 to 20 characters")
-    @NotEmpty(message = "Please Enter the First name")
+    @NotEmpty(message = "Please Enter the Password")
     private String password;
 
     private String imageUrl;

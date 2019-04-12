@@ -144,6 +144,7 @@
                                                     <div class="col-md-4 profileModalFontNormal">
                                                         <p>Name:</p>
                                                         <p>Email:</p>
+                                                        <p>Roles:</p>
                                                     </div>
                                                     <div class="col-md-8 profileModalFontBold">
                                                         <p class="userName"
@@ -151,6 +152,7 @@
                                                             Prateek Nagar</p>
                                                         <p class="userEmail" th:text="${loggedUser.email}">
                                                             prateek.nagar@tothenew.com</p>
+                                                        <p th:text="${loggedUser.getRoles()}"></p>
                                                     </div>
                                                 </div>
 
@@ -189,7 +191,6 @@
     <div class="content-wrapper" style="">
 
         <div class="container-fluid">
-            <div id="result"></div>
             <div class="row">
 
                 <div class="col-md-4">
@@ -216,28 +217,28 @@
                                 <div class="col-sm-6 userDetail">
 
                                     <h3 id="myName"
-                                        th:text="${starCount.getUser().getFirstName()+' '+starCount.getUser().getLastName()}">
+                                        th:text="${starReceived.getUser().getFirstName()+' '+starReceived.getUser().getLastName()}">
                                     </h3>
 
                                     <span>
                                         <img th:src="@{/assets/images/gold.png}" height="18" width="20"/>
-                                        <i th:text="${starCount.getGoldStarRecieved()}">0</i>
+                                        <i th:text="${starReceived.getGoldStarRecieved()}">0</i>
                                   </span>
 
                                     <span>
                                         <img th:src="@{/assets/images/silver.png}" height="18" width="20"/>
-                                          <i th:text="${starCount.getSilverStarRecieved()}">0</i>
+                                          <i th:text="${starReceived.getSilverStarRecieved()}">0</i>
                                   </span>
 
                                     <span>
                                         <img th:src="@{/assets/images/bronze.png}" height="18" width="20"/>
-                                         <i th:text="${starCount.getBronzeStarRecieved()}">0</i>
+                                         <i th:text="${starReceived.getBronzeStarRecieved()}">0</i>
                                   </span>
 
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <h3 class="pointsStyle" th:text="${starCount.getUser().getPoints()+' points'}"></h3>
+                                    <h3 class="pointsStyle" th:text="${starReceived.getUser().getPoints()+' points'}"></h3>
                                 </div>
 
 
@@ -252,6 +253,7 @@
                             <img th:src="@{/assets/images/bag.png}" height="24" width="24"/>&nbsp;&nbsp;Bag
                         </div>
                         <div class="card-body ">
+                            <div id="redeemResult"></div>
                             <div class="cartHead row">
                                 <div class="col-md-2">
                                     <strong><p>Item</p></strong>

@@ -2,7 +2,6 @@ package com.prateek.reap.repository;
 
 import com.prateek.reap.entity.BadgesGiven;
 import com.prateek.reap.entity.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface BadgeRepository extends CrudRepository<BadgesGiven, Integer> {
-    List<BadgesGiven> findByFlag(boolean flag);
 
     List<BadgesGiven> findByGiverAndFlag(Sort sort,User user,Boolean flag);
 

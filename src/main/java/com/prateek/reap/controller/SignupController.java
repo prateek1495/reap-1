@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.prateek.reap.util.HtmlConstants.*;
 
 @Controller
 public class SignupController {
@@ -39,19 +38,18 @@ public class SignupController {
 
     @RequestMapping("/signup")
     public String getSignUpPage(Model model) {
-        if (model.containsAttribute("exist"))
-            model.addAttribute("exist", "Email Id Already Exists");
+        if (model.containsAttribute(KEY_EMAIL_EXISTS_ERROR))
+            model.addAttribute(KEY_EMAIL_EXISTS_ERROR, VALUE_EMAIL_EXISTS_ERROR);
 
-        model.addAttribute("user", new User());
+        model.addAttribute(KEY_USER, new User());
 
-        return "/signup";
+        return SIGN_UP_HTML_PAGE ;
     }
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-
-    public String formSucess(@Valid @ModelAttribute("user") User responseData, BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile file,Model model)
+    public String formSucess(@Valid @ModelAttribute(KEY_USER) User responseData, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes, @RequestParam(REQUEST_PARAM_PROFILE_IMAGE) MultipartFile file,Model model)
             throws IOException {
         if (bindingResult.hasErrors()) {
             List<String> fieldErrors = new ArrayList<>();
@@ -59,21 +57,21 @@ public class SignupController {
             {
                 fieldErrors.add(field.getDefaultMessage());
             }
-            model.addAttribute("binding",fieldErrors);
-            return "signup";
+            model.addAttribute(KEY_BINDING_RESULT ,fieldErrors);
+            return SIGN_UP_HTML_PAGE ;
         }
 
         UserRole userRole = userRoleSevice.checkByName("USER");
         List<User> emailVerification = (List<User>) signUpService.checkEmailAndActive(responseData.getEmail(), true);
         if (emailVerification.size() > 0) {
-            redirectAttributes.addFlashAttribute("exist", "Email Id Already Exists");
-            return "redirect:/signup";
+            redirectAttributes.addFlashAttribute(KEY_EMAIL_EXISTS_ERROR, VALUE_EMAIL_EXISTS_ERROR);
+            return REDIRECT_TO_SIGN_UP;
         }
 
         else {
             signUpService.save(responseData, file);
-            redirectAttributes.addFlashAttribute("signsuccess", "Registration Successfull,You can Login Now");
-            return "redirect:/signup";
+            redirectAttributes.addFlashAttribute(KEY_SIGN_IN_SUCCESS , VALUE_SIGN_UP_SUCCESS);
+            return REDIRECT_TO_SIGN_UP;
         }
 
 

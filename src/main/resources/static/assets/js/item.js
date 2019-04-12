@@ -39,8 +39,8 @@ $(function () {
 
     $(".RButton").click(function () {
         if (!$(".item-data-r").children().length > 0) {
-            $("#result").addClass("alert alert-danger");
-            $("#result").append("Select Item First");
+            $("#redeemResult").addClass("alert alert-danger");
+            $("#redeemResult").append("Select Item First");
             setTimeout(
                 function(){
                     location.reload();
@@ -54,7 +54,6 @@ $(function () {
                 var itemName = $(this).find($(".item-name")).text();
                 var itemPrice = $(this).find($(".item-price")).text();
                 var imgUrl = $(this).find($(".item-img")).text()
-                console.log(itemName + " " + itemPrice + " " + imgUrl);
                 items = items + itemName + " ";
                 totalPrice = totalPrice + itemPrice + " ";
                 itemUrls = itemUrls + imgUrl + " ";
@@ -68,8 +67,8 @@ $(function () {
                 data: {items: items, totalPrice: totalCart, itemUrls: itemUrls},
                 success: function (e) {
                     if (e == "redeemed") {
-                        $("#result").addClass("alert alert-success");
-                        $("#result").append("Order Placed");
+                        $("#redeemResult").addClass("alert alert-success");
+                        $("#redeemResult").append("Order Placed");
                         setTimeout(
                             function(){
                                 location.reload();
@@ -78,8 +77,8 @@ $(function () {
                         );
                     }
                     else {
-                        $("#result").addClass("alert alert-danger");
-                        $("#result").append("Not Enough Points to redeem");
+                        $("#redeemResult").addClass("alert alert-danger");
+                        $("#redeemResult").append("Not Enough Points to redeem");
                         setTimeout(
                             function(){
                                 location.reload();
@@ -96,10 +95,8 @@ $(function () {
     });
 
     $('body').on('click', '.clear-item', function () {
-        console.log("clickedd");
-        var priceee = parseInt($(this).parent().prev().text());
-        console.log(priceee);
-        totalCart = totalCart - priceee;
+        var itemPrice = parseInt($(this).parent().prev().text());
+        totalCart = totalCart - itemPrice;
         $("#points").text(totalCart);
         $(this).parent().parent().remove();
 

@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.prateek.reap.util.HtmlConstants.HTML_404_PAGE;
+import static com.prateek.reap.util.HtmlConstants.HTML_500_PAGE;
+import static com.prateek.reap.util.HtmlConstants.HTML_ERROR_PAGE;
+
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
@@ -18,12 +22,12 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             Integer statusCode = Integer.valueOf(status.toString());
 
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "404";
+                return HTML_404_PAGE;
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "500";
+                return HTML_500_PAGE;
             }
         }
-        return "error";
+        return HTML_ERROR_PAGE;
     }
 
     @Override

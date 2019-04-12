@@ -108,9 +108,7 @@ $(function () {
 
     $('body').on('change', 'select.allocate', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
-        console.log(email);
         var role = $(this).children("option:selected").val();
-        console.log(role);
         $.ajax({
 
             url: "/addRole",
@@ -132,15 +130,12 @@ $(function () {
 
     $('body').on('change', 'select.revokeRole', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
-        console.log(email);
         var role = $(this).children("option:selected").val();
-        console.log(role);
         $.ajax({
             url: "/deleteRole",
             type: "post",
             data: {email: email, role: role},
             success: function (response) {
-                console.log("hi");
                 $("#result").addClass("alert alert-success");
                 $("#result small").text("Role Revoked");
                 setTimeout(
@@ -178,12 +173,16 @@ $(function () {
 
     $(".checkBox").change(function () {
         var checked = $(this).is(':checked');
-        var userId = $(this).val();
+        var email = $(this).parent().parent().find("#email").text();
+        console.log(email);
+        console.log(checked);
         if (!checked) {
             $.ajax({
 
                 url: "/deactivate-user",
-                data: {"userId": userId},
+
+                type:"post",
+                data:{email:email},
                 success: (function () {
                     $('#result').append("User Deactivated SuccessFully");
                     $('#result').addClass("alert alert-success");
@@ -199,7 +198,8 @@ $(function () {
             $.ajax({
 
                 url: "/activate-user",
-                data: {"userId": userId},
+                type:"post",
+                data:{email:email},
                 success: (function () {
                     $('#result').append("User Activated SuccessFully");
                     $('#result').addClass("alert alert-success");

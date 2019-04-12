@@ -152,6 +152,7 @@
                                                     <div class="col-md-4 profileModalFontNormal">
                                                         <p>Name:</p>
                                                         <p>Email:</p>
+                                                        <p>Roles:</p>
                                                     </div>
                                                     <div class="col-md-8 profileModalFontBold">
                                                         <p class="userName"
@@ -159,6 +160,8 @@
                                                             Prateek Nagar</p>
                                                         <p class="userEmail" th:text="${loggedUser.email}">
                                                             prateek.nagar@tothenew.com</p>
+                                                        <p th:text="${loggedUser.getRoles()}"></p>
+
                                                     </div>
                                                 </div>
 

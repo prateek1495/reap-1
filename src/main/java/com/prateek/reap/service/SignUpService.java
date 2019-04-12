@@ -205,17 +205,17 @@ public class SignUpService {
 
     }
 
-    public void deactivateUser(int id) {
-        Optional<User> user = signUpRepository.findById(id);
-        user.get().setActive(false);
-        signUpRepository.save(user.get());
+    public void deactivateUser(String email) {
+        User user = signUpRepository.findByEmail(email);
+        user.setActive(false);
+        signUpRepository.save(user);
     }
 
 
-    public void activateUser(int id) {
-        Optional<User> user = signUpRepository.findById(id);
-        user.get().setActive(true);
-        signUpRepository.save(user.get());
+    public void activateUser(String email) {
+        User user = signUpRepository.findByEmail(email);
+        user.setActive(true);
+        signUpRepository.save(user);
     }
 
 

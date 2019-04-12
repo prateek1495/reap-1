@@ -1,28 +1,26 @@
 package com.prateek.reap.controller;
 
-import com.prateek.reap.service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static com.prateek.reap.util.HtmlConstants.*;
+
+
 @Controller
 public class LoginController {
 
-    @Autowired
-    private LoginService loginService;
-
     @RequestMapping("/login")
-    public String getLoginPage(Model model) {
+    public String getLoginPage() {
 
-        return "/login";
+        return LOG_IN_HTML_PAGE ;
 
     }
 
     @RequestMapping("/login-error")
     public String getLoginErrorPage(Model model) {
-        model.addAttribute("error", "Bad Credentials, Please Try Again");
-        return "/login";
+        model.addAttribute(HTML_ERROR_PAGE, VALUE_LOGIN_ERROR );
+        return LOG_IN_HTML_PAGE ;
 
     }
 

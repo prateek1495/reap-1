@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.prateek.reap.util.CommonUtils.currentLoggedInUser;
+import static com.prateek.reap.util.HtmlConstants.*;
 
 @Controller
 public class DashboardController {
@@ -41,29 +42,28 @@ public class DashboardController {
     @RequestMapping("/dashboard")
     public String getDashboardPage(Model model, Authentication authentication, Principal principal) {
 
-        if (model.containsAttribute("success"))
-            model.addAttribute("success", "Newer Has Been Successfully RECOGNIZED");
+        if (model.containsAttribute(KEY_SUCCESS))
+            model.addAttribute(KEY_SUCCESS, VALUE_RECOGNITION_SUCCESS);
 
-        if (model.containsAttribute("saveError"))
-            model.addAttribute("saveError", "Cannot Give Star To Newer");
+        if (model.containsAttribute(KEY_RECOGNITION_FAILURE))
+            model.addAttribute(KEY_RECOGNITION_FAILURE, VALUE_RECOGNITION_FAILURE);
 
-        if (model.containsAttribute("emailError"))
-            model.addAttribute("emailError", "User Doesn't exists");
+        if (model.containsAttribute(KEY_EMAIL_ERROR))
+            model.addAttribute(KEY_EMAIL_ERROR, VALUE_RECOGNITION_RECIEVER_EMAIL);
 
-        if (model.containsAttribute("selfRecoError"))
-            model.addAttribute("selfRecoError", "Cannot Give To Recognition to yourself");
+        if (model.containsAttribute(KEY_SELF_ERROR))
+            model.addAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
 
-       // model.addAttribute("loggedUser",currentLoggedInUser(authentication));
-        model.addAttribute("loggedUser", signUpService.checkByEmail(principal.getName()));
-        model.addAttribute("badge", new BadgesGiven());
-        model.addAttribute("users", userStarCountService.findAll());
-        model.addAttribute("recvstars", userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
+        model.addAttribute(KEY_LOGGED_IN_USER, signUpService.checkByEmail(authentication.getName()));
+        model.addAttribute(KEY_BADGE, new BadgesGiven());
+        model.addAttribute(KEY_USERS, userStarCountService.findAll());
+        model.addAttribute(KEY_RECEIVE_STARS, userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
-        model.addAttribute("starCount", userStarCountService.findByUserId(currentLoggedInUser(authentication)
+        model.addAttribute(KEY_STAR_COUNT , userStarCountService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
-        model.addAttribute("wallOfFame", badgeService.findAllByDate());
-        model.addAttribute("newersBoard", userStarReceivedService.findByTopNewers());
-        return "/dashboard";
+        model.addAttribute(KEY_WALL_OF_FAME, badgeService.findAllByDate());
+        model.addAttribute(KEY_NEWERS_BOARD, userStarReceivedService.findByTopNewers());
+        return DASHBOARD_HTML_PAGE;
     }
 
 
@@ -75,37 +75,42 @@ public class DashboardController {
 
 
     @RequestMapping(value = "/saveRecognition", method = RequestMethod.POST)
-    public String saveRecognition(@RequestParam("receiver") String receiverEmail,
-                                  @RequestParam("comment") String comment, @RequestParam("star") String starType,
+    public String saveRecognition(@RequestParam(REQUEST_PARAM_RECEIVER ) String receiverEmail,
+                                  @RequestParam(REQUEST_PARAM_COMMENT) String comment, @RequestParam(REQUEST_PARAM_STAR) String starType,
                                   Authentication authentication, RedirectAttributes redirectAttributes) {
 
         User user = signUpService.checkByEmail(receiverEmail);
         if (receiverEmail.equals(currentLoggedInUser(authentication).getEmail())) {
-            redirectAttributes.addFlashAttribute("selfRecoError", "Cannot Give Recognition to yourself");
-            return "redirect:/dashboard";
+            redirectAttributes.addFlashAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
+            return REDIRECT_TO_DASHBOARD;
         }
+        if (comment.trim().equals("")) {
+            redirectAttributes.addFlashAttribute(KEY_COMMENT_BLANK, VALUE_BLANK_COMMENT);
+            return REDIRECT_TO_DASHBOARD;
+        }
+
         if (receiverEmail.equals(" ")) {
-            redirectAttributes.addFlashAttribute("Select the receiver", "Cannot Give Recognition to yourself");
-            return "redirect:/dashboard";
+            redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR, VALUE_RECOGNITION_RECIEVER_EMAIL);
+            return REDIRECT_TO_DASHBOARD;
         }
 
 
         if (user == null) {
-            redirectAttributes.addFlashAttribute("emailError", "User Doesnot exist");
-            return "redirect:/dashboard";
+            redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR, VALUE_RECOGNITION_RECIEVER_EMAIL);
+            return REDIRECT_TO_DASHBOARD;
         }
 
         boolean check = badgeService.saveRecognitionData(starType.toUpperCase(), receiverEmail,
                 currentLoggedInUser(authentication).getEmail(), comment);
 
         if (!check) {
-            redirectAttributes.addFlashAttribute("saveError", "Cannot Give a Star");
-            return "redirect:/dashboard";
+            redirectAttributes.addFlashAttribute(KEY_RECOGNITION_FAILURE, VALUE_RECOGNITION_FAILURE);
+            return REDIRECT_TO_DASHBOARD;
         }
 
-        redirectAttributes.addFlashAttribute("success", " Successfully RECOGNIZED");
+        redirectAttributes.addFlashAttribute(KEY_SUCCESS, VALUE_RECOGNITION_SUCCESS);
 
-        return "redirect:/dashboard";
+        return REDIRECT_TO_DASHBOARD;
 
 
     }
@@ -122,13 +127,13 @@ public class DashboardController {
         comment = comment.replace("_", " ");
         badgeService.recognitionDelete(id, star, comment);
 
-        return "redirect:/dashboard";
+        return REDIRECT_TO_DASHBOARD;
     }
 
     @GetMapping(value = "/download.csv")
-    public void download(@RequestParam("startDate") String s, @RequestParam("endDate") String e,
+    public void download(@RequestParam(REQUEST_PARAM_STARTDATE) String s, @RequestParam(REQUEST_PARAM_END_DATE) String e,
                          HttpServletResponse response) throws IOException {
-        response.setHeader("Content-Disposition", "attachment; file=BadgesGiven.csv");
+        response.setHeader(KEY_SET_HEADER_CSV, VALUE_SET_HEADER_CSV);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateStart = LocalDateTime.parse(s, formatter);
         LocalDateTime dateEnd = LocalDateTime.parse(e, formatter);
@@ -139,51 +144,51 @@ public class DashboardController {
 
 
     @PostMapping("/addRole")
-    public String updateRole(@RequestParam("email") String email, @RequestParam("role") String role) {
+    public String updateRole(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam( REQUEST_PARAM_ROLE) String role) {
         UserRole role1 = userRoleService.checkByName(role);
         User user = signUpService.checkByEmail(email);
         signUpService.allocateRole(role1, user);
-        return "redirect:/dashboard";
+        return REDIRECT_TO_DASHBOARD;
     }
 
     @PostMapping("/deleteRole")
-    public String deleteRole(@RequestParam("email") String email, @RequestParam("role") String role) {
+    public String deleteRole(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam( REQUEST_PARAM_ROLE) String role) {
         UserRole role2 = userRoleService.checkByName(role);
         User user1 = signUpService.checkByEmail(email);
         signUpService.deleteRole(role2, user1);
-        return "redirect:/dashboard";
+        return REDIRECT_TO_DASHBOARD;
     }
 
     @PostMapping("/changePoints")
-    public String changePoints(@RequestParam("email") String email, @RequestParam("point") Integer points) {
+    public String changePoints(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam(REQUEST_PARAM_POINT) Integer points) {
         User user1 = signUpService.checkByEmail(email);
         signUpService.changePointsByAdmin(user1, points);
-        return "redirect:/dashboard";
+        return REDIRECT_TO_DASHBOARD;
 
     }
 
-    @RequestMapping("/deactivate-user")
+    @PostMapping("/deactivate-user")
     @ResponseBody
-    public void userDeactivate(@RequestParam("userId") int id) {
-        signUpService.deactivateUser(id);
+    public void userDeactivate(@RequestParam("email") String email) {
+        signUpService.deactivateUser(email);
     }
 
-    @RequestMapping("/activate-user")
+    @PostMapping("/activate-user")
     @ResponseBody
-    public void userActivate(@RequestParam("userId") int id) {
-        signUpService.activateUser(id);
+    public void userActivate(@RequestParam("email") String email) {
+        signUpService.activateUser(email);
     }
 
 
     @GetMapping("/searchRecognitionByDate/{start}/{end}")
-    public String getUserRecodByName(@PathVariable("start") String startDate, @PathVariable("end") String endDate,
+    public String getUserRecodByName(@PathVariable(REQUEST_PARAM_START) String startDate, @PathVariable(REQUEST_PARAM_END) String endDate,
                                      Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateStart = LocalDateTime.parse(startDate, formatter);
         LocalDateTime dateEnd = LocalDateTime.parse(endDate, formatter);
         List<BadgesGiven> recognitions = badgeService.findAllBetween(dateStart, dateEnd).stream()
                 .filter(e1 -> e1.isFlag()).collect(Collectors.toList());
-        model.addAttribute("wallOfFame", recognitions);
+        model.addAttribute(KEY_WALL_OF_FAME, recognitions);
         return "dashboard::wallOfFame";
     }
 
