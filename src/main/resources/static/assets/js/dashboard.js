@@ -174,8 +174,6 @@ $(function () {
     $(".checkBox").change(function () {
         var checked = $(this).is(':checked');
         var email = $(this).parent().parent().find("#email").text();
-        console.log(email);
-        console.log(checked);
         if (!checked) {
             $.ajax({
 

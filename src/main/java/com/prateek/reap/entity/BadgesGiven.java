@@ -23,7 +23,6 @@ public class BadgesGiven {
     private User receiver;
 
     @NotEmpty
-    @Size(min = 10,max = 250,message = "Please Enter the comment in the range of 10 to 250 characters")
     private String comment;
 
 
