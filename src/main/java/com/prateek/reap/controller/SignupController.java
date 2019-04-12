@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,9 +39,6 @@ public class SignupController {
 
     @RequestMapping("/signup")
     public String getSignUpPage(Model model) {
-
-        if (model.asMap().containsKey("binding"))
-            model.addAttribute("error", model.asMap().get("binding"));
         if (model.containsAttribute("exist"))
             model.addAttribute("exist", "Email Id Already Exists");
 
@@ -52,25 +51,26 @@ public class SignupController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
 
     public String formSucess(@Valid @ModelAttribute("user") User responseData, BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile file)
+                             RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile file,Model model)
             throws IOException {
+        if (bindingResult.hasErrors()) {
+            List<String> fieldErrors = new ArrayList<>();
+            for(FieldError field : bindingResult.getFieldErrors() )
+            {
+                fieldErrors.add(field.getDefaultMessage());
+            }
+            model.addAttribute("binding",fieldErrors);
+            return "signup";
+        }
 
         UserRole userRole = userRoleSevice.checkByName("USER");
-        ModelAndView modelAndView = new ModelAndView("/signup");
         List<User> emailVerification = (List<User>) signUpService.checkEmailAndActive(responseData.getEmail(), true);
         if (emailVerification.size() > 0) {
             redirectAttributes.addFlashAttribute("exist", "Email Id Already Exists");
             return "redirect:/signup";
         }
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("binding", bindingResult
-                    .getFieldErrors()
-                    .stream()
-                    .map(f -> f.getField().toUpperCase() + " --> " + f.getDefaultMessage())
-                    .collect(Collectors.joining(System.lineSeparator())));
-            return "redirect:/signup";
-        } else {
+        else {
             signUpService.save(responseData, file);
             redirectAttributes.addFlashAttribute("signsuccess", "Registration Successfull,You can Login Now");
             return "redirect:/signup";

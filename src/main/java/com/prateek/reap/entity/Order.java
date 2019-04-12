@@ -95,4 +95,17 @@ public class Order {
     public void setTotalPrice(Integer totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user +
+                ", itemUrl=" + itemUrl +
+                ", quantity=" + quantity +
+                ", totalPrice=" + totalPrice +
+                ", orderDate=" + orderDate +
+                ", elapsedTime='" + elapsedTime + '\'' +
+                '}';
+    }
 }

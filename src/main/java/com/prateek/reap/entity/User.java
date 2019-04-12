@@ -3,13 +3,11 @@ package com.prateek.reap.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-@NoArgsConstructor
-@ToString
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "user")
 public class User {
@@ -32,17 +24,21 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    @Size(min = 0, max = 30, message = "{user.first.name}")
+    @NotEmpty(message = "Please Enter the First name")
+    @Size(min = 3, max = 30, message = "Please Enter First Name In Range of 3 to 30 characters")
     private String firstName;
 
-    @Size(min = 0, max = 30, message = "{user.last.name}")
+    @Column(nullable = false)
+    @NotEmpty(message = "Please Enter the Last name")
+    @Size(min = 3, max = 30, message = "Please Enter Last Name In Range of 3 to 30 characters")
     private String lastName;
 
-    @Email(message = "{user.email}")
+    @Email(message = "Please Enter the valid Email Address")
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 4)
+    @Size(min = 8,max=20,message = "Please Enter the Password In Range of 8 to 20 characters")
+    @NotEmpty(message = "Please Enter the First name")
     private String password;
 
     private String imageUrl;
@@ -66,7 +62,7 @@ public class User {
 
     @JsonBackReference
     @OneToMany(mappedBy = "user")
-    private List<Order> order=new ArrayList<>();
+    private List<Order> order = new ArrayList<>();
 
 
     @JsonManagedReference
@@ -77,7 +73,6 @@ public class User {
     public Integer getId() {
         return id;
     }
-
 
     public void setId(Integer id) {
         this.id = id;
@@ -198,9 +193,6 @@ public class User {
                 ", roles=" + roles +
                 '}';
     }
-
-
-    /*public String getUsername() {
-        return firstName+" "+lastName;
-    }*/
 }
+
+

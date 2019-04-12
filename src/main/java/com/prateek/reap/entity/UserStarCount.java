@@ -9,7 +9,6 @@ public class UserStarCount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
 

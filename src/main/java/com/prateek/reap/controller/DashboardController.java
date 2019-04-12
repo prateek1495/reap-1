@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DashboardController {
     private UserStarReceivedService userStarReceivedService;
 
     @RequestMapping("/dashboard")
-    public String getDashboardPage(Model model, Authentication authentication) {
+    public String getDashboardPage(Model model, Authentication authentication, Principal principal) {
 
         if (model.containsAttribute("success"))
             model.addAttribute("success", "Newer Has Been Successfully RECOGNIZED");
@@ -52,7 +53,8 @@ public class DashboardController {
         if (model.containsAttribute("selfRecoError"))
             model.addAttribute("selfRecoError", "Cannot Give To Recognition to yourself");
 
-        model.addAttribute("loggedUser", currentLoggedInUser(authentication));
+       // model.addAttribute("loggedUser",currentLoggedInUser(authentication));
+        model.addAttribute("loggedUser", signUpService.checkByEmail(principal.getName()));
         model.addAttribute("badge", new BadgesGiven());
         model.addAttribute("users", userStarCountService.findAll());
         model.addAttribute("recvstars", userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
@@ -82,6 +84,11 @@ public class DashboardController {
             redirectAttributes.addFlashAttribute("selfRecoError", "Cannot Give Recognition to yourself");
             return "redirect:/dashboard";
         }
+        if (receiverEmail.equals(" ")) {
+            redirectAttributes.addFlashAttribute("Select the receiver", "Cannot Give Recognition to yourself");
+            return "redirect:/dashboard";
+        }
+
 
         if (user == null) {
             redirectAttributes.addFlashAttribute("emailError", "User Doesnot exist");
@@ -174,7 +181,7 @@ public class DashboardController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateStart = LocalDateTime.parse(startDate, formatter);
         LocalDateTime dateEnd = LocalDateTime.parse(endDate, formatter);
-        List<BadgesGiven> recognitions = badgeService.findRecognitionByDateBetween(dateStart, dateEnd).stream()
+        List<BadgesGiven> recognitions = badgeService.findAllBetween(dateStart, dateEnd).stream()
                 .filter(e1 -> e1.isFlag()).collect(Collectors.toList());
         model.addAttribute("wallOfFame", recognitions);
         return "dashboard::wallOfFame";

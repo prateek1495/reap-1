@@ -173,10 +173,11 @@
                                                             Prateek Nagar</p>
                                                         <p class="userEmail" th:text="${loggedUser.email}">
                                                             prateek.nagar@tothenew.com</p>
-                                                        <th:block th:each="role:${loggedUser.getRoles()}">
+                                                        <p th:text="${loggedUser.getRoles()}"></p>
+                                                       <!-- <th:block th:each="role:${loggedUser.getRoles()}">
                                                         <span class="roles" th:text="'['+${role.name}+']'">
                                                         </span>
-                                                        </th:block>
+                                                        </th:block>-->
                                                     </div>
                                                 </div>
 

@@ -14,10 +14,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "user_role")
 public class UserRole {
@@ -119,5 +115,9 @@ public class UserRole {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public String toString() {
+       return name;
+    }
 
 }

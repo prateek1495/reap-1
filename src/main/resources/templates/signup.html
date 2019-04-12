@@ -54,6 +54,11 @@
                                         <small>Registration Successful, Please Log in.</small>
                                     </div>
                                 </div>
+                                <div th:if="${binding}" th:each="result:${binding}">
+                                    <div class="alert alert-danger" role="alert">
+                                        <small th:text="${result}"></small>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -75,7 +80,6 @@
                                            tabindex="1"
                                            class="form-control" placeholder="Last Name" value=""/>
                                 </div>
-                                <!--th:field="*{imageUrl}"-->
                                 <div class="form-group">
                                     <label>Photo*</label>
                                     <input type="file" required name="photo" id="photo"
