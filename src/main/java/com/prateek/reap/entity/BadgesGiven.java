@@ -25,7 +25,6 @@ public class BadgesGiven {
     @NotEmpty
     private String comment;
 
-
     @OneToOne
     private Star star;
 

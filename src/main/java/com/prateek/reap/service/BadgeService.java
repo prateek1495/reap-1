@@ -58,8 +58,7 @@ public class BadgeService {
         badgeRepository.save(badgesGiven);
 
         emailService.sendEmailToSingleRecipient(senderUser.getEmail(), RECOGNITION_NEWER,
-                GAVE_STAR + " " + star.getName().toUpperCase() + TO + receiverUser
-                        .getEmail() + " " + REASON_REVOKATION
+                GAVE_STAR + " " + star.getName().toUpperCase() + STAR + TO + receiverUser.getFirstName() + " " + receiverUser.getLastName() + " " + REASON_REVOKATION
                         + " \n\n" + comment);
 
 
