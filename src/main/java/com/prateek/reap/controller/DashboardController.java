@@ -60,7 +60,7 @@ public class DashboardController {
         model.addAttribute(KEY_USERS, userStarCountService.findAll());
         model.addAttribute(KEY_RECEIVE_STARS, userStarReceivedService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
-        model.addAttribute(KEY_STAR_COUNT , userStarCountService.findByUserId(currentLoggedInUser(authentication)
+        model.addAttribute(KEY_STAR_COUNT, userStarCountService.findByUserId(currentLoggedInUser(authentication)
                 .getId()));
         model.addAttribute(KEY_WALL_OF_FAME, badgeService.findAllByDate());
         model.addAttribute(KEY_NEWERS_BOARD, userStarReceivedService.findByTopNewers());
@@ -76,8 +76,9 @@ public class DashboardController {
 
 
     @RequestMapping(value = "/saveRecognition", method = RequestMethod.POST)
-    public String saveRecognition(@RequestParam(REQUEST_PARAM_RECEIVER ) String receiverEmail,
-                                  @RequestParam(REQUEST_PARAM_COMMENT) String comment, @RequestParam(REQUEST_PARAM_STAR) String starType,
+    public String saveRecognition(@RequestParam(REQUEST_PARAM_RECEIVER) String receiverEmail,
+                                  @RequestParam(REQUEST_PARAM_COMMENT) String comment,
+                                  @RequestParam(REQUEST_PARAM_STAR) String starType,
                                   Authentication authentication, RedirectAttributes redirectAttributes)
             throws MessagingException {
 
@@ -86,8 +87,7 @@ public class DashboardController {
             redirectAttributes.addFlashAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
-        if(starType.equals("Select Badges"))
-        {
+        if (starType.equals("Select Badges")) {
             redirectAttributes.addFlashAttribute(KEY_STAR_ERROR, VALUE_STAR_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
@@ -122,23 +122,25 @@ public class DashboardController {
 
     }
 
-    @PostMapping("/getWall")
+    @RequestMapping("/getWall")
     @ResponseBody
     public List<BadgesGiven> getBadgesGiven(@RequestBody String name) {
         return badgeService.findAllByDateAndNameLike(name);
     }
 
     @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
-    public String disableRecognition(
+    @ResponseBody
+    public Boolean disableRecognition(
             @PathVariable Integer id, @PathVariable String star, @PathVariable String comment)
             throws MessagingException {
         comment = comment.replace("_", " ");
-        badgeService.recognitionDelete(id, star, comment);
-        return REDIRECT_TO_DASHBOARD;
+        Boolean check = badgeService.recognitionDelete(id, star, comment);
+        return check;
     }
 
     @GetMapping(value = "/download.csv")
-    public void download(@RequestParam(REQUEST_PARAM_STARTDATE) String s, @RequestParam(REQUEST_PARAM_END_DATE) String e,
+    public void download(@RequestParam(REQUEST_PARAM_STARTDATE) String s,
+                         @RequestParam(REQUEST_PARAM_END_DATE) String e,
                          HttpServletResponse response) throws IOException {
         response.setHeader(KEY_SET_HEADER_CSV, VALUE_SET_HEADER_CSV);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -151,7 +153,8 @@ public class DashboardController {
 
 
     @PostMapping("/addRole")
-    public String updateRole(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam( REQUEST_PARAM_ROLE) String role) {
+    public String updateRole(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                             @RequestParam(REQUEST_PARAM_ROLE) String role) {
         UserRole role1 = userRoleService.checkByName(role);
         User user = signUpService.checkByEmail(email);
         signUpService.allocateRole(role1, user);
@@ -159,7 +162,8 @@ public class DashboardController {
     }
 
     @PostMapping("/deleteRole")
-    public String deleteRole(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam( REQUEST_PARAM_ROLE) String role) {
+    public String deleteRole(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                             @RequestParam(REQUEST_PARAM_ROLE) String role) {
         UserRole role2 = userRoleService.checkByName(role);
         User user1 = signUpService.checkByEmail(email);
         signUpService.deleteRole(role2, user1);
@@ -167,7 +171,8 @@ public class DashboardController {
     }
 
     @PostMapping("/changePoints")
-    public String changePoints(@RequestParam(REQUEST_PARAM_EMAIL ) String email, @RequestParam(REQUEST_PARAM_POINT) Integer points) {
+    public String changePoints(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                               @RequestParam(REQUEST_PARAM_POINT) Integer points) {
         User user1 = signUpService.checkByEmail(email);
         signUpService.changePointsByAdmin(user1, points);
         return REDIRECT_TO_DASHBOARD;
@@ -176,7 +181,8 @@ public class DashboardController {
 
 
     @GetMapping("/searchRecognitionByDate/{start}/{end}")
-    public String getUserRecodByName(@PathVariable(REQUEST_PARAM_START) String startDate, @PathVariable(REQUEST_PARAM_END) String endDate,
+    public String getUserRecodByName(@PathVariable(REQUEST_PARAM_START) String startDate,
+                                     @PathVariable(REQUEST_PARAM_END) String endDate,
                                      Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateStart = LocalDateTime.parse(startDate, formatter);
@@ -188,12 +194,12 @@ public class DashboardController {
     }
 
     @PostMapping(value = "/updateActive")
-    public String updateActive(@RequestParam("email") String email){
+    public String updateActive(@RequestParam("email") String email) {
 
         User user = signUpService.checkByEmail(email);
-        if(user.isActive()){
+        if (user.isActive()) {
             user.setActive(false);
-        }else {
+        } else {
             user.setActive(true);
         }
         signUpService.saveUser(user);
@@ -202,8 +208,8 @@ public class DashboardController {
 
 
     @PostMapping("/changeGoldBadges")
-    public String changeGoldBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
-                          @RequestParam(REQUEST_PARAM_GOLD ) Integer goldStar) {
+    public String changeGoldBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                                   @RequestParam(REQUEST_PARAM_GOLD) Integer goldStar) {
         User user1 = signUpService.checkByEmail(email);
         signUpService.changeGoldStarByAdmin(user1, goldStar);
         return REDIRECT_TO_DASHBOARD;
@@ -211,8 +217,8 @@ public class DashboardController {
     }
 
     @PostMapping("/changeSilverBadges")
-    public String changeSilverBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
-                                   @RequestParam(REQUEST_PARAM_SILVER ) Integer silverStar) {
+    public String changeSilverBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                                     @RequestParam(REQUEST_PARAM_SILVER) Integer silverStar) {
         User user1 = signUpService.checkByEmail(email);
         signUpService.changeSilverStarByAdmin(user1, silverStar);
         return REDIRECT_TO_DASHBOARD;
@@ -220,8 +226,8 @@ public class DashboardController {
     }
 
     @PostMapping("/changeBronzeBadges")
-    public String changeBronzeBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
-                                   @RequestParam(REQUEST_PARAM_BRONZE ) Integer bronzeStar) {
+    public String changeBronzeBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
+                                     @RequestParam(REQUEST_PARAM_BRONZE) Integer bronzeStar) {
         User user1 = signUpService.checkByEmail(email);
         signUpService.changeBronzeStarByAdmin(user1, bronzeStar);
         return REDIRECT_TO_DASHBOARD;

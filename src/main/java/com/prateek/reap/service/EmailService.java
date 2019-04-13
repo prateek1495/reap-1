@@ -16,4 +16,8 @@ public interface EmailService {
 
     @Async
     void sendEmailStarRevocation(String recipient, String subject, String body) throws MessagingException;
+
+    @Async
+    void sendEmailExpireRevocation(String email, String mailSubjectRecognitionRevoked, String s)
+            throws MessagingException;
 }

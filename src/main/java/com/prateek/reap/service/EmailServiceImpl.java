@@ -57,4 +57,16 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
+    @Override
+    @Async
+    public void sendEmailExpireRevocation(String recipient, String subject, String body) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setTo(recipient);
+        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setText(HTML_EXPIRE_REVOCATION_TEMPLATE_BEFORE_BODY +body+HTML_EXPIRE_REVOCATION_TEMPLATE_AFTER_BODY,true);
+        javaMailSender.send(mimeMessage);
+
+
+    }
 }

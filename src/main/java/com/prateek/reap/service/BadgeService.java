@@ -111,7 +111,7 @@ public class BadgeService {
         return badgeRepository.findByReceiverFirstNameLike("%" + name.substring(0, name.length() - 2) + "%");
     }
 
-    public void recognitionDelete(Integer id, String starName, String comment) throws MessagingException {
+    public Boolean recognitionDelete(Integer id, String starName, String comment) throws MessagingException {
 
         Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
         Star star = starService.findByName(starName);
@@ -120,17 +120,46 @@ public class BadgeService {
 
             User giver = badgesGiven.get().getGiver();
             User receiver = badgesGiven.get().getReceiver();
-            BadgesGiven badgesGiven1 = badgesGiven.get();
-            badgesGiven1.setFlag(false);
+            int userPoints = receiver.getPoints();
+            int receivedPoints = star.getWeight();
+            if(userPoints>=receivedPoints) {
+                signUpService.changeUserPoints(receiver, star, DECIDER_DELETE);
 
-            userStarCountService.incrementGiverStarAfterRevocation(giver, star);
+                BadgesGiven badgesGiven1 = badgesGiven.get();
+                badgesGiven1.setFlag(false);
 
-            userStarReceivedService.decrementReceiverStarAfterRevocation(receiver, star);
+                userStarCountService.incrementGiverStarAfterRevocation(giver, star);
 
-            signUpService.changeUserPoints(receiver, star, DECIDER_DELETE );
+                userStarReceivedService.decrementReceiverStarAfterRevocation(receiver, star);
 
-            sendRevocationEmails(giver, receiver, comment);
+                sendRevocationEmails(giver, receiver, comment);
+                return true;
+            }
+            else
+            {
+                sendRevocationExpiredEmails(giver,receiver);
+                return false;
+
+            }
+
+
         }
+        return true;
+    }
+
+    private void sendRevocationExpiredEmails(User giver, User receiver) throws MessagingException {
+        emailService.sendEmailExpireRevocation(
+                giver.getEmail(),
+                MAIL_SUBJECT_RECOGNITION_REVOKED,
+                RECOGNITION_YOU_GAVE_TO
+                        + " "
+                        + receiver.getFirstName()
+                        + " "
+                        + CANNOTREVOKE
+                        + " "
+                        + EXPIRE_REASON
+                        + "\n");
+
     }
 
     public void sendRevocationEmails(User giver, User receiver, String comment) throws MessagingException {
