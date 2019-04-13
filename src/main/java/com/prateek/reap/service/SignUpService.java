@@ -205,18 +205,4 @@ public class SignUpService {
 
     }
 
-    public void deactivateUser(String email) {
-        User user = signUpRepository.findByEmail(email);
-        user.setActive(false);
-        signUpRepository.save(user);
-    }
-
-
-    public void activateUser(String email) {
-        User user = signUpRepository.findByEmail(email);
-        user.setActive(true);
-        signUpRepository.save(user);
-    }
-
-
 }

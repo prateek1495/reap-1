@@ -354,7 +354,7 @@
                                         <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Revoke Role</th>
+                                            <th>Assigned Roles/Revoke Role</th>
                                             <th>Allocate Role</th>
                                             <th>Active</th>
                                             <th>Email</th>
@@ -376,10 +376,12 @@
                                         </thead>
                                         <tbody id="manageUser">
                                         <tr th:each="result:${users}">
-                                            <td th:text="${result.getUser().getFirstName()}">Prateek Nagar</td>
+                                            <td
+                                                    th:text="${result.getUser().getFirstName()}+' '+${result.getUser().getLastName()}">Prateek Nagar</td>
                                             <td>
                                                 <div class="input-group mb-3">
                                                     <select class="custom-select select-assesor revokeRole">
+                                                        <option value="Select Role" selected disabled>Select Role</option>
                                                         <option th:each="res:${result.getUser().getRoles()}"
                                                                 th:value="${res.getName()}"
                                                                 th:disabled="${res.getName()=='USER'}"
@@ -394,7 +396,8 @@
                                             <td>
                                                 <div class="input-group mb-3">
                                                     <select class="custom-select select-assesor allocate">
-                                                        <option th:th:value="USER" th:text="USER"></option>
+                                                        <!--<option th:th:value="USER" th:text="USER"></option>-->
+                                                        <option value="Select Role" selected disabled>Select Role</option>
                                                         <option th:value="ADMIN" th:text="ADMIN"></option>
                                                         <option th:value="SUPERVISOR" th:text="SUPERVISOR"></option>
                                                         <option th:value="PRACTICEHEAD" th:text="PRACTICEHEAD"></option>
@@ -403,7 +406,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="checkbox" class="checkBox"
+                                                <input type="checkbox" class="checkBox" name="isActive"
                                                        th:checked="${result.getUser().isActive()}"
                                                        th:value="${result.getUser().getId()}">
                                             </td>
@@ -562,7 +565,7 @@
 
                             <div id="page">
 
-                                <div class="list-group boardWall" th:fragment="wallOfFame">
+                                <div class="list-group boardWall" style="overflow-y: scroll;overflow-x: hidden;" th:fragment="wallOfFame">
                                     <div class="row recordInfo" id="record" th:each="result:${wallOfFame}">
 
                                         <div class="col-md-1 " style="vertical-align: center">

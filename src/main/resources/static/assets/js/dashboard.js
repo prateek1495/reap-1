@@ -50,7 +50,10 @@ $(function () {
     });
 
     var table = $('#dataTable').DataTable({
-        paging: true,
+        paging: false,
+        scrollY:"500px",
+        scrollX:false,
+        scrollColapse:true,
         fixedColumns: true
 
     });
@@ -109,43 +112,56 @@ $(function () {
     $('body').on('change', 'select.allocate', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
         var role = $(this).children("option:selected").val();
-        $.ajax({
+        var confirmBox = confirm("Are you sure you want to add the role");
+        if(confirmBox==true) {
+            $.ajax({
 
-            url: "/addRole",
-            type: "post",
-            data: {email: email, role: role},
-            success: function (response) {
-                $("#result").addClass("alert alert-success");
-                $("#result small").text("Role Allocated");
-                setTimeout(
-                    function () {
-                        location.reload();
+                url: "/addRole",
+                type: "post",
+                data: {email: email, role: role},
+                success: function (response) {
+                    $("#result").addClass("alert alert-success");
+                    $("#result small").text("Role Allocated");
+                    setTimeout(
+                        function () {
+                            location.reload();
 
-                    }, 5000
-                );
-            }
-        });
+                        }, 5000
+                    );
+                }
+            });
+        }
+        else {
+            location.reload();
+        }
     });
 
 
     $('body').on('change', 'select.revokeRole', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
         var role = $(this).children("option:selected").val();
-        $.ajax({
-            url: "/deleteRole",
-            type: "post",
-            data: {email: email, role: role},
-            success: function (response) {
-                $("#result").addClass("alert alert-success");
-                $("#result small").text("Role Revoked");
-                setTimeout(
-                    function () {
-                        location.reload();
+        var confirmBox = confirm("Are you sure you want to revoke the role");
+        if(confirmBox==true) {
+            $.ajax({
+                url: "/deleteRole",
+                type: "post",
+                data: {email: email, role: role},
+                success: function (response) {
+                    $("#result").addClass("alert alert-success");
+                    $("#result small").text("Role Revoked");
+                    setTimeout(
+                        function () {
+                            location.reload();
 
-                    }, 5000
-                );
-            }
-        });
+                        }, 3000
+                    );
+                }
+            });
+        }
+        else
+        {
+            location.reload();
+        }
 
     });
 
@@ -153,65 +169,48 @@ $(function () {
     $('body').on('change', '.points', function (e) {
         var email = $(this).parent().parent().parent().find("#email").text();
         var point = $(this).val();
+        var confirmBox = confirm("Are you sure you want to change the points");
+        if(confirmBox==true) {
+            $.ajax({
+                url: "/changePoints",
+                type: "post",
+                data: {email: email, point: point},
+                success: function (response) {
+                    $("#result").addClass("alert alert-success");
+                    $('#result small').text("Points Changed");
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 3000
+                    );
+
+                }
+            });
+        }
+        else {
+            location.reload();
+        }
+    });
+
+    $('input[name="isActive"]').click(function () {
+        if ($('input[name="isActive"]:checked'))
+            var e = $(this).parent().parent().find('#email').text();
         $.ajax({
-            url: "/changePoints",
-            type: "post",
-            data: {email: email, point: point},
+            url: "/updateActive",
+            type:"post",
+            data: {email: e},
             success: function (response) {
                 $("#result").addClass("alert alert-success");
-                $('#result small').text("Points Changed");
+                $("#result small").text("Active status changed ");
                 setTimeout(
                     function () {
                         location.reload();
-                    }, 5000
+                    }, 3000
                 );
-
             }
         });
     });
 
-
-    $(".checkBox").change(function () {
-        var checked = $(this).is(':checked');
-        var email = $(this).parent().parent().find("#email").text();
-        if (!checked) {
-            $.ajax({
-
-                url: "/deactivate-user",
-
-                type:"post",
-                data:{email:email},
-                success: (function () {
-                    $('#result').append("User Deactivated SuccessFully");
-                    $('#result').addClass("alert alert-success");
-
-                    $("#result").fadeTo(2000, 500).slideUp(500, function () {
-                        $("#result").empty();
-                        $('#result').removeClass("alert alert-success");
-                    });
-                })
-
-            });
-        } else {
-            $.ajax({
-
-                url: "/activate-user",
-                type:"post",
-                data:{email:email},
-                success: (function () {
-                    $('#result').append("User Activated SuccessFully");
-                    $('#result').addClass("alert alert-success");
-
-                    $("#result").fadeTo(2000, 500).slideUp(500, function () {
-                        $("#result").empty();
-                        $('#result').removeClass("alert alert-success");
-                    });
-                })
-
-            });
-
-        }
-    });
 
 });
 

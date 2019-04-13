@@ -250,7 +250,8 @@
                                 </div>
 
                                 <div class="col-sm-3">
-                                    <h3 class="pointsStyle" th:text="${starReceived.getUser().getPoints()}+'points'"
+                                    <h3 class="pointsStyle"
+                                        th:text="${starReceived.getUser().getPoints()}+' '+'points'"
                                         style="position:absolute; bottom:-15px; right:-25px; font-size:24px; padding-left: 10px; color: white; font-weight: bolder">
                                         0 points</h3>
                                 </div>
@@ -483,7 +484,7 @@
 
                                             </div>
 
-                                            <div class="col-md-11 badgeInfo">
+                                            <div class="col-md-11 badgeInfo" style="padding-top: 10px;">
 
                                                 <p>
 

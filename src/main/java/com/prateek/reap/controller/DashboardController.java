@@ -167,18 +167,6 @@ public class DashboardController {
 
     }
 
-    @PostMapping("/deactivate-user")
-    @ResponseBody
-    public void userDeactivate(@RequestParam("email") String email) {
-        signUpService.deactivateUser(email);
-    }
-
-    @PostMapping("/activate-user")
-    @ResponseBody
-    public void userActivate(@RequestParam("email") String email) {
-        signUpService.activateUser(email);
-    }
-
 
     @GetMapping("/searchRecognitionByDate/{start}/{end}")
     public String getUserRecodByName(@PathVariable(REQUEST_PARAM_START) String startDate, @PathVariable(REQUEST_PARAM_END) String endDate,
@@ -190,6 +178,19 @@ public class DashboardController {
                 .filter(e1 -> e1.isFlag()).collect(Collectors.toList());
         model.addAttribute(KEY_WALL_OF_FAME, recognitions);
         return "dashboard::wallOfFame";
+    }
+
+    @PostMapping(value = "/updateActive")
+    public String updateActive(@RequestParam("email") String email){
+
+        User user = signUpService.checkByEmail(email);
+        if(user.isActive()){
+            user.setActive(false);
+        }else {
+            user.setActive(true);
+        }
+        signUpService.saveUser(user);
+        return REDIRECT_TO_DASHBOARD;
     }
 
 }
