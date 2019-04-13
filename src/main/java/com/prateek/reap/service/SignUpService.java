@@ -44,9 +44,11 @@ public class SignUpService {
         return signUpRepository.findByEmail(email);
     }
 
+/*
     public User findUserByResetToken(String resetToken) {
         return signUpRepository.findByToken(resetToken);
     }
+*/
 
     public String saveTokenAndGenerateResetUrl(User user, String resetTokenUrl) {
         String token = generateAndSaveResetToken(user);
@@ -78,10 +80,10 @@ public class SignUpService {
     }
 
 
-    public boolean checkUserExists(String email, boolean active) {
+   /* public boolean checkUserExists(String email, boolean active) {
         List<User> userList = signUpRepository.findByEmailAndActive(email, active);
         return userList.size() > 0;
-    }
+    }*/
 
 
     public void save(User user, MultipartFile file) throws IOException {
@@ -150,57 +152,65 @@ public class SignUpService {
 
 
     public Boolean allocateRole(UserRole role, User user) {
-
-        if (user.getRoles().contains(role)) {
-            return false;
+        if(user!=null) {
+            if (user.getRoles().contains(role)) {
+                return false;
+            }
+            getPriority(user, role);
+            user.getRoles().add(role);
+            signUpRepository.save(user);
+            return true;
         }
-        getPriority(user, role);
-        user.getRoles().add(role);
-        signUpRepository.save(user);
-        return true;
-
+        return false;
     }
 
     public Boolean deleteRole(UserRole role, User user) {
-
-        if (user.getRoles().contains(role)) {
-            user.getRoles().remove(role);
-            int revokePriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get().getPriority();
-            UserRole role1 = userRoleService.findByPriority(revokePriority);
-            UserStarCount userStarCount = userStarCountService.findUserStarCount(user);
-            userStarCount.setGoldStarCount(role1.getGoldStar());
-            userStarCount.setSilverStarCount(role1.getSilverStar());
-            userStarCount.setBronzeStarCount(role1.getBronzeStar());
-            userStarCountService.save(userStarCount);
-            signUpRepository.save(user);
-            return true;
-        } else
-            return false;
+        if(user!=null) {
+            if (user.getRoles().contains(role)) {
+                user.getRoles().remove(role);
+                int revokePriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get()
+                        .getPriority();
+                UserRole role1 = userRoleService.findByPriority(revokePriority);
+                UserStarCount userStarCount = userStarCountService.findUserStarCount(user);
+                userStarCount.setGoldStarCount(role1.getGoldStar());
+                userStarCount.setSilverStarCount(role1.getSilverStar());
+                userStarCount.setBronzeStarCount(role1.getBronzeStar());
+                userStarCountService.save(userStarCount);
+                signUpRepository.save(user);
+                return true;
+            } else
+                return false;
+        }
+        return false;
 
     }
 
     public Boolean changePointsByAdmin(User user1, Integer points) {
-        if (user1.isActive()) {
-            user1.setPoints(points);
-            signUpRepository.save(user1);
-            return true;
-        } else
-            return false;
+        if(user1!=null) {
+            if (user1.isActive()) {
+                user1.setPoints(points);
+                signUpRepository.save(user1);
+                return true;
+            } else
+                return false;
+        }
+        return false;
 
     }
 
     public void getPriority(User user, UserRole role) {
-        int p1 = role.getPriority();
-        int currentPriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get().getPriority();
-        if (p1 > currentPriority) {
-            UserStarCount userStarCount = userStarCountService.findUserStarCount(user);
-            userStarCount.setGoldStarCount(role.getGoldStar());
-            userStarCount.setSilverStarCount(role.getSilverStar());
-            userStarCount.setBronzeStarCount(role.getBronzeStar());
-            userStarCountService.save(userStarCount);
+        if(user!=null) {
+            int p1 = role.getPriority();
+            int currentPriority = user.getRoles().stream().max(Comparator.comparing(UserRole::getPriority)).get()
+                    .getPriority();
+            if (p1 > currentPriority) {
+                UserStarCount userStarCount = userStarCountService.findUserStarCount(user);
+                userStarCount.setGoldStarCount(role.getGoldStar());
+                userStarCount.setSilverStarCount(role.getSilverStar());
+                userStarCount.setBronzeStarCount(role.getBronzeStar());
+                userStarCountService.save(userStarCount);
 
-        } else {
-
+            }
         }
 
     }

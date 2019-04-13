@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,8 @@ public class BadgeService {
         badgeRepository.save(badgesGiven);
     }
 
-    public boolean saveRecognitionData(String starType, String receiverEmail, String senderEmail, String comment) {
+    public boolean saveRecognitionData(String starType, String receiverEmail, String senderEmail, String comment)
+            throws MessagingException {
 
         User receiverUser = signUpService.checkByEmail(receiverEmail);
         User senderUser = signUpService.checkByEmail(senderEmail);
@@ -57,17 +59,16 @@ public class BadgeService {
         BadgesGiven badgesGiven = sendRecognition(receiverUser, senderUser, star, comment);
         badgeRepository.save(badgesGiven);
 
-        emailService.sendEmailToSingleRecipient(senderUser.getEmail(), RECOGNITION_NEWER,
+        emailService.sendEmailStarRecognition(senderUser.getEmail(), RECOGNITION_NEWER,
                 GAVE_STAR + " " + star.getName().toUpperCase() + STAR + TO + receiverUser.getFirstName() + " " + receiverUser.getLastName() + " " + REASON_REVOKATION
                         + " \n\n" + comment);
 
 
-        emailService.sendEmailToSingleRecipient(receiverUser.getEmail(), RECOGNITION_NEWER,
+        emailService.sendEmailStarRecognition(receiverUser.getEmail(), RECOGNITION_NEWER,
                 CONGRATULATION+ "\n" + receiverUser.getFirstName() + " " + receiverUser.getLastName() + YOU +
                         HAVE_RECEIVED + star.getName().toUpperCase() + STAR_FROM + senderUser
                         .getFirstName() + " " + senderUser.getLastName()
                         + " " + REASON_REVOKATION + "\n\n" + comment);
-
 
         return true;
 
@@ -110,7 +111,7 @@ public class BadgeService {
         return badgeRepository.findByReceiverFirstNameLike("%" + name.substring(0, name.length() - 2) + "%");
     }
 
-    public void recognitionDelete(Integer id, String starName, String comment) {
+    public void recognitionDelete(Integer id, String starName, String comment) throws MessagingException {
 
         Optional<BadgesGiven> badgesGiven = badgeRepository.findById(id);
         Star star = starService.findByName(starName);
@@ -132,9 +133,9 @@ public class BadgeService {
         }
     }
 
-    public void sendRevocationEmails(User giver, User receiver, String comment) {
+    public void sendRevocationEmails(User giver, User receiver, String comment) throws MessagingException {
 
-        emailService.sendEmailToSingleRecipient(
+        emailService.sendEmailStarRevocation(
                 giver.getEmail(),
                 MAIL_SUBJECT_RECOGNITION_REVOKED,
                 RECOGNITION_YOU_GAVE_TO
@@ -144,11 +145,11 @@ public class BadgeService {
                         + REVOKED_BY_ADMIN
                         + " "
                         + REASON_REVOKATION
-                        + " \n"
+                        + " \n\n"
                         + comment
                         + "\n");
 
-        emailService.sendEmailToSingleRecipient(
+        emailService.sendEmailStarRevocation(
                 receiver.getEmail(),
                 MAIL_SUBJECT_RECOGNITION_REVOKED,
                 RECOGNITION_YOU_RECEIVED
@@ -158,9 +159,9 @@ public class BadgeService {
                         + REVOKED_BY_ADMIN
                         + " "
                         + REASON_REVOKATION
-                        + " \n"
+                        + " \n\n"
                         + comment
-                        + "\n"
+                        + "\n\n"
                         + CONTACT_ADMIN );
     }
 

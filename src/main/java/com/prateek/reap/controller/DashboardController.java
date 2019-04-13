@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
@@ -77,7 +78,8 @@ public class DashboardController {
     @RequestMapping(value = "/saveRecognition", method = RequestMethod.POST)
     public String saveRecognition(@RequestParam(REQUEST_PARAM_RECEIVER ) String receiverEmail,
                                   @RequestParam(REQUEST_PARAM_COMMENT) String comment, @RequestParam(REQUEST_PARAM_STAR) String starType,
-                                  Authentication authentication, RedirectAttributes redirectAttributes) {
+                                  Authentication authentication, RedirectAttributes redirectAttributes)
+            throws MessagingException {
 
         User user = signUpService.checkByEmail(receiverEmail);
         if (receiverEmail.equals(currentLoggedInUser(authentication).getEmail())) {
@@ -123,10 +125,10 @@ public class DashboardController {
 
     @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
     public String disableRecognition(
-            @PathVariable Integer id, @PathVariable String star, @PathVariable String comment) {
+            @PathVariable Integer id, @PathVariable String star, @PathVariable String comment)
+            throws MessagingException {
         comment = comment.replace("_", " ");
         badgeService.recognitionDelete(id, star, comment);
-
         return REDIRECT_TO_DASHBOARD;
     }
 

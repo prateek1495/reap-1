@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import java.util.Map;
 
 import static com.prateek.reap.util.Constants.*;
@@ -51,7 +52,8 @@ public class PasswordController {
 
 
     @RequestMapping(value = "/forget-password-process", method = RequestMethod.POST)
-    public String sendPasswordRestMail(@RequestParam String email, RedirectAttributes redirectAttributes) {
+    public String sendPasswordRestMail(@RequestParam String email, RedirectAttributes redirectAttributes)
+            throws MessagingException {
 
 
         User user = signUpService.checkByEmail(email);
