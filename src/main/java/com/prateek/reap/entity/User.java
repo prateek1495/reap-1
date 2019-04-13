@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -24,20 +25,21 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Please Enter the First name")
+    @NotBlank(message = "Please Enter the First name")
     @Size(min = 3, max = 30, message = "Please Enter First Name In Range of 3 to 30 characters")
     private String firstName;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Please Enter the Last name")
+    @NotBlank(message = "Please Enter the Last name")
     @Size(min = 3, max = 30, message = "Please Enter Last Name In Range of 3 to 30 characters")
     private String lastName;
 
     @Email(message = "Please Enter the valid Email Address")
+    @NotBlank(message = "Please Enter the email")
     private String email;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Please Enter the Password")
+    @NotBlank(message = "Please Enter the Password")
     private String password;
 
     private String imageUrl;

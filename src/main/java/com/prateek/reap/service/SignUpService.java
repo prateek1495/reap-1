@@ -215,4 +215,46 @@ public class SignUpService {
 
     }
 
+    public Boolean changeGoldStarByAdmin(User user1, Integer goldStar) {
+        if(user1!=null) {
+            if (user1.isActive()) {
+                UserStarCount userStarCount=userStarCountService.findUserStarCount(user1);
+                userStarCount.setGoldStarCount(goldStar);
+                userStarCountService.save(userStarCount);
+                signUpRepository.save(user1);
+                return true;
+            } else
+                return false;
+        }
+        return false;
+    }
+
+    public Boolean changeSilverStarByAdmin(User user1, Integer silverStar) {
+        if(user1!=null) {
+            if (user1.isActive()) {
+                UserStarCount userStarCount=userStarCountService.findUserStarCount(user1);
+                userStarCount.setSilverStarCount(silverStar);
+                userStarCountService.save(userStarCount);
+                signUpRepository.save(user1);
+                return true;
+            } else
+                return false;
+        }
+        return false;
+    }
+
+
+    public Boolean changeBronzeStarByAdmin(User user1, Integer bronzeStar) {
+        if(user1!=null) {
+            if (user1.isActive()) {
+                UserStarCount userStarCount=userStarCountService.findUserStarCount(user1);
+                userStarCount.setBronzeStarCount(bronzeStar);
+                userStarCountService.save(userStarCount);
+                signUpRepository.save(user1);
+                return true;
+            } else
+                return false;
+        }
+        return false;
+    }
 }

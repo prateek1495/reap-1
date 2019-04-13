@@ -37,6 +37,9 @@ public class HtmlConstants {
     public static final String KEY_NEWERS_BOARD = "newersBoard";
     public static final String KEY_LINK_EXPIRE = "expire";
     public static final String KEY_EMAIL_ERROR ="emailError";
+    public static final String KEY_EMAIL_ERROR2 ="emailError2";
+    public static final String KEY_COMMENT_ERROR ="commentError";
+    public static final String KEY_STAR_ERROR ="starError";
     public static final String KEY_SELF_ERROR ="selfRecoError";
     public static final String KEY_ERROR = "error";
     public static final String KEY_EMAIL_EXISTS_ERROR = "exist";
@@ -49,11 +52,11 @@ public class HtmlConstants {
     public static final String KEY_SUCCESS = "success";
     public static final String KEY_NEW_PASSWORD = "newPassword";
     public static final String KEY_RECOGNITION_FAILURE = "saveError";
-    public static final String KEY_COMMENT_BLANK = "commentBlank";
     public static final String KEY_SET_HEADER_CSV = "Content-Disposition";
     public static final String KEY_ITEMS = "items";
     public static final String KEY_TOTAL_PRICE = "totalPrice";
     public static final String KEY_ITEM_URLS = "itemUrls";
+
 
     // Messages
 
@@ -71,6 +74,7 @@ public class HtmlConstants {
     public static final String VALUE_SELF_RECOGNITION_ERROR =
             "Cannot Give To Recognition to yourself";
     public static final String VALUE_RESET_PASSWORD_ERROR = "Reset Password Link is expired";
+    public static final String VALUE_STAR_ERROR = "Star is not selected";
     public static final String VALUE_BLANK_COMMENT =
             "Comment you entered is blank.Please enter correctly.";
 
@@ -94,7 +98,9 @@ public class HtmlConstants {
     public static final String REQUEST_PARAM_START= "start";
     public static final String REQUEST_PARAM_EMAIL = "email";
     public static final String REQUEST_PARAM_POINT = "point";
-    public static final String REQUEST_PARAM_USER_ID = "userId";
+    public static final String REQUEST_PARAM_GOLD = "goldStar";
+    public static final String REQUEST_PARAM_SILVER = "silverStar";
+    public static final String REQUEST_PARAM_BRONZE = "bronzeStar";
     public static final String REQUEST_PARAM_ROLE = "role";
     public static final String PATH_VARIABLE_ID = "id";
 

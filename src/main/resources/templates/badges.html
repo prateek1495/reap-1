@@ -307,7 +307,7 @@
 
                                 </li>
 
-                                <li th:if="${starReceived.getId()==loggedUser.getId()}">
+                                <li th:if="${starReceived.getUser().getId()==loggedUser.getId()}">
                                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
                                        href="#nav-contact"
                                        role="tab" aria-controls="nav-contact" aria-selected="false">Points

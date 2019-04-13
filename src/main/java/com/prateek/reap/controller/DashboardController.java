@@ -86,13 +86,18 @@ public class DashboardController {
             redirectAttributes.addFlashAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
+        if(starType.equals("Select Badges"))
+        {
+            redirectAttributes.addFlashAttribute(KEY_STAR_ERROR, VALUE_STAR_ERROR);
+            return REDIRECT_TO_DASHBOARD;
+        }
         if (comment.trim().equals("")) {
-            redirectAttributes.addFlashAttribute(KEY_COMMENT_BLANK, VALUE_BLANK_COMMENT);
+            redirectAttributes.addFlashAttribute(KEY_COMMENT_ERROR, VALUE_BLANK_COMMENT);
             return REDIRECT_TO_DASHBOARD;
         }
 
-        if (receiverEmail.equals(" ")) {
-            redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR, VALUE_RECOGNITION_RECIEVER_EMAIL);
+        if (receiverEmail.trim().equals(" ")) {
+            redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR2, VALUE_RECOGNITION_RECIEVER_EMAIL);
             return REDIRECT_TO_DASHBOARD;
         }
 
@@ -193,6 +198,34 @@ public class DashboardController {
         }
         signUpService.saveUser(user);
         return REDIRECT_TO_DASHBOARD;
+    }
+
+
+    @PostMapping("/changeGoldBadges")
+    public String changeGoldBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
+                          @RequestParam(REQUEST_PARAM_GOLD ) Integer goldStar) {
+        User user1 = signUpService.checkByEmail(email);
+        signUpService.changeGoldStarByAdmin(user1, goldStar);
+        return REDIRECT_TO_DASHBOARD;
+
+    }
+
+    @PostMapping("/changeSilverBadges")
+    public String changeSilverBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
+                                   @RequestParam(REQUEST_PARAM_SILVER ) Integer silverStar) {
+        User user1 = signUpService.checkByEmail(email);
+        signUpService.changeSilverStarByAdmin(user1, silverStar);
+        return REDIRECT_TO_DASHBOARD;
+
+    }
+
+    @PostMapping("/changeBronzeBadges")
+    public String changeBronzeBadges(@RequestParam(REQUEST_PARAM_EMAIL ) String email,
+                                   @RequestParam(REQUEST_PARAM_BRONZE ) Integer bronzeStar) {
+        User user1 = signUpService.checkByEmail(email);
+        signUpService.changeBronzeStarByAdmin(user1, bronzeStar);
+        return REDIRECT_TO_DASHBOARD;
+
     }
 
 }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class BadgesGiven {
     @ManyToOne
     private User receiver;
 
-    @NotEmpty
+    @NotBlank(message = "Please enter the comment")
     private String comment;
 
     @OneToOne

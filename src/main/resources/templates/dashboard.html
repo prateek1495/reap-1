@@ -248,7 +248,22 @@
                             </div>
                             <div th:if="${emailError}">
                                 <div class="alert alert-danger" role="alert">
-                                    <small>User dosen't exists</small>
+                                    <small>User doesn't exists</small>
+                                </div>
+                            </div>
+                            <div th:if="${emailError2}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>User doesn't exists</small>
+                                </div>
+                            </div>
+                            <div th:if="${commentError}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>Enter the comment</small>
+                                </div>
+                            </div>
+                            <div th:if="${starError}">
+                                <div class="alert alert-danger" role="alert">
+                                    <small>Please Select a Star</small>
                                 </div>
                             </div>
                             <div th:if="${selfRecoError}">
@@ -281,7 +296,7 @@
                                             <select required class="form-control custom-heigthSelect20 badges"
                                                     th:name="star">
 
-                                                <option value="" disabled selected>Select Badges</option>
+                                                <option value="Select Badges" disabled selected>Select Badges</option>
 
                                                 <option value="Gold" th:disabled="${starCount.getGoldStarCount()==0}"
                                                         th:text="'Gold('+${starCount.getGoldStarCount()}+')'">Gold
@@ -343,11 +358,6 @@
 
 
                                 <div class="table-responsive">
-
-                                    <!-- <button type="button" class="btn btn-info" value="Assign New Role"
-                                             style="margin-bottom: 15px; float: right"
-                                             data-toggle="modal" data-target=".bd-example-modal-lg">Manage Roles
-                                     </button>-->
 
                                     <table id="dataTable" class=" row-border order-column"
                                            style="width:100%;text-align: center">
@@ -422,9 +432,12 @@
                                             </td>
 
                                             <td>
-                                                <span th:text="${result.getGoldStarCount()}"></span>&nbsp;&nbsp;
-                                                <span th:text="${result.getSilverStarCount()}"></span>&nbsp;&nbsp;
-                                                <span th:text="${result.getBronzeStarCount()}"></span>
+                                                <input type="text" name="goldStar" style="width: 20px;"
+                                                       th:value="${result.goldStarCount}"/>
+                                                <input name="silverStar" style="width: 20px;"
+                                                       th:value="${result.silverStarCount}"/>
+                                                <input name="bronzeStar" style="width: 20px;"
+                                                       th:value="${result.bronzeStarCount}"/>
                                             </td>
                                         </tr>
 

@@ -51,9 +51,9 @@ $(function () {
 
     var table = $('#dataTable').DataTable({
         paging: false,
-        scrollY:"500px",
-        scrollX:false,
-        scrollColapse:true,
+        scrollY: "500px",
+        scrollX: false,
+        scrollColapse: true,
         fixedColumns: true
 
     });
@@ -113,7 +113,7 @@ $(function () {
         var email = $(this).parent().parent().parent().find("#email").text();
         var role = $(this).children("option:selected").val();
         var confirmBox = confirm("Are you sure you want to add the role");
-        if(confirmBox==true) {
+        if (confirmBox == true) {
             $.ajax({
 
                 url: "/addRole",
@@ -141,7 +141,7 @@ $(function () {
         var email = $(this).parent().parent().parent().find("#email").text();
         var role = $(this).children("option:selected").val();
         var confirmBox = confirm("Are you sure you want to revoke the role");
-        if(confirmBox==true) {
+        if (confirmBox == true) {
             $.ajax({
                 url: "/deleteRole",
                 type: "post",
@@ -158,8 +158,7 @@ $(function () {
                 }
             });
         }
-        else
-        {
+        else {
             location.reload();
         }
 
@@ -170,7 +169,7 @@ $(function () {
         var email = $(this).parent().parent().parent().find("#email").text();
         var point = $(this).val();
         var confirmBox = confirm("Are you sure you want to change the points");
-        if(confirmBox==true) {
+        if (confirmBox == true) {
             $.ajax({
                 url: "/changePoints",
                 type: "post",
@@ -197,7 +196,7 @@ $(function () {
             var e = $(this).parent().parent().find('#email').text();
         $.ajax({
             url: "/updateActive",
-            type:"post",
+            type: "post",
             data: {email: e},
             success: function (response) {
                 $("#result").addClass("alert alert-success");
@@ -209,6 +208,119 @@ $(function () {
                 );
             }
         });
+    });
+
+
+    $('body').on('change', 'input[name=goldStar]', function (e) {
+        var email = $(this).parent().parent().find("#email").text();
+        var goldStar = $(this).val();
+        var confirmBox = confirm("Are you sure you want to change the gold badge");
+        if (confirmBox == true) {
+            if ($.isNumeric(goldStar)) {
+                $.ajax({
+                    url: "/changeGoldBadges",
+                    type: "post",
+                    data: {email: email, goldStar: goldStar},
+                    success: function (response) {
+                        $("#result").addClass("alert alert-success");
+                        $('#result small').text("Gold Badge Changed");
+                        setTimeout(
+                            function () {
+                                location.reload();
+                            }, 3000
+                        );
+
+                    }
+                });
+            }
+            else {
+                $("#result").addClass("alert alert-danger");
+                $('#result small').text("Gold Badge Can Not Be Changed");
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 3000
+                );
+            }
+        }
+        else {
+            location.reload();
+        }
+    });
+
+
+    $('body').on('change', 'input[name=silverStar]', function (e) {
+        var email = $(this).parent().parent().find("#email").text();
+        var silverStar = $(this).val();
+        var confirmBox = confirm("Are you sure you want to change the silver badge");
+        if (confirmBox == true) {
+            if ($.isNumeric(silverStar)) {
+                $.ajax({
+                    url: "/changeSilverBadges",
+                    type: "post",
+                    data: {email: email, silverStar: silverStar},
+                    success: function (response) {
+                        $("#result").addClass("alert alert-success");
+                        $('#result small').text("Silver Badge Changed");
+                        setTimeout(
+                            function () {
+                                location.reload();
+                            }, 3000
+                        );
+
+                    }
+                });
+            }
+            else {
+                $("#result").addClass("alert alert-danger");
+                $('#result small').text("Silver Badge Can Not Be Changed");
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 3000
+                );
+            }
+        }
+        else {
+            location.reload();
+        }
+    });
+
+
+    $('body').on('change', 'input[name=bronzeStar]', function (e) {
+        var email = $(this).parent().parent().find("#email").text();
+        var bronzeStar = $(this).val();
+        var confirmBox = confirm("Are you sure you want to change the bronze badge");
+        if (confirmBox == true) {
+            if ($.isNumeric(bronzeStar)) {
+                $.ajax({
+                    url: "/changeBronzeBadges",
+                    type: "post",
+                    data: {email: email, bronzeStar: bronzeStar},
+                    success: function (response) {
+                        $("#result").addClass("alert alert-success");
+                        $('#result small').text("Bronze Badge Changed");
+                        setTimeout(
+                            function () {
+                                location.reload();
+                            }, 3000
+                        );
+
+                    }
+                });
+            } else {
+                $("#result").addClass("alert alert-danger");
+                $('#result small').text("Bronze Badge Can Not Be Changed");
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 3000
+                );
+            }
+        }
+        else {
+            location.reload();
+        }
     });
 
 
