@@ -129,13 +129,12 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
-    @ResponseBody
-    public Boolean disableRecognition(
+    public String disableRecognition(
             @PathVariable Integer id, @PathVariable String star, @PathVariable String comment)
             throws MessagingException {
         comment = comment.replace("_", " ");
         Boolean check = badgeService.recognitionDelete(id, star, comment);
-        return check;
+        return REDIRECT_TO_DASHBOARD;
     }
 
     @GetMapping(value = "/download.csv")

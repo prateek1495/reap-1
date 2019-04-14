@@ -79,7 +79,6 @@ $(function () {
             });
         }
         else {
-
             deleteRecognition(id, star, comment);
         }
     });
@@ -87,32 +86,17 @@ $(function () {
 
     function deleteRecognition(id, star, comment) {
 
-        // $(' body').load("/delete-recognition/" + id + "/" + star + "/" + comment, function (e) {
-        $.ajax({
-            url:"/delete-recognition/" + id + "/" + star + "/" + comment,
-            type:"get",
-            success:function (e) {
-                if (e == true) {
-                    location.reload();
-                    $('.resultRevoke').append("Recognition Revoked");
-                    $('.resultRevoke').addClass("alert alert-success");
-                    $(".resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
-                        $(".resultRevoke").empty();
-                        $('.resultRevoke').removeClass("alert alert-success");
+        $(' body').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
 
-                    });
-                }
-                else {
-                    location.reload();
-                    $('.resultRevoke').append("Recognition Cannot be Revoked");
-                    $('.resultRevoke').addClass("alert alert-danger");
-                    $(".resultRevoke").fadeTo(2000, 500).slideUp(500, function () {
-                        $(".resultRevoke").empty();
-                        $('.resultRevoke').removeClass("alert alert-danger");
+            location.reload();
+            $('.resultRevoke').append("Revocation Request submitted successfull,Mail has been sent");
+            $('.resultRevoke').addClass("alert alert-success");
+            $(".resultRevoke").fadeTo(7000, 500).slideUp(500, function () {
+                $(".resultRevoke").empty();
+                $('.resultRevoke').removeClass("alert alert-success");
 
-                    });
-                }
-            }
+            });
+
         });
     }
 

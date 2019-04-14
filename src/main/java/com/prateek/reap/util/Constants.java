@@ -9,7 +9,7 @@ public class Constants {
     public static final String MAIL_SUBJECT = "Reset Password";
     public static final String RECOGNITION_YOU_GAVE_TO = "The recognition you gave to ";
     public static final String REVOKED_BY_ADMIN = " has been revoked by Admin ";
-    public static final String REASON_REVOKATION = " For the following reason  ";
+    public static final String REASON_REVOKATION = " For the following reason :  ";
     public static final String CONTACT_ADMIN = " For more information Please contact the admin";
     public static final String RECOGNITION_NEWER = "Newer Recognition";
     public static final String GAVE_STAR = "You gave a ";
