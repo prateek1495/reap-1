@@ -89,7 +89,7 @@ $(function () {
         $(' body').load("/delete-recognition/" + id + "/" + star + "/" + comment, function () {
 
             location.reload();
-            $('.resultRevoke').append("Revocation Request submitted successfull,Mail has been sent");
+            $('.resultRevoke').append("Revocation Request submitted successfully , Mail has been sent");
             $('.resultRevoke').addClass("alert alert-success");
             $(".resultRevoke").fadeTo(7000, 500).slideUp(500, function () {
                 $(".resultRevoke").empty();

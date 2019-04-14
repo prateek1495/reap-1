@@ -77,14 +77,22 @@ $(function () {
                         );
                     }
                     else {
-                        $("#redeemResult").addClass("alert alert-danger");
+                       /* $("#redeemResult").addClass("alert alert-danger");
                         $("#redeemResult").append("Not Enough Points to redeem");
                         setTimeout(
                             function(){
                                 location.reload();
 
                             },3000
-                        );
+                        );*/
+                        $('#redeemResult').append("Not enough points");
+                        $('#redeemResult').addClass("alert alert-danger");
+                        $('#redeemResult').fadeTo(2000, 500).slideUp(500, function () {
+                            $('#redeemResult').empty();
+                            $('#redeemResult').removeClass("alert alert-danger");
+
+                        });
+
                     }
 
                 }

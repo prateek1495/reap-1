@@ -3,7 +3,7 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/images/ttn.ico" sizes="20x20" type="image/gif">
     <title>DashBoard</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -578,7 +578,7 @@
 
                             <div id="page">
 
-                                <div class="list-group boardWall"  th:fragment="wallOfFame">
+                                <div class="list-group boardWall" style="overflow-y: auto;overflow-x: hidden" th:fragment="wallOfFame">
                                     <div class="row recordInfo" id="record" th:each="result:${wallOfFame}">
 
                                         <div class="col-md-1 " style="vertical-align: center">
