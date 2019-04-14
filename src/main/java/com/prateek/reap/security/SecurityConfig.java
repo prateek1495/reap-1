@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .csrf()
                 .disable()
@@ -49,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/save", "/signup", "/forget-password", "/reset-password",
                         "/forget-password-process", "/reset-password-process", "/perform-login","/getWall")
                 .permitAll()
-                .antMatchers("/dashboard/**")
+                .antMatchers("/dashboard/**","/items/**","/badge/**")
                 .authenticated()
                 .and()
                 .formLogin()

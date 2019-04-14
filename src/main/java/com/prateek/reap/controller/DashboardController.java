@@ -87,7 +87,7 @@ public class DashboardController {
             redirectAttributes.addFlashAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
-        if (starType.equals("Select Badges")) {
+        if (starType.equals(KEY_SELECT_BADGE)) {
             redirectAttributes.addFlashAttribute(KEY_STAR_ERROR, VALUE_STAR_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }

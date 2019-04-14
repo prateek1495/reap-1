@@ -29,6 +29,7 @@ public class HtmlConstants {
 
     public static final String KEY_LOGGED_IN_USER = "loggedUser";
     public static final String KEY_BADGE = "badge";
+    public static final String KEY_SELECT_BADGE = "Select Badges";
     public static final String KEY_USERS = "users";
     public static final String KEY_RECEIVE_STARS = "recvstars";
     public static final String KEY_STAR_COUNT = "starCount";
