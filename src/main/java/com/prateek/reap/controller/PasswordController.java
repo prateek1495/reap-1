@@ -3,6 +3,8 @@ package com.prateek.reap.controller;
 import com.prateek.reap.entity.User;
 import com.prateek.reap.service.EmailService;
 import com.prateek.reap.service.SignUpService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class PasswordController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    Logger logger= LoggerFactory.getLogger(PasswordController.class);
 
     @RequestMapping("/forget-password")
     public String getPasswordResetPage(Model model) {
@@ -43,6 +46,7 @@ public class PasswordController {
     public String getResetPasswordPage(@RequestParam String token, Model model, RedirectAttributes redirectAttributes) {
         User user = signUpService.findByToken(token);
         if (user == null) {
+            logger.error("Reset Token doesnot exist"+token);
             redirectAttributes.addFlashAttribute(KEY_LINK_EXPIRE, VALUE_RESET_PASSWORD_ERROR );
             return REDIRECT_TO_LOGIN;
         }
@@ -65,6 +69,7 @@ public class PasswordController {
         String resetUrl = signUpService.saveTokenAndGenerateResetUrl(user, RESET_TOKEN_URL );
 
         emailService.sendEmailToSingleRecipient(email, MAIL_SUBJECT , resetUrl);
+        logger.info("Reset password mail has been sent");
         redirectAttributes.addFlashAttribute(KEY_PASSWORD_SUCCESS, VALUE_FORGET_PASSWORD_SUCCESS);
 
         return REDIRECT_TO_LOGIN;
@@ -75,11 +80,13 @@ public class PasswordController {
     public String resetPasswordProcess(@RequestParam Map<String, String> requestParams, RedirectAttributes redirectAttributes) {
         User user1 = signUpService.findByToken(requestParams.get(KEY_TOKEN));
         if (user1 == null) {
+            logger.error("Reset Link Expired"+ requestParams.get(KEY_TOKEN));
             redirectAttributes.addFlashAttribute(KEY_LINK_EXPIRE, VALUE_RESET_PASSWORD_ERROR);
             return REDIRECT_TO_LOGIN;
         }
 
         signUpService.resetEmailTokenAndSetNewPassword(requestParams.get(KEY_TOKEN), requestParams.get(KEY_NEW_PASSWORD));
+        logger.info("Password Reseted Successfully");
         redirectAttributes.addFlashAttribute(KEY_RESET_PASSWORD_SUCCESS , VALUE_RESET_PASSWORD_SUCCESS);
         return REDIRECT_TO_LOGIN;
     }

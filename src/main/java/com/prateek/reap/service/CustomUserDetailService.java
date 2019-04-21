@@ -4,6 +4,8 @@ import com.prateek.reap.entity.User;
 import com.prateek.reap.entity.UserPrincipal;
 import com.prateek.reap.entity.UserRole;
 import com.prateek.reap.repository.LoginRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,15 +27,18 @@ public class CustomUserDetailService implements UserDetailsService {
     @Autowired
     LoginRepository loginRepository;
 
+    Logger logger= LoggerFactory.getLogger(CustomUserDetailService.class);
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = loginRepository.findByEmailAndActive(email, true);
 
-        if (isNull(user))
+        if (isNull(user)) {
+            logger.error("Bad credentials"+email);
             throw new UsernameNotFoundException("User Does Not Exists");
 
-
+        }
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNotExpired = true;

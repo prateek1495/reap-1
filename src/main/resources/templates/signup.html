@@ -84,15 +84,13 @@
                                 <div class="form-group">
                                     <label>Photo*</label>
                                     <input type="file" required name="photo" id="photo"
-                                           tabindex="1"
+                                           tabindex="1" accept="image/*"
                                            class="form-control"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Email*</label>
                                     <input type="email" required th:field="*{email}" name="email" id="email"
                                            tabindex="1"
-                                           pattern="[a-zA-Z]+[a-zA-Z0-9._-]*@tothenew\.com"
-                                           title="Email should not start with special character or number and must end with '@tothenew.com' "
                                            class="form-control" placeholder="Email Address" value=""/>
                                 </div>
                                 <div class="form-group">

@@ -5,7 +5,10 @@ import com.prateek.reap.entity.User;
 import com.prateek.reap.entity.UserRole;
 import com.prateek.reap.repository.SignUpRepository;
 import com.prateek.reap.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,9 +43,11 @@ public class DashboardController {
     @Autowired
     private UserStarReceivedService userStarReceivedService;
 
+    Logger logger= LoggerFactory.getLogger(DashboardController.class);
     @RequestMapping("/dashboard")
     public String getDashboardPage(Model model, Authentication authentication, Principal principal) {
 
+        logger.info("User logged in"+authentication.getName());
         if (model.containsAttribute(KEY_SUCCESS))
             model.addAttribute(KEY_SUCCESS, VALUE_RECOGNITION_SUCCESS);
 
@@ -84,33 +89,40 @@ public class DashboardController {
 
         User user = signUpService.checkByEmail(receiverEmail);
         if (receiverEmail.equals(currentLoggedInUser(authentication).getEmail())) {
+            logger.error("Cannot recognize yourself"+receiverEmail);
             redirectAttributes.addFlashAttribute(KEY_SELF_ERROR, VALUE_SELF_RECOGNITION_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
         if (starType.equals(KEY_SELECT_BADGE)) {
+            logger.error("Star not selected");
             redirectAttributes.addFlashAttribute(KEY_STAR_ERROR, VALUE_STAR_ERROR);
             return REDIRECT_TO_DASHBOARD;
         }
         if (comment.trim().equals("")) {
+            logger.error("Comment is blank");
             redirectAttributes.addFlashAttribute(KEY_COMMENT_ERROR, VALUE_BLANK_COMMENT);
             return REDIRECT_TO_DASHBOARD;
         }
 
         if (receiverEmail.trim().equals(" ")) {
+            logger.error("User does not exist");
             redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR2, VALUE_RECOGNITION_RECIEVER_EMAIL);
             return REDIRECT_TO_DASHBOARD;
         }
 
 
         if (user == null) {
+            logger.error("User doesnot exist");
             redirectAttributes.addFlashAttribute(KEY_EMAIL_ERROR, VALUE_RECOGNITION_RECIEVER_EMAIL);
             return REDIRECT_TO_DASHBOARD;
         }
 
         boolean check = badgeService.saveRecognitionData(starType.toUpperCase(), receiverEmail,
                 currentLoggedInUser(authentication).getEmail(), comment);
+        logger.info(starType+"is given to"+receiverEmail+"by"+currentLoggedInUser(authentication).getEmail());
 
         if (!check) {
+            logger.error("Cannot be recognized");
             redirectAttributes.addFlashAttribute(KEY_RECOGNITION_FAILURE, VALUE_RECOGNITION_FAILURE);
             return REDIRECT_TO_DASHBOARD;
         }
@@ -128,6 +140,7 @@ public class DashboardController {
         return badgeService.findAllByDateAndNameLike(name);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @RequestMapping(value = "/delete-recognition/{id}/{star}/{comment}", method = RequestMethod.GET)
     public String disableRecognition(
             @PathVariable Integer id, @PathVariable String star, @PathVariable String comment)
@@ -150,7 +163,7 @@ public class DashboardController {
         WriteDataToCsv.writeObjectToCSV(response.getWriter(), badgesGivens);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/addRole")
     public String updateRole(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                              @RequestParam(REQUEST_PARAM_ROLE) String role) {
@@ -160,6 +173,7 @@ public class DashboardController {
         return REDIRECT_TO_DASHBOARD;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/deleteRole")
     public String deleteRole(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                              @RequestParam(REQUEST_PARAM_ROLE) String role) {
@@ -169,6 +183,7 @@ public class DashboardController {
         return REDIRECT_TO_DASHBOARD;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/changePoints")
     public String changePoints(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                                @RequestParam(REQUEST_PARAM_POINT) Integer points) {
@@ -178,7 +193,7 @@ public class DashboardController {
 
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/searchRecognitionByDate/{start}/{end}")
     public String getUserRecodByName(@PathVariable(REQUEST_PARAM_START) String startDate,
                                      @PathVariable(REQUEST_PARAM_END) String endDate,
@@ -192,6 +207,7 @@ public class DashboardController {
         return "dashboard::wallOfFame";
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping(value = "/updateActive")
     public String updateActive(@RequestParam("email") String email) {
 
@@ -206,6 +222,7 @@ public class DashboardController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/changeGoldBadges")
     public String changeGoldBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                                    @RequestParam(REQUEST_PARAM_GOLD) Integer goldStar) {
@@ -214,7 +231,7 @@ public class DashboardController {
         return REDIRECT_TO_DASHBOARD;
 
     }
-
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/changeSilverBadges")
     public String changeSilverBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                                      @RequestParam(REQUEST_PARAM_SILVER) Integer silverStar) {
@@ -224,6 +241,7 @@ public class DashboardController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/changeBronzeBadges")
     public String changeBronzeBadges(@RequestParam(REQUEST_PARAM_EMAIL) String email,
                                      @RequestParam(REQUEST_PARAM_BRONZE) Integer bronzeStar) {

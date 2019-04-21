@@ -1,5 +1,11 @@
 $(function () {
 
+
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        window.history.pushState(null, "", window.location.href);
+    };
+
     $("#endDate").val(moment().format('YYYY-MM-DD HH:mm:ss'));
     $("#startDate").val(moment().subtract('days', 1).format('YYYY-MM-DD HH:mm:ss'));
 
